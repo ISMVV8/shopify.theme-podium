@@ -686,3 +686,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initPasswordReveal();
   initNewsletterForms();
 });
+
