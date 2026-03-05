@@ -82,7 +82,7 @@
             {%- endif -%}
           </div>
 
-          {%- form 'product', product, data-product-form: '', id: 'product-form' -%}
+          {%- form 'product', product, id: 'product-form' -%}
             <variant-selector>
               <script type="application/json" data-variants>{{ product.variants | json }}</script>
 

@@ -1,9 +1,4 @@
-{%- liquid
-  assign pill_active = 0
-  if request.params.pill_active
-    assign pill_active = request.params.pill_active | plus: 0
-  endif
--%}
+{%- assign pill_active = 0 -%}
 
 <featured-products class="featured-products container" data-section-id="{{ section.id }}">
   <div class="featured-products__header">
