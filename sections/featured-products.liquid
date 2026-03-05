@@ -96,7 +96,31 @@
               {%- endif -%}
             </div>
           {%- else -%}
-            {%- render 'featured-products-placeholder', label: section.settings.pill_1_label, cta_label: cta_label, show_label: section.settings.show_featured_label, max_right: max_right -%}
+            <div class="featured-products__featured">
+              <a href="#" class="featured-products__featured-link">
+                <div class="featured-products__featured-image-wrap">
+                  {{ 'product-1' | placeholder_svg_tag: 'featured-products__placeholder-svg' }}
+                  {%- if section.settings.show_featured_label -%}
+                    <span class="featured-products__featured-label">{{ section.settings.pill_1_label | default: 'Back in stock' }}</span>
+                  {%- endif -%}
+                  <span class="featured-products__featured-cta btn btn--primary">{{ cta_label }}</span>
+                </div>
+              </a>
+            </div>
+            <div class="featured-products__grid-right">
+              {%- for i in (1..4) -%}
+                <article class="product-card product-card--placeholder">
+                  <div class="product-card__image-wrap">
+                    {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                  </div>
+                  <div class="product-card__info">
+                    <h3 class="product-card__title">Product title</h3>
+                    <p class="product-card__subtitle">Variant</p>
+                    <div class="product-card__price">€29,99</div>
+                  </div>
+                </article>
+              {%- endfor -%}
+            </div>
           {%- endif -%}
         </div>
       </div>
