@@ -285,6 +285,7 @@ announcement-bar {
 }
 
 .announcement-bar {
+  font-family: "Avenir", "Avenir Next", sans-serif;
   font-size: 0.8125rem;
   line-height: 1.3;
 }
