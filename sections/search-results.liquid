@@ -1,0 +1,57 @@
+<section class="search-results section">
+  <div class="container">
+    <h1 class="search-results__title">{{ 'search.title' | t }}</h1>
+
+    {%- if search.performed -%}
+      <p class="search-results__count">
+        {{ 'search.results_count' | t: count: search.results_count }}
+      </p>
+
+      {%- if search.results_count > 0 -%}
+        {%- paginate search.results by 24 -%}
+          <div class="search-results__grid">
+            {%- for result in search.results -%}
+              {%- if result.object_type == 'product' -%}
+                {% render 'product-card', product: result %}
+              {%- else -%}
+                <article class="product-card">
+                  <a href="{{ result.url }}" class="product-card__link">
+                    {%- if result.featured_image -%}
+                      <div class="product-card__image-wrap">
+                        <img
+                          src="{{ result.featured_image | image_url: width: 400 }}"
+                          alt="{{ result.title | escape }}"
+                          class="product-card__image"
+                          width="400"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- endif -%}
+                    <div class="product-card__info">
+                      <h3 class="product-card__title">{{ result.title }}</h3>
+                      <p class="product-card__subtitle">{{ result.content | strip_html | truncate: 80 }}</p>
+                    </div>
+                  </a>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {% render 'pagination', paginate: paginate %}
+        {%- endpaginate -%}
+      {%- else -%}
+        <div class="search-results__empty">
+          <h2>{{ 'search.no_results' | t: query: search.terms }}</h2>
+          <p>{{ 'search.no_results_suggestion' | t }}</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search results",
+  "class": "search-results-section",
+  "settings": []
+}
+{% endschema %}

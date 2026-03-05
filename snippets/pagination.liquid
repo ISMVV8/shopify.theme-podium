@@ -1,0 +1,45 @@
+{% comment %}
+  Pagination snippet.
+  Usage: {% render 'pagination', paginate: paginate %}
+  Must be used inside a {% paginate %} block.
+{% endcomment %}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.page' | t: number: paginate.current_page }}">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" class="pagination__item pagination__item--prev" aria-label="{{ 'general.pagination.previous' | t }}">
+        {% render 'icon', name: 'chevron-left', size: 16 %}
+      </a>
+    {%- else -%}
+      <span class="pagination__item pagination__item--prev pagination__item--disabled" aria-disabled="true">
+        {% render 'icon', name: 'chevron-left', size: 16 %}
+      </span>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}" class="pagination__item" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+          {{ part.title }}
+        </a>
+      {%- else -%}
+        {%- if part.title == paginate.current_page -%}
+          <span class="pagination__item pagination__item--active" aria-current="page">
+            {{ part.title }}
+          </span>
+        {%- else -%}
+          <span class="pagination__item pagination__item--ellipsis">{{ part.title }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" class="pagination__item pagination__item--next" aria-label="{{ 'general.pagination.next' | t }}">
+        {% render 'icon', name: 'chevron-right', size: 16 %}
+      </a>
+    {%- else -%}
+      <span class="pagination__item pagination__item--next pagination__item--disabled" aria-disabled="true">
+        {% render 'icon', name: 'chevron-right', size: 16 %}
+      </span>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

@@ -1,0 +1,113 @@
+<sticky-header class="header-wrapper" data-sticky="{{ settings.header_sticky }}">
+  <header class="header" role="banner">
+    <div class="header__inner container">
+      {%- comment -%} Mobile menu button {%- endcomment -%}
+      <button class="header__menu-btn btn--icon desktop-hidden" data-mobile-menu-open aria-label="{{ 'accessibility.open_menu' | t }}" aria-expanded="false">
+        {% render 'icon', name: 'menu', size: 22 %}
+      </button>
+
+      {%- comment -%} Logo {%- endcomment -%}
+      <div class="header__logo">
+        <a href="{{ routes.root_url }}" class="header__logo-link" aria-label="{{ shop.name }}">
+          {%- if section.settings.logo != blank -%}
+            <img
+              src="{{ section.settings.logo | image_url: width: 200 }}"
+              alt="{{ shop.name }}"
+              width="200"
+              height="{{ 200 | divided_by: section.settings.logo.aspect_ratio | round }}"
+              class="header__logo-image"
+            >
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      {%- comment -%} Desktop navigation {%- endcomment -%}
+      <nav class="header__nav mobile-hidden" role="navigation" aria-label="{{ 'header.menu' | t }}">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}" class="header__nav-link{% if link.active %} is-active{% endif %}">
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      </nav>
+
+      {%- comment -%} Icons {%- endcomment -%}
+      <div class="header__icons">
+        <button class="header__icon btn--icon" data-search-open aria-label="{{ 'header.search' | t }}">
+          {% render 'icon', name: 'search', size: 20 %}
+        </button>
+
+        <a href="/pages/wishlist" class="header__icon btn--icon mobile-hidden" aria-label="{{ 'header.wishlist' | t }}">
+          {% render 'icon', name: 'heart', size: 20 %}
+        </a>
+
+        <a href="{{ routes.account_url }}" class="header__icon btn--icon mobile-hidden" aria-label="{{ 'header.account' | t }}">
+          {% render 'icon', name: 'user', size: 20 %}
+        </a>
+
+        <button class="header__icon header__cart-btn btn--icon" data-cart-open aria-label="{{ 'header.cart' | t }}">
+          {% render 'icon', name: 'cart', size: 20 %}
+          <span class="header__cart-count" data-cart-count>{{ cart.item_count }}</span>
+        </button>
+      </div>
+    </div>
+  </header>
+</sticky-header>
+
+{%- comment -%} Mobile menu drawer {%- endcomment -%}
+<mobile-menu class="mobile-menu" id="mobile-menu" aria-label="{{ 'header.menu' | t }}">
+  <div class="mobile-menu__header">
+    <span class="mobile-menu__title">{{ 'header.menu' | t }}</span>
+    <button class="btn--icon" data-mobile-menu-close aria-label="{{ 'accessibility.close_menu' | t }}">
+      {% render 'icon', name: 'close', size: 20 %}
+    </button>
+  </div>
+  <nav class="mobile-menu__nav" role="navigation">
+    {%- for link in section.settings.menu.links -%}
+      <a href="{{ link.url }}" class="mobile-menu__link{% if link.active %} is-active{% endif %}">
+        {{ link.title }}
+      </a>
+    {%- endfor -%}
+  </nav>
+  <div class="mobile-menu__footer">
+    <a href="{{ routes.account_url }}" class="mobile-menu__link">
+      {% render 'icon', name: 'user', size: 18 %}
+      {{ 'header.account' | t }}
+    </a>
+    <a href="/pages/wishlist" class="mobile-menu__link">
+      {% render 'icon', name: 'heart', size: 18 %}
+      {{ 'header.wishlist' | t }}
+    </a>
+  </div>
+</mobile-menu>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 150
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

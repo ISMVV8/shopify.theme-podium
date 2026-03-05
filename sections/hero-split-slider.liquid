@@ -1,0 +1,133 @@
+<hero-slider class="hero-slider-section" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval }}">
+  <div class="hero-slider">
+    <div class="hero-slider__track" aria-live="polite">
+      {%- for block in section.blocks -%}
+        <div class="hero-slider__slide" {{ block.shopify_attributes }}>
+          <div class="hero-slider__image-wrap">
+            {%- if block.settings.image_left != blank -%}
+              <img
+                src="{{ block.settings.image_left | image_url: width: 960 }}"
+                alt="{{ block.settings.image_left.alt | escape | default: 'Slide image' }}"
+                class="hero-slider__image"
+                width="960"
+                height="{{ 960 | divided_by: block.settings.image_left.aspect_ratio | round }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                {% if forloop.first %}fetchpriority="high"{% endif %}
+              >
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__image' }}
+            {%- endif -%}
+          </div>
+          <div class="hero-slider__image-wrap">
+            {%- if block.settings.image_right != blank -%}
+              <img
+                src="{{ block.settings.image_right | image_url: width: 960 }}"
+                alt="{{ block.settings.image_right.alt | escape | default: 'Slide image' }}"
+                class="hero-slider__image"
+                width="960"
+                height="{{ 960 | divided_by: block.settings.image_right.aspect_ratio | round }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slider__image' }}
+            {%- endif -%}
+          </div>
+          {%- if block.settings.cta_text != blank -%}
+            <a href="{{ block.settings.cta_link }}" class="hero-slider__cta btn btn--primary btn--large">
+              {{ block.settings.cta_text }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      {%- if section.blocks.size == 0 -%}
+        <div class="hero-slider__slide">
+          <div class="hero-slider__image-wrap">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__image' }}
+          </div>
+          <div class="hero-slider__image-wrap">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slider__image' }}
+          </div>
+          <a href="/collections/all" class="hero-slider__cta btn btn--primary btn--large">Découvrir</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="hero-slider__dots" role="tablist">
+        {%- for block in section.blocks -%}
+          <button
+            class="hero-slider__dot{% if forloop.first %} active{% endif %}"
+            data-slide-dot="{{ forloop.index0 }}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-label="{{ 'accessibility.slide_number' | t: number: forloop.index, total: section.blocks.size }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</hero-slider>
+
+{% schema %}
+{
+  "name": "Hero split slider",
+  "class": "hero-slider-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Autoplay interval",
+      "min": 3000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "default": 5000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_left",
+          "label": "Left image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_right",
+          "label": "Right image"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA text",
+          "default": "Découvrir"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero split slider",
+      "blocks": [
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

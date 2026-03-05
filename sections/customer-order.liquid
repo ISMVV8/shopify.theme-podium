@@ -1,0 +1,74 @@
+<section class="account-page section">
+  <div class="container">
+    <h1>{{ 'customer.order.title' | t: name: order.name }}</h1>
+    <p style="color: var(--color-text-secondary); margin-bottom: var(--space-xl);">
+      {{ 'customer.order.date' | t: date: order.created_at | date: '%d/%m/%Y' }}
+    </p>
+
+    <table class="account-page__orders">
+      <thead>
+        <tr>
+          <th>{{ 'customer.order.product' | t }}</th>
+          <th>{{ 'customer.order.sku' | t }}</th>
+          <th>{{ 'customer.order.price' | t }}</th>
+          <th>{{ 'customer.order.quantity' | t }}</th>
+          <th>{{ 'customer.order.total' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td>
+              <a href="{{ line_item.product.url }}">{{ line_item.title }}</a>
+            </td>
+            <td>{{ line_item.sku | default: '-' }}</td>
+            <td>{{ line_item.final_price | money }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" style="text-align: right; font-weight: 600;">{{ 'customer.order.subtotal' | t }}</td>
+          <td>{{ order.line_items_subtotal_price | money }}</td>
+        </tr>
+        {%- for shipping_method in order.shipping_methods -%}
+          <tr>
+            <td colspan="4" style="text-align: right;">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</td>
+            <td>{{ shipping_method.price | money }}</td>
+          </tr>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+          <tr>
+            <td colspan="4" style="text-align: right;">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate_percentage }}%)</td>
+            <td>{{ tax_line.price | money }}</td>
+          </tr>
+        {%- endfor -%}
+        <tr>
+          <td colspan="4" style="text-align: right; font-weight: 600;">{{ 'customer.order.total' | t }}</td>
+          <td style="font-weight: 600;">{{ order.total_price | money }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    {%- if order.shipping_address -%}
+      <div style="margin-top: var(--space-xl);">
+        <h3>{{ 'customer.order.shipping_address' | t }}</h3>
+        <p>{{ order.shipping_address | format_address }}</p>
+      </div>
+    {%- endif -%}
+
+    <div style="margin-top: var(--space-lg);">
+      <a href="{{ routes.account_url }}" class="btn btn--secondary">&larr; {{ 'customer.account.title' | t }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer order",
+  "class": "customer-order-section",
+  "settings": []
+}
+{% endschema %}

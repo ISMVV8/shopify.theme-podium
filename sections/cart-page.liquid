@@ -1,0 +1,62 @@
+{%- comment -%} Fallback cart page for no-JS or direct /cart URL {%- endcomment -%}
+
+<section class="cart-page section">
+  <div class="container">
+    <h1 class="cart-page__title">{{ 'cart.title' | t }}</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-page__empty">
+        <p>{{ 'cart.empty_title' | t }}</p>
+        <p>{{ 'cart.empty_subtitle' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary" style="margin-top: var(--space-lg);">
+          {{ 'cart.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post">
+        <div class="cart-page__items">
+          {%- for item in cart.items -%}
+            <div class="cart-page__item">
+              <a href="{{ item.url }}">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" class="cart-page__item-image" width="100" loading="lazy">
+                {%- endif -%}
+              </a>
+              <div class="cart-page__item-info">
+                <h3><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p style="color: var(--color-text-secondary); font-size: 0.875rem;">{{ item.variant.title }}</p>
+                {%- endunless -%}
+                <p>{{ item.final_line_price | money }}</p>
+                <div style="margin-top: var(--space-sm);">
+                  <label for="qty-{{ item.key }}" class="visually-hidden">{{ 'cart.quantity' | t }}</label>
+                  <input type="number" id="qty-{{ item.key }}" name="updates[{{ item.key }}]" value="{{ item.quantity }}" min="0" style="width: 60px; text-align: center; border: 1px solid var(--color-border); padding: var(--space-xs);">
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="cart-page__footer">
+          <div class="cart-page__summary">
+            <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-md); font-size: 1.125rem;">
+              <span>{{ 'cart.subtotal' | t }}</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <p style="font-size: 0.8125rem; color: var(--color-text-secondary); margin-bottom: var(--space-md);">{{ 'cart.shipping_note' | t }}</p>
+            <button type="submit" name="checkout" class="btn btn--primary btn--full btn--large">{{ 'cart.checkout' | t }}</button>
+            <button type="submit" name="update" class="btn btn--secondary btn--full" style="margin-top: var(--space-sm);">Update cart</button>
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart page",
+  "class": "cart-page-section",
+  "settings": []
+}
+{% endschema %}

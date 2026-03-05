@@ -1,0 +1,131 @@
+<section class="masonry-section section">
+  <div class="container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="masonry-section__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="masonry-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tile_collection = block.settings.collection
+          assign tile_title = block.settings.title_override
+          if tile_title == blank and tile_collection != blank
+            assign tile_title = tile_collection.title
+          endif
+          assign tile_image = block.settings.image_override
+          if tile_image == blank and tile_collection != blank
+            assign tile_image = tile_collection.image
+          endif
+          assign tile_url = tile_collection.url | default: '#'
+        -%}
+        <a href="{{ tile_url }}" class="masonry-tile masonry-tile--{{ block.settings.style }}" {{ block.shopify_attributes }}>
+          {%- if tile_image != blank -%}
+            <img
+              src="{{ tile_image | image_url: width: 800 }}"
+              alt="{{ tile_title | escape | default: 'Collection' }}"
+              class="masonry-tile__image"
+              width="800"
+              height="{{ 800 | divided_by: tile_image.aspect_ratio | round }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'masonry-tile__image' }}
+          {%- endif -%}
+          <div class="masonry-tile__overlay">
+            <h3 class="masonry-tile__title">{{ tile_title | default: 'Collection' }}</h3>
+          </div>
+        </a>
+      {%- endfor -%}
+
+      {%- if section.blocks.size == 0 -%}
+        {%- for i in (1..4) -%}
+          <a href="#" class="masonry-tile masonry-tile--{% cycle 'wide', 'tall', 'wide', 'tall' %}">
+            {{ 'collection-1' | placeholder_svg_tag: 'masonry-tile__image' }}
+            <div class="masonry-tile__overlay">
+              <h3 class="masonry-tile__title">Collection {{ i }}</h3>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.footer_link_text != blank -%}
+      <div class="masonry-section__footer">
+        <a href="{{ section.settings.footer_link_url | default: '/collections' }}" class="btn btn--secondary">
+          {{ section.settings.footer_link_text }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections masonry",
+  "class": "masonry-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Collections"
+    },
+    {
+      "type": "text",
+      "id": "footer_link_text",
+      "label": "Footer link text",
+      "default": "Découvrir toute la collection"
+    },
+    {
+      "type": "url",
+      "id": "footer_link_url",
+      "label": "Footer link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Collection tile",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_override",
+          "label": "Image override"
+        },
+        {
+          "type": "text",
+          "id": "title_override",
+          "label": "Title override"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Tile style",
+          "options": [
+            { "value": "wide", "label": "Wide (spans 2 columns)" },
+            { "value": "tall", "label": "Tall (spans 2 rows)" }
+          ],
+          "default": "wide"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections masonry",
+      "blocks": [
+        { "type": "tile", "settings": { "style": "wide" } },
+        { "type": "tile", "settings": { "style": "tall" } },
+        { "type": "tile", "settings": { "style": "wide" } },
+        { "type": "tile", "settings": { "style": "tall" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

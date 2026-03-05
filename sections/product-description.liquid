@@ -1,0 +1,73 @@
+<div class="product-description">
+  {%- if product.description != blank -%}
+    <div class="product-description__content">
+      {{ product.description }}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Accordions {%- endcomment -%}
+  <div class="product-description__accordions">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'accordion' -%}
+        {% render 'accordion',
+          title: block.settings.title,
+          content: block.settings.content,
+          id: block.id,
+          open: block.settings.open_by_default
+        %}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if section.blocks.size == 0 -%}
+      {% render 'accordion',
+        title: 'Composition & entretien',
+        content: '<p>Informations à compléter par le marchand.</p>',
+        id: 'composition'
+      %}
+      {% render 'accordion',
+        title: 'Livraisons & retours',
+        content: '<p>Livraison standard sous 3-5 jours ouvrés. Retour gratuit sous 14 jours.</p>',
+        id: 'shipping'
+      %}
+      {% render 'accordion',
+        title: 'Moyens de paiement',
+        content: '<p>Visa, Mastercard, American Express, PayPal, Scalapay (3x sans frais).</p>',
+        id: 'payment'
+      %}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product description",
+  "class": "product-description-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Composition & entretien"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Informations à compléter.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

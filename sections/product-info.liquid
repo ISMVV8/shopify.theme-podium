@@ -1,0 +1,212 @@
+<div class="product-info">
+  {%- comment -%} Title {%- endcomment -%}
+  <h1 class="product-info__title">{{ product.title }}</h1>
+
+  {%- comment -%} Color label {%- endcomment -%}
+  {%- for option in product.options_with_values -%}
+    {%- if option.name == 'Color' or option.name == 'Couleur' -%}
+      <p class="product-info__color-label">
+        {{ 'product.color' | t }}: <span>{{ option.selected_value }}</span>
+      </p>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} Price {%- endcomment -%}
+  <div class="product-info__price">
+    <span data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+    {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+      <span data-compare-price class="price__compare">
+        <s>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+      </span>
+    {%- else -%}
+      <span data-compare-price class="price__compare" style="display:none;"></span>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Product form {%- endcomment -%}
+  {%- form 'product', product, data-product-form: '', id: 'product-form' -%}
+    <variant-selector>
+      {%- comment -%} Variants data {%- endcomment -%}
+      <script type="application/json" data-variants>
+        {{ product.variants | json }}
+      </script>
+
+      {%- for option in product.options_with_values -%}
+        {%- if option.name == 'Color' or option.name == 'Couleur' -%}
+          {%- comment -%} Color swatches {%- endcomment -%}
+          <div class="product-info__swatches">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign variant_for_color = nil
+                for variant in product.variants
+                  if variant.options[forloop.parentloop.index0] == value
+                    assign variant_for_color = variant
+                    break
+                  endif
+                endfor
+              -%}
+              <button
+                type="button"
+                class="swatch{% if option.selected_value == value %} active{% endif %}"
+                data-option
+                data-option-position="{{ forloop.parentloop.index }}"
+                data-value="{{ value }}"
+                aria-label="{{ value }}"
+                title="{{ value }}"
+              >
+                {%- if variant_for_color and variant_for_color.featured_image -%}
+                  <img
+                    src="{{ variant_for_color.featured_image | image_url: width: 72 }}"
+                    alt="{{ value }}"
+                    width="36"
+                    height="36"
+                  >
+                {%- else -%}
+                  <span class="swatch--color" style="background-color: {{ value | handleize }};"></span>
+                {%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+
+        {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
+          {%- comment -%} Size pills {%- endcomment -%}
+          <p class="product-info__size-label">{{ 'product.size' | t }}</p>
+          <div class="product-info__sizes">
+            {%- for value in option.values -%}
+              <button
+                type="button"
+                class="size-btn{% if option.selected_value == value %} active{% endif %}"
+                data-option
+                data-option-position="{{ forloop.parentloop.index }}"
+                data-value="{{ value }}"
+              >
+                {{ value }}
+              </button>
+            {%- endfor -%}
+          </div>
+
+        {%- else -%}
+          {%- comment -%} Generic option as pills {%- endcomment -%}
+          <p class="product-info__size-label">{{ option.name }}</p>
+          <div class="product-info__sizes">
+            {%- for value in option.values -%}
+              <button
+                type="button"
+                class="size-btn{% if option.selected_value == value %} active{% endif %}"
+                data-option
+                data-option-position="{{ forloop.parentloop.index }}"
+                data-value="{{ value }}"
+              >
+                {{ value }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Hidden variant ID input {%- endcomment -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    </variant-selector>
+
+    {%- comment -%} Size guide link {%- endcomment -%}
+    {%- if section.settings.size_guide_url != blank -%}
+      <a href="{{ section.settings.size_guide_url }}" class="product-info__size-guide">
+        {{ 'product.size_guide' | t }}
+      </a>
+    {%- endif -%}
+
+    {%- comment -%} Model info blocks {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'model_info' -%}
+        <p class="product-info__model" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Installments info {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'installments' -%}
+        <div class="product-info__installments" {{ block.shopify_attributes }}>
+          {{ block.settings.text }}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Quantity (hidden, default 1) {%- endcomment -%}
+    <input type="hidden" name="quantity" value="1">
+
+    {%- comment -%} Add to cart button {%- endcomment -%}
+    <button
+      type="submit"
+      class="btn btn--primary product-info__add-btn"
+      data-add-to-cart
+      data-add-text="{{ 'product.add_to_cart' | t }}"
+      data-soldout-text="{{ 'product.sold_out' | t }}"
+      data-unavailable-text="{{ 'product.unavailable' | t }}"
+      {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+    >
+      {%- if product.selected_or_first_available_variant.available -%}
+        {{ 'product.add_to_cart' | t }}
+      {%- else -%}
+        {{ 'product.sold_out' | t }}
+      {%- endif -%}
+    </button>
+
+    {%- comment -%} Dynamic checkout button {%- endcomment -%}
+    <div class="product-info__express-btn">
+      {{ form | payment_button }}
+    </div>
+  {%- endform -%}
+
+  {%- comment -%} Trust row {%- endcomment -%}
+  <div class="product-info__trust">
+    <span class="product-info__trust-item">
+      {% render 'icon', name: 'return', size: 16 %}
+      {{ 'trust.returns' | t }}
+    </span>
+    <span class="product-info__trust-item">
+      {% render 'icon', name: 'truck', size: 16 %}
+      {{ 'trust.fast_shipping' | t }}
+    </span>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product info",
+  "class": "product-info-section",
+  "settings": [
+    {
+      "type": "url",
+      "id": "size_guide_url",
+      "label": "Size guide URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "model_info",
+      "name": "Model info line",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Le mannequin mesure 1m78 et porte la taille S"
+        }
+      ]
+    },
+    {
+      "type": "installments",
+      "name": "Installments info",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Payez en 3x sans frais avec Scalapay</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

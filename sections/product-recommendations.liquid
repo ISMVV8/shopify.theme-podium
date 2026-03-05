@@ -1,0 +1,58 @@
+<section class="recommendations-section section" data-product-id="{{ product.id }}">
+  <div class="container">
+    <h2 class="recommendations-section__title">{{ section.settings.heading | default: 'Vous aimerez aussi' }}</h2>
+    <div class="recommendations-grid" id="product-recommendations">
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        {%- for rec_product in recommendations.products limit: section.settings.limit -%}
+          {% render 'product-card', product: rec_product %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('.recommendations-section');
+    if (!section) return;
+    const productId = section.dataset.productId;
+    const limit = {{ section.settings.limit | default: 4 }};
+    const url = `${window.Shopify.routes.root}recommendations/products?product_id=${productId}&limit=${limit}&section_id={{ section.id }}`;
+
+    fetch(url)
+      .then(res => res.text())
+      .then(html => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const grid = temp.querySelector('#product-recommendations');
+        if (grid && grid.innerHTML.trim()) {
+          document.getElementById('product-recommendations').innerHTML = grid.innerHTML;
+        }
+      })
+      .catch(err => console.error('Recommendations fetch error:', err));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "class": "recommendations-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Vous aimerez aussi"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

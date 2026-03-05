@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "login": {
+      "type": "login-hero",
+      "settings": {}
+    }
+  },
+  "order": ["login"]
+}

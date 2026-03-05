@@ -1,0 +1,83 @@
+{% comment %}
+  Product card snippet.
+  Usage: {% render 'product-card', product: product %}
+  Optional: {% render 'product-card', product: product, show_wishlist: true %}
+{% endcomment %}
+
+{%- liquid
+  unless show_wishlist == false
+    assign show_wishlist = true
+  endunless
+-%}
+
+<article class="product-card">
+  <a href="{{ product.url }}" class="product-card__link" aria-label="{{ product.title }}">
+    <div class="product-card__image-wrap">
+      {%- if product.featured_media -%}
+        <img
+          class="product-card__image"
+          src="{{ product.featured_media | image_url: width: 600 }}"
+          alt="{{ product.featured_media.alt | escape | default: product.title }}"
+          width="600"
+          height="{{ 600 | divided_by: product.featured_media.aspect_ratio | round }}"
+          loading="lazy"
+          srcset="
+            {{ product.featured_media | image_url: width: 300 }} 300w,
+            {{ product.featured_media | image_url: width: 450 }} 450w,
+            {{ product.featured_media | image_url: width: 600 }} 600w,
+            {{ product.featured_media | image_url: width: 800 }} 800w
+          "
+          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+        >
+        {%- if product.media.size > 1 -%}
+          <img
+            class="product-card__image product-card__image--hover"
+            src="{{ product.media[1] | image_url: width: 600 }}"
+            alt="{{ product.media[1].alt | escape | default: product.title }}"
+            width="600"
+            height="{{ 600 | divided_by: product.media[1].aspect_ratio | round }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+      {%- else -%}
+        <div class="product-card__placeholder">
+          {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+        </div>
+      {%- endif -%}
+
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__badge product-card__badge--sale">
+          -{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%
+        </span>
+      {%- endif -%}
+
+      {%- if product.available == false -%}
+        <span class="product-card__badge product-card__badge--soldout">
+          {{ 'product.sold_out' | t }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    <div class="product-card__info">
+      <h3 class="product-card__title">{{ product.title }}</h3>
+      {%- if product.variants.size > 1 -%}
+        <p class="product-card__subtitle">
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Color' or option.name == 'Couleur' -%}
+              {{ option.values | join: ' / ' }}
+            {%- endif -%}
+          {%- endfor -%}
+        </p>
+      {%- endif -%}
+      <div class="product-card__price">
+        {% render 'price', product: product %}
+      </div>
+    </div>
+  </a>
+
+  {%- if show_wishlist -%}
+    <button class="product-card__wishlist btn--icon" data-wishlist-toggle data-product-id="{{ product.id }}" aria-label="{{ 'header.wishlist' | t }}">
+      {% render 'icon', name: 'heart', size: 18 %}
+    </button>
+  {%- endif -%}
+</article>

@@ -1,0 +1,54 @@
+{% comment %}
+  Maps Shopify theme settings to CSS custom properties.
+  Include this snippet inside <style> tags in layout/theme.liquid.
+{% endcomment %}
+
+:root {
+  /* Colors */
+  --color-bg: {{ settings.color_background }};
+  --color-text: {{ settings.color_text }};
+  --color-text-secondary: {{ settings.color_text_secondary }};
+  --color-border: {{ settings.color_border }};
+  --color-btn-bg: {{ settings.color_button_bg }};
+  --color-btn-text: {{ settings.color_button_text }};
+  --color-btn-secondary-bg: {{ settings.color_button_secondary_bg }};
+  --color-btn-secondary-text: {{ settings.color_button_secondary_text }};
+  --color-sale: {{ settings.color_sale }};
+  --color-overlay: {{ settings.color_overlay }};
+
+  /* Typography */
+  --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+  --font-body-weight: {{ settings.font_body.weight }};
+  --font-body-style: {{ settings.font_body.style }};
+  --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+  --font-heading-weight: {{ settings.font_heading.weight }};
+  --font-heading-style: {{ settings.font_heading.style }};
+  --font-body-size: {{ settings.font_body_size }}px;
+  --font-heading-scale: {{ settings.font_heading_scale | divided_by: 100.0 }};
+
+  /* Layout */
+  --radius: {{ settings.border_radius }}px;
+  --page-width: {{ settings.page_width }}px;
+  --spacing-scale: {{ settings.spacing_scale | divided_by: 100.0 }};
+
+  /* Computed spacing */
+  --space-xs: calc(4px * var(--spacing-scale));
+  --space-sm: calc(8px * var(--spacing-scale));
+  --space-md: calc(16px * var(--spacing-scale));
+  --space-lg: calc(24px * var(--spacing-scale));
+  --space-xl: calc(40px * var(--spacing-scale));
+  --space-2xl: calc(64px * var(--spacing-scale));
+  --space-3xl: calc(96px * var(--spacing-scale));
+
+  /* Z-index scale */
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
+
+  /* Transitions */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}

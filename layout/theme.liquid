@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>
+    {%- if page_title -%}
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- else -%}
+      {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+  {%- comment -%} Font face declarations {%- endcomment -%}
+  <style>
+    {{ settings.font_body | font_face: font_display: 'swap' }}
+    {{ settings.font_heading | font_face: font_display: 'swap' }}
+  </style>
+
+  {%- comment -%} CSS Variables from theme settings – inlined directly {%- endcomment -%}
+  <style>
+    :root {
+      --color-bg: {{ settings.color_background }};
+      --color-text: {{ settings.color_text }};
+      --color-text-secondary: {{ settings.color_text_secondary }};
+      --color-border: {{ settings.color_border }};
+      --color-btn-bg: {{ settings.color_button_bg }};
+      --color-btn-text: {{ settings.color_button_text }};
+      --color-btn-secondary-bg: {{ settings.color_button_secondary_bg }};
+      --color-btn-secondary-text: {{ settings.color_button_secondary_text }};
+      --color-sale: {{ settings.color_sale }};
+      --color-overlay: {{ settings.color_overlay }};
+
+      --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+      --font-body-weight: {{ settings.font_body.weight }};
+      --font-body-style: {{ settings.font_body.style }};
+      --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+      --font-heading-weight: {{ settings.font_heading.weight }};
+      --font-heading-style: {{ settings.font_heading.style }};
+      --font-body-size: {{ settings.font_body_size }}px;
+      --font-heading-scale: {{ settings.font_heading_scale | times: 1.0 | divided_by: 100.0 }};
+
+      --radius: {{ settings.border_radius }}px;
+      --page-width: {{ settings.page_width }}px;
+      {%- assign spacing_ratio = settings.spacing_scale | times: 1.0 | divided_by: 100.0 -%}
+      --spacing-scale: {{ spacing_ratio }};
+
+      --space-xs: calc(4px * {{ spacing_ratio }});
+      --space-sm: calc(8px * {{ spacing_ratio }});
+      --space-md: calc(16px * {{ spacing_ratio }});
+      --space-lg: calc(24px * {{ spacing_ratio }});
+      --space-xl: calc(40px * {{ spacing_ratio }});
+      --space-2xl: calc(64px * {{ spacing_ratio }});
+      --space-3xl: calc(96px * {{ spacing_ratio }});
+
+      --z-header: 100;
+      --z-overlay: 200;
+      --z-drawer: 300;
+      --z-modal: 400;
+
+      --duration-fast: 150ms;
+      --duration-base: 250ms;
+      --duration-slow: 400ms;
+      --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+  </style>
+
+  {%- comment -%} Theme stylesheet {%- endcomment -%}
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} Liquid objects for JS {%- endcomment -%}
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    window.Shopify = window.Shopify || {};
+    window.Shopify.routes = {
+      root: '{{ routes.root_url }}',
+      cart_url: '{{ routes.cart_url }}',
+      cart_add_url: '{{ routes.cart_add_url }}',
+      cart_change_url: '{{ routes.cart_change_url }}',
+      cart_update_url: '{{ routes.cart_update_url }}',
+      search_url: '{{ routes.search_url }}'
+    };
+    window.Shopify.money_format = {{ shop.money_format | json }};
+    window.Shopify.locale = {{ request.locale.iso_code | json }};
+  </script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">
+  <a href="#main-content" class="visually-hidden focus-visible-only">
+    {{ 'general.skip_to_content' | t }}
+  </a>
+
+  <div class="overlay-bg" data-overlay></div>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+  {% section 'search-overlay' %}
+
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+  {% section 'cart-drawer' %}
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

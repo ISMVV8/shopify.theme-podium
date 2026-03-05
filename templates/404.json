@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "404-page",
+      "settings": {
+        "title": "Page introuvable",
+        "text": "La page que vous recherchez n'existe pas.",
+        "button_text": "Retour à l'accueil"
+      }
+    }
+  },
+  "order": ["main"]
+}

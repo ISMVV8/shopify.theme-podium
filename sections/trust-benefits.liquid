@@ -1,0 +1,81 @@
+<section class="section">
+  <div class="container">
+    <div class="trust-row">
+      {%- for block in section.blocks -%}
+        <div class="trust-row__item" {{ block.shopify_attributes }}>
+          <div class="trust-row__icon">
+            {% render 'icon', name: block.settings.icon, size: 28 %}
+          </div>
+          <span class="trust-row__label">{{ block.settings.label }}</span>
+        </div>
+      {%- endfor -%}
+
+      {%- if section.blocks.size == 0 -%}
+        <div class="trust-row__item">
+          <div class="trust-row__icon">{% render 'icon', name: 'truck', size: 28 %}</div>
+          <span class="trust-row__label">{{ 'trust.fast_shipping' | t }}</span>
+        </div>
+        <div class="trust-row__item">
+          <div class="trust-row__icon">{% render 'icon', name: 'return', size: 28 %}</div>
+          <span class="trust-row__label">{{ 'trust.returns' | t }}</span>
+        </div>
+        <div class="trust-row__item">
+          <div class="trust-row__icon">{% render 'icon', name: 'lock', size: 28 %}</div>
+          <span class="trust-row__label">{{ 'trust.secure_payment' | t }}</span>
+        </div>
+        <div class="trust-row__item">
+          <div class="trust-row__icon">{% render 'icon', name: 'headset', size: 28 %}</div>
+          <span class="trust-row__label">{{ 'trust.customer_service' | t }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust benefits",
+  "class": "trust-benefits-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Shipping truck" },
+            { "value": "return", "label": "Return arrow" },
+            { "value": "lock", "label": "Lock / security" },
+            { "value": "headset", "label": "Customer service" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "heart", "label": "Heart" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Livraison rapide"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "truck", "label": "Livraison rapide" } },
+        { "type": "benefit", "settings": { "icon": "return", "label": "Retour sous 14 jours" } },
+        { "type": "benefit", "settings": { "icon": "lock", "label": "Paiement sécurisé" } },
+        { "type": "benefit", "settings": { "icon": "headset", "label": "Service client disponible & réactif" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,167 @@
+{
+  "general": {
+    "skip_to_content": "Aller au contenu",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "search": "Rechercher",
+    "menu": "Menu",
+    "loading": "Chargement...",
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {{ number }}"
+    }
+  },
+  "header": {
+    "menu": "Menu",
+    "search": "Rechercher",
+    "account": "Compte",
+    "cart": "Panier",
+    "wishlist": "Favoris",
+    "language": "Langue"
+  },
+  "announcement": {
+    "default_message": "Livraison offerte dès 75€ d'achat"
+  },
+  "search": {
+    "title": "Rechercher",
+    "placeholder": "Rechercher",
+    "frequent": "Recherches fréquentes :",
+    "results_count": "{{ count }} résultats",
+    "no_results": "Aucun résultat pour « {{ query }} »",
+    "no_results_suggestion": "Essayez un autre terme de recherche"
+  },
+  "cart": {
+    "title": "Panier",
+    "empty_title": "Votre panier est vide :(",
+    "empty_subtitle": "Commencez votre shopping dès maintenant",
+    "empty_cta": "Je craque",
+    "subtotal": "Sous-total",
+    "checkout": "Commander",
+    "remove": "Supprimer",
+    "quantity": "Quantité",
+    "free_shipping_note": "Livraison offerte à partir de 75€*",
+    "shipping_note": "Frais de livraison calculés à la commande",
+    "continue_shopping": "Continuer mes achats"
+  },
+  "product": {
+    "add_to_cart": "AJOUTER AU PANIER",
+    "sold_out": "ÉPUISÉ",
+    "unavailable": "Indisponible",
+    "size_guide": "Guide des tailles",
+    "color": "Couleur",
+    "size": "Taille",
+    "quantity": "Quantité",
+    "description": "Description",
+    "composition": "Composition & entretien",
+    "shipping": "Livraisons & retours",
+    "payment_methods": "Moyens de paiement",
+    "complete_look": "Complétez le look",
+    "you_may_like": "Vous aimerez aussi",
+    "model_info": "Informations sur le modèle",
+    "installments": "Payez en plusieurs fois",
+    "added_to_cart": "Ajouté au panier"
+  },
+  "collection": {
+    "title": "Collection",
+    "results_count": "{{ count }} résultats",
+    "sort": "Trier",
+    "filter": "Filtrer",
+    "clear_filters": "Tout effacer",
+    "apply_filters": "Appliquer",
+    "availability": "Disponibilité",
+    "in_stock": "En stock",
+    "price": "Prix",
+    "price_range": "{{ min }} – {{ max }}"
+  },
+  "customer": {
+    "login": {
+      "title": "Connexion",
+      "email": "Email",
+      "password": "Mot de passe",
+      "forgot_password": "Mot de passe oublié ?",
+      "sign_in": "SE CONNECTER",
+      "new_customer": "Nouveau sur {{ shop_name }} ?",
+      "create_account": "S'INSCRIRE"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "Email",
+      "password": "Mot de passe",
+      "submit": "CRÉER UN COMPTE",
+      "have_account": "Vous avez déjà un compte ?",
+      "sign_in": "Se connecter"
+    },
+    "account": {
+      "title": "Mon compte",
+      "orders": "Historique de commandes",
+      "no_orders": "Aucune commande pour le moment",
+      "logout": "Déconnexion",
+      "order_number": "Commande",
+      "date": "Date",
+      "payment_status": "Paiement",
+      "fulfillment_status": "Livraison",
+      "total": "Total"
+    },
+    "order": {
+      "title": "Commande {{ name }}",
+      "date": "Passée le {{ date }}",
+      "product": "Produit",
+      "sku": "SKU",
+      "price": "Prix",
+      "quantity": "Quantité",
+      "total": "Total",
+      "subtotal": "Sous-total",
+      "shipping": "Livraison",
+      "tax": "Taxes",
+      "billing_address": "Adresse de facturation",
+      "shipping_address": "Adresse de livraison"
+    },
+    "reset_password": {
+      "title": "Réinitialiser le mot de passe",
+      "email": "Email",
+      "submit": "Envoyer",
+      "success": "Nous vous avons envoyé un email avec un lien pour réinitialiser votre mot de passe."
+    }
+  },
+  "newsletter": {
+    "title": "Restons en contact",
+    "description": "Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités et offres exclusives.",
+    "email_placeholder": "Votre adresse email",
+    "submit": "S'inscrire",
+    "consent": "En vous inscrivant, vous acceptez notre politique de confidentialité.",
+    "success": "Merci pour votre inscription !"
+  },
+  "trust": {
+    "fast_shipping": "Livraison rapide",
+    "returns": "Retour sous 14 jours",
+    "secure_payment": "Paiement sécurisé",
+    "customer_service": "Service client disponible & réactif"
+  },
+  "footer": {
+    "services": "Services",
+    "about": "À propos",
+    "copyright": "© {{ year }} {{ shop_name }}. Tous droits réservés.",
+    "privacy_policy": "Politique de confidentialité",
+    "terms": "Conditions générales de vente",
+    "legal_notice": "Mentions légales"
+  },
+  "wishlist": {
+    "title": "Mes favoris",
+    "empty": "Votre liste de favoris est vide",
+    "empty_subtitle": "Sauvegardez vos articles préférés en cliquant sur l'icône cœur",
+    "remove": "Retirer des favoris"
+  },
+  "accessibility": {
+    "skip_to_content": "Aller au contenu",
+    "close_menu": "Fermer le menu",
+    "open_menu": "Ouvrir le menu",
+    "close_cart": "Fermer le panier",
+    "close_search": "Fermer la recherche",
+    "previous_slide": "Diapositive précédente",
+    "next_slide": "Diapositive suivante",
+    "slide_number": "Diapositive {{ number }} sur {{ total }}"
+  }
+}

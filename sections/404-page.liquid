@@ -1,0 +1,37 @@
+<section class="section">
+  <div class="container" style="text-align: center; padding: var(--space-3xl) var(--space-md);">
+    <h1>{{ section.settings.title | default: '404' }}</h1>
+    <p style="color: var(--color-text-secondary); margin-top: var(--space-md); margin-bottom: var(--space-xl);">
+      {{ section.settings.text | default: 'La page que vous recherchez est introuvable.' }}
+    </p>
+    <a href="{{ routes.root_url }}" class="btn btn--primary">
+      {{ section.settings.button_text | default: 'Retour' }}
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Page introuvable"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "La page que vous recherchez n'existe pas."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Retour à l'accueil"
+    }
+  ]
+}
+{% endschema %}

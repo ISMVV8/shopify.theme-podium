@@ -1,0 +1,143 @@
+<cart-drawer class="cart-drawer-wrapper" id="cart-drawer">
+  <div class="cart-drawer">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="cart-drawer__header">
+      <button class="btn--icon" data-cart-close aria-label="{{ 'accessibility.close_cart' | t }}">
+        {% render 'icon', name: 'close', size: 20 %}
+      </button>
+      <h2 class="cart-drawer__title">{{ 'cart.title' | t }}</h2>
+      <span class="cart-drawer__header-icon">
+        {% render 'icon', name: 'cart', size: 20 %}
+      </span>
+    </div>
+
+    {%- comment -%} Body {%- endcomment -%}
+    <div class="cart-drawer__body">
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-drawer__empty">
+          <h3 class="cart-drawer__empty-title">{{ 'cart.empty_title' | t }}</h3>
+          <p class="cart-drawer__empty-subtitle">{{ 'cart.empty_subtitle' | t }}</p>
+          <div class="cart-drawer__empty-cards">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'empty_card' -%}
+                <a href="{{ block.settings.link }}" class="cart-drawer__empty-card" {{ block.shopify_attributes }}>
+                  {%- if block.settings.image != blank -%}
+                    <img src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.title }}" width="100" loading="lazy">
+                  {%- endif -%}
+                  <span class="cart-drawer__empty-card-title">{{ block.settings.title }}</span>
+                  <span class="cart-drawer__empty-card-cta">{{ 'cart.empty_cta' | t }}</span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if section.blocks.size == 0 -%}
+              <a href="/collections/all" class="cart-drawer__empty-card">
+                <span class="cart-drawer__empty-card-title">Vêtements Femme</span>
+                <span class="cart-drawer__empty-card-cta">{{ 'cart.empty_cta' | t }}</span>
+              </a>
+              <a href="/collections/all" class="cart-drawer__empty-card">
+                <span class="cart-drawer__empty-card-title">Accessoires</span>
+                <span class="cart-drawer__empty-card-cta">{{ 'cart.empty_cta' | t }}</span>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="cart-drawer__items">
+          {%- for item in cart.items -%}
+            <div class="cart-drawer__item">
+              <a href="{{ item.url }}">
+                {%- if item.image -%}
+                  <img
+                    src="{{ item.image | image_url: width: 160 }}"
+                    alt="{{ item.title | escape }}"
+                    class="cart-drawer__item-image"
+                    width="80"
+                    height="100"
+                    loading="lazy"
+                  >
+                {%- endif -%}
+              </a>
+              <div class="cart-drawer__item-info">
+                <a href="{{ item.url }}" class="cart-drawer__item-title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <span class="cart-drawer__item-variant">{{ item.variant.title }}</span>
+                {%- endunless -%}
+                <span class="cart-drawer__item-price">{{ item.final_line_price | money }}</span>
+                <div class="cart-drawer__item-actions">
+                  <div class="quantity-stepper" data-line-key="{{ item.key }}">
+                    <button type="button" data-qty-minus aria-label="{{ 'cart.quantity' | t }} -">
+                      {% render 'icon', name: 'minus', size: 14 %}
+                    </button>
+                    <input
+                      type="number"
+                      data-qty-input
+                      value="{{ item.quantity }}"
+                      min="0"
+                      aria-label="{{ 'cart.quantity' | t }}"
+                    >
+                    <button type="button" data-qty-plus aria-label="{{ 'cart.quantity' | t }} +">
+                      {% render 'icon', name: 'plus', size: 14 %}
+                    </button>
+                  </div>
+                  <button class="btn--icon" data-remove-item="{{ item.key }}" aria-label="{{ 'cart.remove' | t }}">
+                    {% render 'icon', name: 'trash', size: 16 %}
+                  </button>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Footer {%- endcomment -%}
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-drawer__footer">
+        <div class="cart-drawer__subtotal">
+          <span class="cart-drawer__subtotal-label">{{ 'cart.subtotal' | t }}</span>
+          <span class="cart-drawer__subtotal-price">{{ cart.total_price | money }}</span>
+        </div>
+        <p class="cart-drawer__shipping-note">{{ 'cart.shipping_note' | t }}</p>
+        <a href="{{ routes.cart_url }}/checkout" class="btn btn--primary btn--full btn--large">
+          {{ 'cart.checkout' | t }}
+        </a>
+        {%- if settings.cart_free_shipping_message != blank -%}
+          <p class="cart-drawer__free-shipping">{{ settings.cart_free_shipping_message }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</cart-drawer>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "class": "cart-drawer-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "empty_card",
+      "name": "Empty state card",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Vêtements Femme"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,167 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "open": "Open",
+    "search": "Search",
+    "menu": "Menu",
+    "loading": "Loading...",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ number }}"
+    }
+  },
+  "header": {
+    "menu": "Menu",
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "language": "Language"
+  },
+  "announcement": {
+    "default_message": "Free shipping on orders over €75"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search",
+    "frequent": "Popular searches:",
+    "results_count": "{{ count }} results",
+    "no_results": "No results found for \"{{ query }}\"",
+    "no_results_suggestion": "Try a different search term"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty_title": "Your cart is empty :(",
+    "empty_subtitle": "Start your shopping now",
+    "empty_cta": "Let's go",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "free_shipping_note": "Free shipping from €75*",
+    "shipping_note": "Shipping calculated at checkout",
+    "continue_shopping": "Continue shopping"
+  },
+  "product": {
+    "add_to_cart": "ADD TO CART",
+    "sold_out": "SOLD OUT",
+    "unavailable": "Unavailable",
+    "size_guide": "Size guide",
+    "color": "Color",
+    "size": "Size",
+    "quantity": "Quantity",
+    "description": "Description",
+    "composition": "Composition & care",
+    "shipping": "Shipping & returns",
+    "payment_methods": "Payment methods",
+    "complete_look": "Complete the look",
+    "you_may_like": "You may also like",
+    "model_info": "Model info",
+    "installments": "Pay in installments",
+    "added_to_cart": "Added to cart"
+  },
+  "collection": {
+    "title": "Collection",
+    "results_count": "{{ count }} results",
+    "sort": "Sort",
+    "filter": "Filter",
+    "clear_filters": "Clear all",
+    "apply_filters": "Apply",
+    "availability": "Availability",
+    "in_stock": "In stock",
+    "price": "Price",
+    "price_range": "{{ min }} – {{ max }}"
+  },
+  "customer": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot password?",
+      "sign_in": "SIGN IN",
+      "new_customer": "New here?",
+      "create_account": "CREATE ACCOUNT"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "CREATE ACCOUNT",
+      "have_account": "Already have an account?",
+      "sign_in": "Sign in"
+    },
+    "account": {
+      "title": "My account",
+      "orders": "Order history",
+      "no_orders": "No orders yet",
+      "logout": "Log out",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Fulfillment",
+      "total": "Total"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "billing_address": "Billing address",
+      "shipping_address": "Shipping address"
+    },
+    "reset_password": {
+      "title": "Reset password",
+      "email": "Email",
+      "submit": "Submit",
+      "success": "We've sent you an email with a link to reset your password."
+    }
+  },
+  "newsletter": {
+    "title": "Stay in touch",
+    "description": "Subscribe to our newsletter to receive our latest news and exclusive offers.",
+    "email_placeholder": "Your email address",
+    "submit": "Subscribe",
+    "consent": "By subscribing, you agree to our privacy policy.",
+    "success": "Thank you for subscribing!"
+  },
+  "trust": {
+    "fast_shipping": "Fast shipping",
+    "returns": "Returns within 14 days",
+    "secure_payment": "Secure payment",
+    "customer_service": "Responsive customer service"
+  },
+  "footer": {
+    "services": "Services",
+    "about": "About us",
+    "copyright": "© {{ year }} {{ shop_name }}. All rights reserved.",
+    "privacy_policy": "Privacy policy",
+    "terms": "Terms of service",
+    "legal_notice": "Legal notice"
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "empty": "Your wishlist is empty",
+    "empty_subtitle": "Save your favorite items by clicking the heart icon",
+    "remove": "Remove from wishlist"
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close_menu": "Close menu",
+    "open_menu": "Open menu",
+    "close_cart": "Close cart",
+    "close_search": "Close search",
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide",
+    "slide_number": "Slide {{ number }} of {{ total }}"
+  }
+}

@@ -1,0 +1,92 @@
+<filter-drawer class="filter-drawer-wrapper" id="filter-drawer">
+  <div class="filter-drawer">
+    <div class="filter-drawer__header">
+      <h3 class="filter-drawer__title">{{ 'collection.filter' | t }}</h3>
+      <button class="btn--icon" data-filter-close aria-label="{{ 'general.close' | t }}">
+        {% render 'icon', name: 'close', size: 20 %}
+      </button>
+    </div>
+
+    <div class="filter-drawer__body">
+      <form id="filter-form" action="{{ collection.url }}" method="get">
+        {%- comment -%} Sort {%- endcomment -%}
+        <div class="filter-drawer__sort">
+          <label class="filter-drawer__group-title" for="sort-select">{{ 'collection.sort' | t }}</label>
+          <select id="sort-select" name="sort_by" data-sort-select>
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </div>
+
+        {%- comment -%} Filters {%- endcomment -%}
+        {%- for filter in collection.filters -%}
+          <div class="filter-drawer__group">
+            <h4 class="filter-drawer__group-title">{{ filter.label }}</h4>
+
+            {%- case filter.type -%}
+              {%- when 'list' -%}
+                <div class="filter-drawer__options">
+                  {%- for value in filter.values -%}
+                    <label class="filter-drawer__option">
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 %}disabled{% endif %}
+                      >
+                      <span>{{ value.label }}</span>
+                      <span class="filter-drawer__count">({{ value.count }})</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+
+              {%- when 'price_range' -%}
+                <div class="filter-drawer__price-range">
+                  <input
+                    type="number"
+                    name="{{ filter.min_value.param_name }}"
+                    class="filter-drawer__price-input"
+                    placeholder="{{ filter.min_value.value | default: 0 | money_without_currency }}"
+                    value="{{ filter.min_value.value | money_without_currency }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency }}"
+                  >
+                  <span>–</span>
+                  <input
+                    type="number"
+                    name="{{ filter.max_value.param_name }}"
+                    class="filter-drawer__price-input"
+                    placeholder="{{ filter.range_max | money_without_currency }}"
+                    value="{{ filter.max_value.value | money_without_currency }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency }}"
+                  >
+                </div>
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </form>
+    </div>
+
+    <div class="filter-drawer__footer">
+      <button class="btn btn--secondary" data-filter-clear>
+        {{ 'collection.clear_filters' | t }}
+      </button>
+      <button class="btn btn--primary" type="submit" form="filter-form">
+        {{ 'collection.apply_filters' | t }}
+      </button>
+    </div>
+  </div>
+</filter-drawer>
+
+{% schema %}
+{
+  "name": "Collection filters",
+  "class": "collection-filters-section",
+  "settings": []
+}
+{% endschema %}

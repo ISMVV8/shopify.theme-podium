@@ -1,0 +1,36 @@
+<section class="section">
+  <div class="container">
+    <h1 class="text-center" style="margin-bottom: var(--space-xl);">{{ 'collection.title' | t }}</h1>
+    <div class="collections-grid">
+      {%- for collection in collections -%}
+        {%- unless collection.handle == 'all' -%}
+          <a href="{{ collection.url }}" class="collection-card">
+            {%- if collection.image -%}
+              <img
+                src="{{ collection.image | image_url: width: 600 }}"
+                alt="{{ collection.title | escape }}"
+                class="collection-card__image"
+                width="600"
+                height="{{ 600 | divided_by: collection.image.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'collection-card__image' }}
+            {%- endif -%}
+            <div class="collection-card__overlay">
+              <h3 class="collection-card__title">{{ collection.title }}</h3>
+            </div>
+          </a>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "class": "list-collections-section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,280 @@
+{%- comment -%}
+  Product content section: wraps gallery, info, and description in the 2-column layout.
+  This is a single section that handles all main product content.
+{%- endcomment -%}
+
+<section class="section">
+  <div class="container">
+    <div class="product-page">
+      {%- comment -%} Left column: Gallery {%- endcomment -%}
+      <div class="product-page__gallery">
+        <product-gallery class="product-gallery-wrapper">
+          <div class="product-gallery">
+            {%- comment -%} Thumbnails {%- endcomment -%}
+            <div class="product-gallery__thumbs" role="list">
+              {%- for media in product.media -%}
+                <button
+                  class="product-gallery__thumb{% if forloop.first %} active{% endif %}"
+                  data-thumb="{{ forloop.index0 }}"
+                  data-full-src="{{ media | image_url: width: 1200 }}"
+                  role="listitem"
+                  aria-label="{{ 'accessibility.slide_number' | t: number: forloop.index, total: product.media.size }}"
+                >
+                  <img
+                    src="{{ media | image_url: width: 120 }}"
+                    alt="{{ media.alt | escape | default: product.title }}"
+                    width="60"
+                    height="80"
+                    loading="lazy"
+                  >
+                </button>
+              {%- endfor -%}
+            </div>
+
+            {%- comment -%} Main image {%- endcomment -%}
+            <div class="product-gallery__main">
+              {%- if product.featured_media -%}
+                <img
+                  data-main-image
+                  src="{{ product.featured_media | image_url: width: 1200 }}"
+                  alt="{{ product.featured_media.alt | escape | default: product.title }}"
+                  width="1200"
+                  height="{{ 1200 | divided_by: product.featured_media.aspect_ratio | round }}"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
+
+              {%- if product.media.size > 1 -%}
+                <button class="product-gallery__nav product-gallery__nav--prev" data-gallery-prev aria-label="{{ 'accessibility.previous_slide' | t }}">
+                  {% render 'icon', name: 'chevron-left', size: 18 %}
+                </button>
+                <button class="product-gallery__nav product-gallery__nav--next" data-gallery-next aria-label="{{ 'accessibility.next_slide' | t }}">
+                  {% render 'icon', name: 'chevron-right', size: 18 %}
+                </button>
+              {%- endif -%}
+            </div>
+          </div>
+        </product-gallery>
+      </div>
+
+      {%- comment -%} Right column: Info {%- endcomment -%}
+      <div class="product-page__info">
+        <div class="product-info">
+          <h1 class="product-info__title">{{ product.title }}</h1>
+
+          {%- for option in product.options_with_values -%}
+            {%- if option.name == 'Color' or option.name == 'Couleur' -%}
+              <p class="product-info__color-label">
+                {{ 'product.color' | t }}: <span>{{ option.selected_value }}</span>
+              </p>
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="product-info__price">
+            <span data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+              <span data-compare-price class="price__compare">
+                <s>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+              </span>
+            {%- else -%}
+              <span data-compare-price class="price__compare" style="display:none;"></span>
+            {%- endif -%}
+          </div>
+
+          {%- form 'product', product, data-product-form: '', id: 'product-form' -%}
+            <variant-selector>
+              <script type="application/json" data-variants>{{ product.variants | json }}</script>
+
+              {%- for option in product.options_with_values -%}
+                {%- if option.name == 'Color' or option.name == 'Couleur' -%}
+                  <div class="product-info__swatches">
+                    {%- for value in option.values -%}
+                      {%- liquid
+                        assign variant_for_color = nil
+                        for variant in product.variants
+                          if variant.options[forloop.parentloop.index0] == value
+                            assign variant_for_color = variant
+                            break
+                          endif
+                        endfor
+                      -%}
+                      <button
+                        type="button"
+                        class="swatch{% if option.selected_value == value %} active{% endif %}"
+                        data-option
+                        data-option-position="{{ forloop.parentloop.index }}"
+                        data-value="{{ value }}"
+                        aria-label="{{ value }}"
+                        title="{{ value }}"
+                      >
+                        {%- if variant_for_color and variant_for_color.featured_image -%}
+                          <img src="{{ variant_for_color.featured_image | image_url: width: 72 }}" alt="{{ value }}" width="36" height="36">
+                        {%- else -%}
+                          <span class="swatch--color" style="background-color: {{ value | handleize }};"></span>
+                        {%- endif -%}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
+                  <p class="product-info__size-label">{{ 'product.size' | t }}</p>
+                  <div class="product-info__sizes">
+                    {%- for value in option.values -%}
+                      <button type="button" class="size-btn{% if option.selected_value == value %} active{% endif %}" data-option data-option-position="{{ forloop.parentloop.index }}" data-value="{{ value }}">
+                        {{ value }}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <p class="product-info__size-label">{{ option.name }}</p>
+                  <div class="product-info__sizes">
+                    {%- for value in option.values -%}
+                      <button type="button" class="size-btn{% if option.selected_value == value %} active{% endif %}" data-option data-option-position="{{ forloop.parentloop.index }}" data-value="{{ value }}">
+                        {{ value }}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            </variant-selector>
+
+            {%- if section.settings.size_guide_url != blank -%}
+              <a href="{{ section.settings.size_guide_url }}" class="product-info__size-guide">{{ 'product.size_guide' | t }}</a>
+            {%- endif -%}
+
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'model_info' -%}
+                <p class="product-info__model" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'installments' -%}
+                <div class="product-info__installments" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+              {%- endif -%}
+            {%- endfor -%}
+
+            <input type="hidden" name="quantity" value="1">
+
+            <button
+              type="submit"
+              class="btn btn--primary product-info__add-btn"
+              data-add-to-cart
+              data-add-text="{{ 'product.add_to_cart' | t }}"
+              data-soldout-text="{{ 'product.sold_out' | t }}"
+              data-unavailable-text="{{ 'product.unavailable' | t }}"
+              {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+            >
+              {%- if product.selected_or_first_available_variant.available -%}
+                {{ 'product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'product.sold_out' | t }}
+              {%- endif -%}
+            </button>
+
+            <div class="product-info__express-btn">
+              {{ form | payment_button }}
+            </div>
+          {%- endform -%}
+
+          <div class="product-info__trust">
+            <span class="product-info__trust-item">{% render 'icon', name: 'return', size: 16 %} {{ 'trust.returns' | t }}</span>
+            <span class="product-info__trust-item">{% render 'icon', name: 'truck', size: 16 %} {{ 'trust.fast_shipping' | t }}</span>
+          </div>
+        </div>
+
+        {%- comment -%} Description + Accordions below info on right column {%- endcomment -%}
+        <div class="product-description">
+          {%- if product.description != blank -%}
+            <div class="product-description__content">{{ product.description }}</div>
+          {%- endif -%}
+
+          <div class="product-description__accordions">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'accordion' -%}
+                {% render 'accordion', title: block.settings.title, content: block.settings.content, id: block.id, open: block.settings.open_by_default %}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- assign has_accordions = false -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'accordion' -%}{%- assign has_accordions = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- unless has_accordions -%}
+              {% render 'accordion', title: 'Composition & entretien', content: '<p>Informations à compléter par le marchand.</p>', id: 'composition' %}
+              {% render 'accordion', title: 'Livraisons & retours', content: '<p>Livraison standard sous 3-5 jours ouvrés. Retour gratuit sous 14 jours.</p>', id: 'shipping' %}
+              {% render 'accordion', title: 'Moyens de paiement', content: '<p>Visa, Mastercard, American Express, PayPal, Scalapay (3x sans frais).</p>', id: 'payment' %}
+            {%- endunless -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product content",
+  "class": "product-content-section",
+  "settings": [
+    {
+      "type": "url",
+      "id": "size_guide_url",
+      "label": "Size guide URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "model_info",
+      "name": "Model info line",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Le mannequin mesure 1m78 et porte la taille S"
+        }
+      ]
+    },
+    {
+      "type": "installments",
+      "name": "Installments info",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Payez en 3x sans frais avec Scalapay</p>"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Composition & entretien"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Informations à compléter.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

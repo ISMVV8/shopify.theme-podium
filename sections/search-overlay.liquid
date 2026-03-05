@@ -1,0 +1,70 @@
+<search-overlay class="search-overlay" id="search-overlay" role="dialog" aria-label="{{ 'search.title' | t }}">
+  <div class="container search-overlay__inner">
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <div class="search-overlay__input-wrap">
+        <input
+          type="search"
+          name="q"
+          class="search-overlay__input"
+          placeholder="{{ 'search.placeholder' | t }}"
+          autocomplete="off"
+          aria-label="{{ 'search.placeholder' | t }}"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="button" class="btn--icon" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
+          {% render 'icon', name: 'close', size: 24 %}
+        </button>
+      </div>
+    </form>
+
+    {%- comment -%} Frequent searches {%- endcomment -%}
+    <div class="search-overlay__frequent">
+      <p class="search-overlay__frequent-label">{{ 'search.frequent' | t }}</p>
+      <div class="search-overlay__pills">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'quick_link' -%}
+            <a href="{{ block.settings.link }}" class="btn btn--pill" {{ block.shopify_attributes }}>
+              {{ block.settings.label }}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.blocks.size == 0 -%}
+          <a href="{{ routes.search_url }}?q=robes&type=product" class="btn btn--pill">Robes</a>
+          <a href="{{ routes.search_url }}?q=chemisiers&type=product" class="btn btn--pill">Chemisiers & Blouses</a>
+          <a href="{{ routes.search_url }}?q=pulls+gilets&type=product" class="btn btn--pill">Pulls & Gilets</a>
+          <a href="{{ routes.search_url }}?q=vestes+manteaux&type=product" class="btn btn--pill">Vestes & Manteaux</a>
+          <a href="{{ routes.search_url }}?q=tops+t-shirts&type=product" class="btn btn--pill">Tops & T-shirts</a>
+          <a href="{{ routes.search_url }}?q=accessoires&type=product" class="btn btn--pill">Accessoires</a>
+          <a href="{{ routes.search_url }}?q=pantalons&type=product" class="btn btn--pill">Pantalons</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</search-overlay>
+
+{% schema %}
+{
+  "name": "Search overlay",
+  "class": "search-overlay-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "quick_link",
+      "name": "Quick search link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Robes"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+<section class="wishlist-page section">
+  <div class="container">
+    <h1 class="wishlist-page__title">{{ 'wishlist.title' | t }}</h1>
+
+    <div class="wishlist-page__empty" id="wishlist-empty">
+      <p>{{ 'wishlist.empty' | t }}</p>
+      <p>{{ 'wishlist.empty_subtitle' | t }}</p>
+    </div>
+
+    <div class="wishlist-page__grid" id="wishlist-grid" style="display:none;">
+      {%- comment -%} Products will be dynamically loaded via JS from localStorage {%- endcomment -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const grid = document.getElementById('wishlist-grid');
+    const empty = document.getElementById('wishlist-empty');
+    if (!grid || !empty) return;
+
+    const wishlist = JSON.parse(localStorage.getItem('podium_wishlist') || '[]');
+    if (wishlist.length === 0) return;
+
+    empty.style.display = 'none';
+    grid.style.display = '';
+
+    // Fetch product data for each wishlist item
+    wishlist.forEach(function(handle) {
+      fetch('/products/' + handle + '.js')
+        .then(function(res) { return res.json(); })
+        .then(function(product) {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          const imgSrc = product.featured_image ? product.featured_image.replace('.jpg', '_600x.jpg').replace('.png', '_600x.png') : '';
+          card.innerHTML = '<a href="/products/' + product.handle + '" class="product-card__link">' +
+            '<div class="product-card__image-wrap">' +
+            (imgSrc ? '<img class="product-card__image" src="' + imgSrc + '" alt="' + product.title + '" loading="lazy">' : '') +
+            '</div>' +
+            '<div class="product-card__info">' +
+            '<h3 class="product-card__title">' + product.title + '</h3>' +
+            '<div class="product-card__price">' + (product.price / 100).toFixed(2).replace('.', ',') + ' €</div>' +
+            '</div></a>';
+          grid.appendChild(card);
+        })
+        .catch(function() { /* product not found, skip */ });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist page",
+  "class": "wishlist-page-section",
+  "settings": []
+}
+{% endschema %}

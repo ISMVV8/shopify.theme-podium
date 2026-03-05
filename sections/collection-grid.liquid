@@ -1,0 +1,59 @@
+<section class="section">
+  <div class="container">
+    {%- comment -%} Toolbar: sort + filter buttons {%- endcomment -%}
+    <div class="collection-toolbar">
+      <button class="btn btn--secondary" data-filter-open>
+        {% render 'icon', name: 'sort', size: 16 %}
+        {{ 'collection.sort' | t }}
+      </button>
+      <button class="btn btn--secondary" data-filter-open>
+        {% render 'icon', name: 'filter', size: 16 %}
+        {{ 'collection.filter' | t }}
+      </button>
+    </div>
+
+    {%- comment -%} Product grid {%- endcomment -%}
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="collection-products">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p class="text-center" style="grid-column: 1 / -1;">
+            {{ 'search.no_results' | t: query: collection.title }}
+          </p>
+        {%- endfor -%}
+      </div>
+
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{%- comment -%} Filter drawer is included via the collection template JSON {%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Collection grid",
+  "class": "collection-grid-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    }
+  ]
+}
+{% endschema %}

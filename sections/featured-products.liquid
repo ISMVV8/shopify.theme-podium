@@ -1,0 +1,134 @@
+{%- liquid
+  assign pill_active = 0
+  if request.params.pill_active
+    assign pill_active = request.params.pill_active | plus: 0
+  endif
+-%}
+
+<featured-products class="featured-products container" data-section-id="{{ section.id }}">
+  <div class="featured-products__header">
+    <h2 class="featured-products__title">{{ section.settings.heading | default: 'La sélection' }}</h2>
+    <div class="featured-products__pills">
+      {%- if section.settings.pill_1_label != blank -%}
+        <button class="btn btn--pill{% if pill_active == 0 %} active{% endif %}" data-pill="0">
+          {{ section.settings.pill_1_label }}
+        </button>
+      {%- endif -%}
+      {%- if section.settings.pill_2_label != blank -%}
+        <button class="btn btn--pill{% if pill_active == 1 %} active{% endif %}" data-pill="1">
+          {{ section.settings.pill_2_label }}
+        </button>
+      {%- endif -%}
+      {%- if section.settings.pill_3_label != blank -%}
+        <button class="btn btn--pill{% if pill_active == 2 %} active{% endif %}" data-pill="2">
+          {{ section.settings.pill_3_label }}
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="featured-products__grid" data-products-grid>
+    {%- liquid
+      if pill_active == 1 and section.settings.pill_2_collection != blank
+        assign active_collection = section.settings.pill_2_collection
+      elsif pill_active == 2 and section.settings.pill_3_collection != blank
+        assign active_collection = section.settings.pill_3_collection
+      else
+        assign active_collection = section.settings.pill_1_collection
+      endif
+    -%}
+
+    {%- if active_collection != blank -%}
+      {%- for product in active_collection.products limit: section.settings.products_count -%}
+        {% render 'product-card', product: product %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <article class="product-card">
+          <div class="product-card__image-wrap">
+            {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">Product title</h3>
+            <p class="product-card__subtitle">Color</p>
+            <div class="product-card__price">€29,99</div>
+          </div>
+        </article>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</featured-products>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "class": "featured-products-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "La sélection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Pill 1"
+    },
+    {
+      "type": "text",
+      "id": "pill_1_label",
+      "label": "Pill 1 label",
+      "default": "Back in stock"
+    },
+    {
+      "type": "collection",
+      "id": "pill_1_collection",
+      "label": "Pill 1 collection"
+    },
+    {
+      "type": "header",
+      "content": "Pill 2"
+    },
+    {
+      "type": "text",
+      "id": "pill_2_label",
+      "label": "Pill 2 label",
+      "default": "Nouveautés"
+    },
+    {
+      "type": "collection",
+      "id": "pill_2_collection",
+      "label": "Pill 2 collection"
+    },
+    {
+      "type": "header",
+      "content": "Pill 3"
+    },
+    {
+      "type": "text",
+      "id": "pill_3_label",
+      "label": "Pill 3 label",
+      "default": "Les incontournables"
+    },
+    {
+      "type": "collection",
+      "id": "pill_3_collection",
+      "label": "Pill 3 collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products"
+    }
+  ]
+}
+{% endschema %}

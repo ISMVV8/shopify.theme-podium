@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "product_content": {
+      "type": "product-content",
+      "settings": {}
+    },
+    "cross_sell": {
+      "type": "product-cross-sell",
+      "settings": {
+        "heading": "Complétez le look",
+        "use_metafield": false
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "Vous aimerez aussi",
+        "limit": 4
+      }
+    }
+  },
+  "order": ["product_content", "cross_sell", "recommendations"]
+}

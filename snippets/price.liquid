@@ -1,0 +1,33 @@
+{% comment %}
+  Price snippet.
+  Usage: {% render 'price', product: product %}
+  Or: {% render 'price', variant: variant %}
+{% endcomment %}
+
+{%- liquid
+  if variant
+    assign target = variant
+    assign compare_price = variant.compare_at_price
+    assign current_price = variant.price
+  else
+    assign target = product
+    assign compare_price = product.compare_at_price
+    assign current_price = product.price
+  endif
+
+  assign on_sale = false
+  if compare_price > current_price
+    assign on_sale = true
+  endif
+-%}
+
+<span class="price{% if on_sale %} price--on-sale{% endif %}">
+  {%- if on_sale -%}
+    <span class="price__compare" aria-label="{{ 'product.price' | t }}">
+      <s>{{ compare_price | money }}</s>
+    </span>
+  {%- endif -%}
+  <span class="price__current{% if on_sale %} price__current--sale{% endif %}">
+    {{ current_price | money }}
+  </span>
+</span>

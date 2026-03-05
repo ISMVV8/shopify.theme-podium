@@ -1,0 +1,140 @@
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__grid">
+      {%- comment -%} Left column: Services links {%- endcomment -%}
+      <div class="footer__col">
+        <h4 class="footer__heading">{{ section.settings.col1_title | default: 'Services' }}</h4>
+        {%- if section.settings.menu_1 != blank -%}
+          {%- for link in section.settings.menu_1.links -%}
+            <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          <a href="#" class="footer__link">{{ 'trust.fast_shipping' | t }}</a>
+          <a href="#" class="footer__link">{{ 'trust.returns' | t }}</a>
+          <a href="#" class="footer__link">FAQ</a>
+          <a href="#" class="footer__link">{{ 'product.size_guide' | t }}</a>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Center column: Brand + Social {%- endcomment -%}
+      <div class="footer__col footer__col--center">
+        <div class="footer__logo-text">{{ shop.name }}</div>
+        <div class="footer__social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+              {% render 'icon', name: 'instagram', size: 20 %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+              {% render 'icon', name: 'facebook', size: 20 %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_tiktok != blank -%}
+            <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+              {% render 'icon', name: 'tiktok', size: 20 %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_pinterest != blank -%}
+            <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">
+              {% render 'icon', name: 'pinterest', size: 20 %}
+            </a>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.app_cta_text != blank -%}
+          <a href="{{ section.settings.app_cta_link }}" class="btn btn--secondary footer__app-cta">
+            {{ section.settings.app_cta_text }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Right column: Brand links {%- endcomment -%}
+      <div class="footer__col">
+        <h4 class="footer__heading">{{ section.settings.col3_title | default: shop.name }}</h4>
+        {%- if section.settings.menu_2 != blank -%}
+          {%- for link in section.settings.menu_2.links -%}
+            <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          <a href="#" class="footer__link">{{ 'footer.about' | t }}</a>
+          <a href="#" class="footer__link">Nos boutiques</a>
+          <a href="#" class="footer__link">Nous contacter</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Bottom bar {%- endcomment -%}
+    <div class="footer__bottom">
+      <div class="footer__copyright">
+        {{ 'footer.copyright' | t: year: 'now' | date: '%Y', shop_name: shop.name }}
+      </div>
+      <div class="footer__legal">
+        <a href="{{ section.settings.privacy_url | default: '/policies/privacy-policy' }}">{{ 'footer.privacy_policy' | t }}</a>
+        <a href="{{ section.settings.terms_url | default: '/policies/terms-of-service' }}">{{ 'footer.terms' | t }}</a>
+        <a href="{{ section.settings.legal_url | default: '#' }}">{{ 'footer.legal_notice' | t }}</a>
+      </div>
+      <div class="footer__payments">
+        {%- comment -%} Payment icons – SVG placeholders {%- endcomment -%}
+        {{ shop.enabled_payment_types | payment_type_svg_tag }}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "footer-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "col1_title",
+      "label": "Left column title",
+      "default": "Services"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "Left column menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "col3_title",
+      "label": "Right column title",
+      "default": "Easy Clothes"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Right column menu"
+    },
+    {
+      "type": "text",
+      "id": "app_cta_text",
+      "label": "App CTA text",
+      "default": "Download the app"
+    },
+    {
+      "type": "url",
+      "id": "app_cta_link",
+      "label": "App CTA link"
+    },
+    {
+      "type": "url",
+      "id": "privacy_url",
+      "label": "Privacy policy URL"
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "Terms of service URL"
+    },
+    {
+      "type": "url",
+      "id": "legal_url",
+      "label": "Legal notice URL"
+    }
+  ]
+}
+{% endschema %}

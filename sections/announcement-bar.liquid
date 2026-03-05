@@ -1,0 +1,71 @@
+{%- if section.settings.enable -%}
+  <div class="announcement-bar" role="complementary" aria-label="{{ 'announcement.default_message' | t }}">
+    <div class="announcement-bar__inner container">
+      {%- comment -%} Language selector placeholder {%- endcomment -%}
+      <div class="announcement-bar__left">
+        {%- if section.settings.show_language_selector -%}
+          {%- form 'localization', class: 'announcement-bar__lang' -%}
+            <select name="locale_code" aria-label="{{ 'header.language' | t }}" onchange="this.form.submit()">
+              {%- for locale in shop.published_locales -%}
+                <option value="{{ locale.iso_code }}" {% if locale.iso_code == form.current_locale.iso_code %}selected{% endif %}>
+                  {{ locale.iso_code | upcase }}
+                </option>
+              {%- endfor -%}
+            </select>
+          {%- endform -%}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Center message {%- endcomment -%}
+      <div class="announcement-bar__center">
+        <p class="announcement-bar__message">{{ section.settings.message }}</p>
+      </div>
+
+      {%- comment -%} Optional trust badge {%- endcomment -%}
+      <div class="announcement-bar__right">
+        {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+          <span class="announcement-bar__badge">{{ section.settings.badge_text }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "class": "announcement-bar-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Livraison offerte dès 75€ d'achat"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show trust badge",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "★ 4.8/5 Trustpilot"
+    }
+  ]
+}
+{% endschema %}
