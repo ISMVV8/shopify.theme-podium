@@ -1416,59 +1416,153 @@ featured-products {
 
 /* --- Collections Grid --- */
 
-.collections-grid-section {
-  padding-block: var(--space-2xl);
+.cg-section {
+  padding: 48px 0 56px;
+  background: #f4f1ec;
 }
 
-.collections-grid-section__title {
+.cg-title {
   text-align: center;
-  margin-bottom: var(--space-xl);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0 0 32px;
 }
 
-.collections-grid {
+.cg-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
+  gap: 16px;
 }
 
-.collection-card {
+/* ── Card ── */
+.cg-card {
   position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
-  aspect-ratio: 3/4;
   display: block;
   text-decoration: none;
   color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
 }
-.collection-card:hover { text-decoration: none; }
 
-.collection-card__image {
+.cg-card:hover {
+  text-decoration: none;
+}
+
+.cg-card__img-wrap {
+  aspect-ratio: 3 / 4;
+  background: #ddd9d3;
+  overflow: hidden;
+}
+
+.cg-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--duration-slow) var(--ease);
+  display: block;
+  transition: transform 0.5s ease;
 }
 
-.collection-card:hover .collection-card__image {
-  transform: scale(1.05);
+.cg-card:hover .cg-card__img {
+  transform: scale(1.04);
 }
 
-.collection-card__overlay {
+.cg-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ddd9d3;
+}
+
+.cg-card__placeholder-svg {
+  width: 55%;
+  height: auto;
+  opacity: 0.25;
+}
+
+/* ── Overlay: title centered, link at bottom ── */
+.cg-card__overlay {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: flex-end;
-  padding: var(--space-lg);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 50%);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  text-align: center;
 }
 
-.collection-card__title {
+.cg-card__name {
   font-family: var(--font-heading);
-  font-size: 1.125rem;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+  margin: 0;
 }
 
+.cg-card__link {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ── Footer CTA ── */
+.cg-footer {
+  text-align: center;
+  margin-top: 36px;
+}
+
+.cg-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-text);
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cg-btn:hover {
+  background: var(--color-text);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ── Responsive ── */
 @media (max-width: 1023px) {
-  .collections-grid { grid-template-columns: repeat(2, 1fr); }
+  .cg-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .cg-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .cg-card__img-wrap {
+    aspect-ratio: 4 / 3;
+  }
+  .cg-card__name {
+    font-size: 1.6rem;
+  }
 }
 
 /* --- Brand Banner --- */

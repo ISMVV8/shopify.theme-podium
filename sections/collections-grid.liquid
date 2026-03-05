@@ -1,10 +1,11 @@
-<section class="collections-grid-section section">
+<section class="cg-section" data-section-id="{{ section.id }}">
   <div class="container">
+
     {%- if section.settings.heading != blank -%}
-      <h2 class="collections-grid-section__title">{{ section.settings.heading }}</h2>
+      <h2 class="cg-title">{{ section.settings.heading }}</h2>
     {%- endif -%}
 
-    <div class="collections-grid">
+    <div class="cg-grid">
       {%- for block in section.blocks -%}
         {%- liquid
           assign col = block.settings.collection
@@ -19,34 +20,49 @@
           if col_image == blank and col != blank
             assign col_image = col.image
           endif
+          assign link_label = block.settings.link_label | default: section.settings.card_link_text | default: 'Découvrir'
         -%}
-        <a href="{{ col.url | default: '#' }}" class="collection-card" {{ block.shopify_attributes }}>
-          {%- if col_image != blank -%}
-            <img
-              src="{{ col_image | image_url: width: 600 }}"
-              alt="{{ col_title | escape }}"
-              class="collection-card__image"
-              width="600"
-              height="750"
-              loading="lazy"
-            >
-          {%- else -%}
-            {{ 'collection-1' | placeholder_svg_tag: 'collection-card__image' }}
-          {%- endif -%}
-          <div class="collection-card__overlay">
-            <h3 class="collection-card__title">{{ col_title }}</h3>
-            <span class="collection-card__link">{{ section.settings.card_link_text | default: 'Découvrir' }}</span>
+        <a href="{{ col.url | default: '#' }}" class="cg-card" {{ block.shopify_attributes }}>
+          <div class="cg-card__img-wrap">
+            {%- if col_image != blank -%}
+              <img
+                src="{{ col_image | image_url: width: 700 }}"
+                alt="{{ col_title | escape }}"
+                class="cg-card__img"
+                width="700"
+                height="875"
+                loading="lazy"
+                srcset="
+                  {{ col_image | image_url: width: 400 }} 400w,
+                  {{ col_image | image_url: width: 550 }} 550w,
+                  {{ col_image | image_url: width: 700 }} 700w
+                "
+                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
+              >
+            {%- else -%}
+              <div class="cg-card__placeholder">
+                {{ 'collection-1' | placeholder_svg_tag: 'cg-card__placeholder-svg' }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="cg-card__overlay">
+            <h3 class="cg-card__name">{{ col_title }}</h3>
+            <span class="cg-card__link">{{ link_label }}</span>
           </div>
         </a>
       {%- endfor -%}
 
       {%- if section.blocks.size == 0 -%}
         {%- for i in (1..4) -%}
-          <a href="#" class="collection-card">
-            {{ 'collection-1' | placeholder_svg_tag: 'collection-card__image' }}
-            <div class="collection-card__overlay">
-              <h3 class="collection-card__title">Collection {{ i }}</h3>
-              <span class="collection-card__link">Découvrir</span>
+          <a href="#" class="cg-card">
+            <div class="cg-card__img-wrap">
+              <div class="cg-card__placeholder">
+                {{ 'collection-1' | placeholder_svg_tag: 'cg-card__placeholder-svg' }}
+              </div>
+            </div>
+            <div class="cg-card__overlay">
+              <h3 class="cg-card__name">Collection {{ i }}</h3>
+              <span class="cg-card__link">Découvrir</span>
             </div>
           </a>
         {%- endfor -%}
@@ -54,12 +70,13 @@
     </div>
 
     {%- if section.settings.button_text != blank -%}
-      <div class="collections-grid-section__footer">
-        <a href="{{ section.settings.button_link | default: '/collections' }}" class="btn btn--secondary">
+      <div class="cg-footer">
+        <a href="{{ section.settings.button_link | default: '/collections' }}" class="cg-btn">
           {{ section.settings.button_text }}
         </a>
       </div>
     {%- endif -%}
+
   </div>
 </section>
 
@@ -112,6 +129,11 @@
           "type": "text",
           "id": "title_override",
           "label": "Title override"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label override"
         }
       ]
     }
