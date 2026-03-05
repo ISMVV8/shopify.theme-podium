@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_background": "#FFFFFF",
@@ -19,6 +28,83 @@
     "announcement_bar_enabled": true,
     "show_trustpilot_badge": false,
     "cart_free_shipping_threshold": "75",
-    "cart_free_shipping_message": "Livraison offerte à partir de 75€*"
+    "cart_free_shipping_message": "Livraison offerte à partir de 75€*",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "message_jxwCn8": {
+            "type": "message",
+            "settings": {
+              "message_text": "Notre nouvelle collection \"THE MARCH EDIT\" est en ligne  ☁️",
+              "link": ""
+            }
+          },
+          "message_pzea86": {
+            "type": "message",
+            "settings": {
+              "message_text": "Livraison offerte dès 75€ d'achat",
+              "link": ""
+            }
+          },
+          "message_CPM68Y": {
+            "type": "message",
+            "settings": {
+              "message_text": "Livraison offerte dès 75€ d'achat",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "message_jxwCn8",
+          "message_pzea86",
+          "message_CPM68Y"
+        ],
+        "settings": {
+          "enable_bar": true,
+          "background_color": "#d7e9f6",
+          "text_color": "#000000",
+          "show_language_left": true,
+          "show_trustpilot_right": true,
+          "trustpilot_label_left": "Bien",
+          "trustpilot_label_right": "Trustpilot",
+          "enable_message_rotation": true,
+          "rotation_interval_seconds": 4,
+          "show_arrows": true
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_width": 150,
+          "menu": "main-menu",
+          "transparent_hero": true,
+          "hero_header_style": "light"
+        }
+      },
+      "search-overlay": {
+        "type": "search-overlay",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "col1_title": "Services",
+          "menu_1": "footer",
+          "col3_title": "Easy Clothes",
+          "menu_2": "",
+          "app_cta_text": "Download the app",
+          "app_cta_link": "",
+          "privacy_url": "",
+          "terms_url": "",
+          "legal_url": ""
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   }
 }
