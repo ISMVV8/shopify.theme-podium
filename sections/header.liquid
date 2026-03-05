@@ -1,4 +1,4 @@
-<sticky-header class="header-wrapper" data-sticky="{{ settings.header_sticky }}">
+<sticky-header class="header-wrapper" data-sticky="{{ settings.header_sticky }}" data-transparent-header="{{ section.settings.transparent_hero }}" data-header-hero-style="{{ section.settings.hero_header_style }}" data-template="{{ template.name }}">
   <header class="header" role="banner">
     <div class="header__inner container">
       {%- comment -%} Mobile menu button {%- endcomment -%}
@@ -107,6 +107,26 @@
       "id": "menu",
       "label": "Main menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Transparent header"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_hero",
+      "label": "Enable transparent header on homepage hero",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "hero_header_style",
+      "label": "Header style on hero",
+      "options": [
+        { "value": "light", "label": "Light (white text/icons)" },
+        { "value": "dark", "label": "Dark (dark text/icons)" }
+      ],
+      "default": "light"
     }
   ]
 }

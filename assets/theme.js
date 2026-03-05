@@ -85,9 +85,14 @@ function hideOverlay() {
 
 class StickyHeader extends HTMLElement {
   connectedCallback() {
-    if (this.dataset.sticky !== 'true') return;
     this.header = this.querySelector('.header');
     if (!this.header) return;
+
+    // Transparent header on homepage hero
+    this.initTransparentHeader();
+
+    // Sticky behavior
+    if (this.dataset.sticky !== 'true') return;
     this.sentinel = document.createElement('div');
     this.sentinel.style.height = '1px';
     this.sentinel.style.position = 'absolute';
@@ -96,14 +101,54 @@ class StickyHeader extends HTMLElement {
     this.sentinel.style.width = '100%';
     this.sentinel.style.pointerEvents = 'none';
     document.body.appendChild(this.sentinel);
-    this.observer = new IntersectionObserver(([entry]) => {
+    this.stickyObserver = new IntersectionObserver(([entry]) => {
       this.header.classList.toggle('is-sticky', !entry.isIntersecting);
     });
-    this.observer.observe(this.sentinel);
+    this.stickyObserver.observe(this.sentinel);
   }
+
+  initTransparentHeader() {
+    if (this.dataset.transparentHeader !== 'true') return;
+    if (this.dataset.template !== 'index') return;
+
+    const hero = document.getElementById('home-hero');
+    if (!hero) return;
+
+    const style = this.dataset.headerHeroStyle || 'light';
+    document.body.classList.add('header--transparent', 'header--hero-' + style);
+
+    if ('IntersectionObserver' in window) {
+      this.heroObserver = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          document.body.classList.add('header--transparent');
+        } else {
+          document.body.classList.remove('header--transparent');
+        }
+      }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+      this.heroObserver.observe(hero);
+    } else {
+      // Fallback: scroll listener
+      const onScroll = () => {
+        const heroBottom = hero.getBoundingClientRect().bottom;
+        if (heroBottom > 80) {
+          document.body.classList.add('header--transparent');
+        } else {
+          document.body.classList.remove('header--transparent');
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      this._scrollFallback = onScroll;
+    }
+  }
+
   disconnectedCallback() {
-    if (this.observer) this.observer.disconnect();
+    if (this.stickyObserver) this.stickyObserver.disconnect();
+    if (this.heroObserver) this.heroObserver.disconnect();
     if (this.sentinel) this.sentinel.remove();
+    if (this._scrollFallback) {
+      window.removeEventListener('scroll', this._scrollFallback);
+    }
+    document.body.classList.remove('header--transparent');
   }
 }
 
