@@ -1,68 +1,84 @@
-<section class="masonry-section section">
+{%- liquid
+  assign cta_default = section.settings.cta_default | default: 'Découvrir toute la collection'
+-%}
+
+<section class="cm-section">
   <div class="container">
+
     {%- if section.settings.heading != blank -%}
-      <h2 class="masonry-section__title">{{ section.settings.heading }}</h2>
+      <h2 class="cm-title">{{ section.settings.heading }}</h2>
     {%- endif -%}
 
-    <div class="masonry-grid">
-      {%- for block in section.blocks -%}
+    <div class="cm-mosaic">
+      {%- for block in section.blocks limit: 4 -%}
         {%- liquid
-          assign tile_collection = block.settings.collection
-          assign tile_title = block.settings.title_override
-          if tile_title == blank and tile_collection != blank
-            assign tile_title = tile_collection.title
+          assign col = block.settings.collection
+          assign t = block.settings.title_override
+          if t == blank and col != blank
+            assign t = col.title
           endif
-          assign tile_image = block.settings.image_override
-          if tile_image == blank and tile_collection != blank
-            assign tile_image = tile_collection.image
+          if t == blank
+            assign t = 'Collection'
           endif
-          assign tile_url = tile_collection.url | default: '#'
+          assign img = block.settings.image_override
+          if img == blank and col != blank
+            assign img = col.image
+          endif
+          assign cta_text = block.settings.cta_label | default: cta_default
+          assign url = col.url | default: '#'
         -%}
-        <a href="{{ tile_url }}" class="masonry-tile masonry-tile--{{ block.settings.style }}" {{ block.shopify_attributes }}>
-          {%- if tile_image != blank -%}
+
+        <a href="{{ url }}" class="cm-card cm-card--{{ forloop.index }}" {{ block.shopify_attributes }}>
+          {%- if img != blank -%}
             <img
-              src="{{ tile_image | image_url: width: 800 }}"
-              alt="{{ tile_title | escape | default: 'Collection' }}"
-              class="masonry-tile__image"
-              width="800"
-              height="{{ 800 | divided_by: tile_image.aspect_ratio | round }}"
+              src="{{ img | image_url: width: 900 }}"
+              alt="{{ t | escape }}"
+              class="cm-card__img"
+              width="900"
+              height="{{ 900 | divided_by: img.aspect_ratio | round }}"
               loading="lazy"
+              srcset="
+                {{ img | image_url: width: 500 }} 500w,
+                {{ img | image_url: width: 700 }} 700w,
+                {{ img | image_url: width: 900 }} 900w
+              "
+              sizes="(min-width: 1024px) 50vw, 100vw"
             >
           {%- else -%}
-            {{ 'collection-1' | placeholder_svg_tag: 'masonry-tile__image' }}
+            <div class="cm-card__placeholder">
+              {{ 'collection-1' | placeholder_svg_tag: 'cm-card__placeholder-svg' }}
+            </div>
           {%- endif -%}
-          <div class="masonry-tile__overlay">
-            <h3 class="masonry-tile__title">{{ tile_title | default: 'Collection' }}</h3>
+          <div class="cm-card__overlay">
+            <h3 class="cm-card__name">{{ t }}</h3>
+            <span class="cm-card__cta">{{ cta_text }}</span>
           </div>
         </a>
       {%- endfor -%}
 
       {%- if section.blocks.size == 0 -%}
+        {%- assign placeholders = 'Nos gilets,Nos pulls,Nos t-shirts,Nos chemises' | split: ',' -%}
         {%- for i in (1..4) -%}
-          <a href="#" class="masonry-tile masonry-tile--{% cycle 'wide', 'tall', 'wide', 'tall' %}">
-            {{ 'collection-1' | placeholder_svg_tag: 'masonry-tile__image' }}
-            <div class="masonry-tile__overlay">
-              <h3 class="masonry-tile__title">Collection {{ i }}</h3>
+          <a href="#" class="cm-card cm-card--{{ forloop.index }}">
+            <div class="cm-card__placeholder">
+              {{ 'collection-1' | placeholder_svg_tag: 'cm-card__placeholder-svg' }}
+            </div>
+            <div class="cm-card__overlay">
+              <h3 class="cm-card__name">{{ placeholders[forloop.index0] }}</h3>
+              <span class="cm-card__cta">{{ cta_default }}</span>
             </div>
           </a>
         {%- endfor -%}
       {%- endif -%}
     </div>
 
-    {%- if section.settings.footer_link_text != blank -%}
-      <div class="masonry-section__footer">
-        <a href="{{ section.settings.footer_link_url | default: '/collections' }}" class="btn btn--secondary">
-          {{ section.settings.footer_link_text }}
-        </a>
-      </div>
-    {%- endif -%}
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Collections masonry",
-  "class": "masonry-section",
+  "class": "cm-section-wrapper",
   "settings": [
     {
       "type": "text",
@@ -72,21 +88,16 @@
     },
     {
       "type": "text",
-      "id": "footer_link_text",
-      "label": "Footer link text",
+      "id": "cta_default",
+      "label": "Default card CTA text",
       "default": "Découvrir toute la collection"
-    },
-    {
-      "type": "url",
-      "id": "footer_link_url",
-      "label": "Footer link URL"
     }
   ],
   "blocks": [
     {
       "type": "tile",
       "name": "Collection tile",
-      "limit": 6,
+      "limit": 4,
       "settings": [
         {
           "type": "collection",
@@ -104,14 +115,9 @@
           "label": "Title override"
         },
         {
-          "type": "select",
-          "id": "style",
-          "label": "Tile style",
-          "options": [
-            { "value": "wide", "label": "Wide (spans 2 columns)" },
-            { "value": "tall", "label": "Tall (spans 2 rows)" }
-          ],
-          "default": "wide"
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA label override"
         }
       ]
     }
@@ -120,13 +126,12 @@
     {
       "name": "Collections masonry",
       "blocks": [
-        { "type": "tile", "settings": { "style": "wide" } },
-        { "type": "tile", "settings": { "style": "tall" } },
-        { "type": "tile", "settings": { "style": "wide" } },
-        { "type": "tile", "settings": { "style": "tall" } }
+        { "type": "tile", "settings": { "title_override": "Nos gilets" } },
+        { "type": "tile", "settings": { "title_override": "Nos pulls" } },
+        { "type": "tile", "settings": { "title_override": "Nos t-shirts" } },
+        { "type": "tile", "settings": { "title_override": "Nos chemises" } }
       ]
     }
   ]
 }
 {% endschema %}
-

@@ -1331,86 +1331,142 @@ featured-products {
 
 /* --- Collections Masonry --- */
 
-.masonry-section {
-  padding-block: var(--space-2xl);
+.cm-section {
+  padding: 48px 0 56px;
 }
 
-.masonry-section__title {
+.cm-title {
   text-align: center;
-  margin-bottom: var(--space-xl);
-  font-size: calc(1.75rem * var(--font-heading-scale));
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0 0 32px;
 }
 
-.masonry-grid {
+/* ── Mosaic grid: 2 cols, 3 rows ──
+   Layout:
+   | card-1 (short) | card-3 (tall)   |
+   | card-2 (tall)  | card-3 (cont'd) |
+   | card-2 (cont'd)| card-4 (short)  |
+*/
+.cm-mosaic {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
-  grid-auto-rows: 300px;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 16px;
+  height: 720px;
 }
 
-.masonry-tile {
+.cm-card--1 { grid-column: 1; grid-row: 1; }
+.cm-card--2 { grid-column: 1; grid-row: 2 / 4; }
+.cm-card--3 { grid-column: 2; grid-row: 1 / 3; }
+.cm-card--4 { grid-column: 2; grid-row: 3; }
+
+/* ── Card base ── */
+.cm-card {
   position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
   display: block;
+  overflow: hidden;
+  border-radius: 12px;
   text-decoration: none;
   color: #fff;
-}
-.masonry-tile:hover { text-decoration: none; }
-
-.masonry-tile--wide {
-  grid-column: span 2;
+  background: #ddd9d3;
 }
 
-.masonry-tile--tall {
-  grid-row: span 2;
-}
+.cm-card:hover { text-decoration: none; }
 
-.masonry-tile__image {
+.cm-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--duration-slow) var(--ease);
+  display: block;
+  transition: transform 0.5s ease;
 }
 
-.masonry-tile:hover .masonry-tile__image {
-  transform: scale(1.05);
+.cm-card:hover .cm-card__img {
+  transform: scale(1.04);
 }
 
-.masonry-tile__overlay {
+.cm-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cm-card__placeholder-svg {
+  width: 50%;
+  height: auto;
+  opacity: 0.2;
+}
+
+/* ── Overlay: title centered, CTA at bottom ── */
+.cm-card__overlay {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: var(--space-lg);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 60%);
-}
-
-.masonry-tile__title {
-  font-family: var(--font-heading);
-  font-size: 1.375rem;
-  font-weight: var(--font-heading-weight);
-  margin-bottom: var(--space-xs);
-}
-
-.masonry-tile__link {
-  font-size: 0.8125rem;
-  text-decoration: underline;
-  opacity: 0.85;
-}
-
-.masonry-section__footer {
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
   text-align: center;
-  margin-top: var(--space-lg);
+}
+
+.cm-card__name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  margin: 0;
+}
+
+.cm-card__cta {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.cm-card:hover .cm-card__cta {
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1023px) {
+  .cm-mosaic {
+    height: 600px;
+  }
 }
 
 @media (max-width: 767px) {
-  .masonry-grid {
-    grid-auto-rows: 200px;
+  .cm-mosaic {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+    gap: 12px;
   }
-  .masonry-tile--wide {
-    grid-column: span 1;
+  .cm-card--1,
+  .cm-card--2,
+  .cm-card--3,
+  .cm-card--4 {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .cm-card {
+    aspect-ratio: 4 / 3;
+  }
+  .cm-card__name {
+    font-size: 1.4rem;
   }
 }
 
