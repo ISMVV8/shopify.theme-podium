@@ -418,8 +418,8 @@ class HeroSlider extends HTMLElement {
 
 class FeaturedProductsSection extends HTMLElement {
   connectedCallback() {
-    this.pills = this.querySelectorAll('[data-pill]');
-    this.panels = this.querySelectorAll('[data-panel]');
+    this.pills = this.querySelectorAll('.fp-pill[data-pill]');
+    this.panels = this.querySelectorAll('.fp-panel[data-panel]');
     this.activePill = 0;
 
     if (!this.panels.length) return;
@@ -427,7 +427,7 @@ class FeaturedProductsSection extends HTMLElement {
     this.pills.forEach((pill) => {
       pill.addEventListener('click', () => {
         const index = parseInt(pill.dataset.pill, 10);
-        if (index === this.activePill) return;
+        if (isNaN(index) || index === this.activePill) return;
         this.switchPill(index, pill);
       });
     });
@@ -446,7 +446,7 @@ class FeaturedProductsSection extends HTMLElement {
 
     /* Switch panels */
     this.panels.forEach(panel => panel.classList.remove('is-active'));
-    const target = this.querySelector(`[data-panel="${index}"]`);
+    const target = this.querySelector(`.fp-panel[data-panel="${index}"]`);
     if (target) target.classList.add('is-active');
 
     this.activePill = index;
