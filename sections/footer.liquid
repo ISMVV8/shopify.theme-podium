@@ -66,7 +66,8 @@
     {%- comment -%} Bottom bar {%- endcomment -%}
     <div class="footer__bottom">
       <div class="footer__copyright">
-        {{ 'footer.copyright' | t: year: 'now' | date: '%Y', shop_name: shop.name }}
+        {%- assign current_year = 'now' | date: '%Y' -%}
+        {{ 'footer.copyright' | t: year: current_year, shop_name: shop.name }}
       </div>
       <div class="footer__legal">
         <a href="{{ section.settings.privacy_url | default: '/policies/privacy-policy' }}">{{ 'footer.privacy_policy' | t }}</a>
@@ -75,7 +76,9 @@
       </div>
       <div class="footer__payments">
         {%- comment -%} Payment icons – SVG placeholders {%- endcomment -%}
-        {{ shop.enabled_payment_types | payment_type_svg_tag }}
+        {%- for type in shop.enabled_payment_types -%}
+          {{ type | payment_type_svg_tag }}
+        {%- endfor -%}
       </div>
     </div>
   </div>

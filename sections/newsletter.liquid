@@ -7,7 +7,7 @@
       <p class="newsletter-section__desc">{{ section.settings.description }}</p>
     {%- endif -%}
 
-    {%- form 'customer', class: 'newsletter__form', data-newsletter-form: '' -%}
+    {%- form 'customer', class: 'newsletter__form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
       {%- if form.posted_successfully? -%}
         <p class="newsletter__success" role="status">{{ 'newsletter.success' | t }}</p>
