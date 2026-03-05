@@ -98,11 +98,11 @@ h6 { font-size: calc(0.875rem * var(--font-heading-scale)); }
 .text-center { text-align: center; }
 .text-uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
 
-.desktop-hidden { display: none; }
+.desktop-hidden { display: none !important; }
 .mobile-hidden { display: block; }
 
 @media (max-width: 1023px) {
-  .desktop-hidden { display: block; }
+  .desktop-hidden { display: block !important; }
   .mobile-hidden { display: none !important; }
 }
 
