@@ -28,12 +28,6 @@
 
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
-  {%- comment -%} Font face declarations {%- endcomment -%}
-  <style>
-    {{ settings.font_body | font_face: font_display: 'swap' }}
-    {{ settings.font_heading | font_face: font_display: 'swap' }}
-  </style>
-
   {%- comment -%} CSS Variables from theme settings – inlined directly {%- endcomment -%}
   <style>
     :root {
@@ -48,12 +42,12 @@
       --color-sale: {{ settings.color_sale }};
       --color-overlay: {{ settings.color_overlay }};
 
-      --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
-      --font-body-weight: {{ settings.font_body.weight }};
-      --font-body-style: {{ settings.font_body.style }};
-      --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
-      --font-heading-weight: {{ settings.font_heading.weight }};
-      --font-heading-style: {{ settings.font_heading.style }};
+      --font-body: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-body-weight: 400;
+      --font-body-style: normal;
+      --font-heading: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-heading-weight: 600;
+      --font-heading-style: normal;
       --font-body-size: {{ settings.font_body_size }}px;
       --font-heading-scale: {{ settings.font_heading_scale | times: 1.0 | divided_by: 100.0 }};
 
