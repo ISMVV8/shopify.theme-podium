@@ -7,73 +7,75 @@
     data-interval="{{ section.settings.rotation_interval_seconds | times: 1000 }}"
     style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};"
   >
-    <div class="announcement-bar__inner container">
+    <div class="announcement-bar__inner">
 
-      {%- comment -%} LEFT — Language selector placeholder {%- endcomment -%}
-      <div class="announcement-bar__left">
+      {%- comment -%} LEFT — Language selector {%- endcomment -%}
+      <div class="announcement-bar__zone announcement-bar__left">
         {%- if section.settings.show_language_left -%}
-          <div class="announcement-bar__lang">
+          <button class="announcement-bar__lang" type="button" aria-label="Change language">
             <span class="announcement-bar__lang-code">{{ request.locale.iso_code | upcase }}</span>
-            {% render 'icon', name: 'chevron-down', size: 12 %}
-          </div>
+            {% render 'icon', name: 'chevron-down', size: 10 %}
+          </button>
         {%- endif -%}
       </div>
 
-      {%- comment -%} CENTER — Messages carousel {%- endcomment -%}
-      <div class="announcement-bar__center">
+      {%- comment -%} CENTER — Messages carousel (true-centered via grid) {%- endcomment -%}
+      <div class="announcement-bar__zone announcement-bar__center">
         {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
-          <button class="announcement-bar__arrow btn--icon" data-announce-prev aria-label="Message précédent">
-            {% render 'icon', name: 'chevron-left', size: 14 %}
+          <button class="announcement-bar__arrow" data-announce-prev aria-label="Previous message" type="button">
+            {% render 'icon', name: 'chevron-left', size: 12 %}
           </button>
         {%- endif -%}
 
         <div class="announcement-bar__messages" data-announce-track>
           {%- for block in section.blocks -%}
             {%- if block.type == 'message' -%}
-              <div class="announcement-bar__message{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+              <p class="announcement-bar__message{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
                 {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}" class="announcement-bar__message-link">
-                {%- endif -%}
-                  {{ block.settings.message_text }}
-                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" class="announcement-bar__link">
+                    {{ block.settings.message_text }}
                   </a>
+                {%- else -%}
+                  {{ block.settings.message_text }}
                 {%- endif -%}
-              </div>
+              </p>
             {%- endif -%}
           {%- endfor -%}
 
           {%- if section.blocks.size == 0 -%}
-            <div class="announcement-bar__message is-active">
-              Livraison offerte dès 75€ d'achat
-            </div>
+            <p class="announcement-bar__message is-active">
+              Votre shopping encore plus facile : Téléchargez notre app !
+            </p>
           {%- endif -%}
         </div>
 
         {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
-          <button class="announcement-bar__arrow btn--icon" data-announce-next aria-label="Message suivant">
-            {% render 'icon', name: 'chevron-right', size: 14 %}
+          <button class="announcement-bar__arrow" data-announce-next aria-label="Next message" type="button">
+            {% render 'icon', name: 'chevron-right', size: 12 %}
           </button>
         {%- endif -%}
       </div>
 
-      {%- comment -%} RIGHT — Trustpilot mini badge {%- endcomment -%}
-      <div class="announcement-bar__right">
+      {%- comment -%} RIGHT — Trustpilot badge {%- endcomment -%}
+      <div class="announcement-bar__zone announcement-bar__right">
         {%- if section.settings.show_trustpilot_right -%}
           <div class="announcement-bar__trustpilot">
-            <span class="announcement-bar__trustpilot-label">{{ section.settings.trustpilot_label_left }}</span>
-            <span class="announcement-bar__trustpilot-stars" aria-label="4.5 out of 5 stars">
-              <svg width="68" height="13" viewBox="0 0 68 13" fill="none" aria-hidden="true">
-                <polygon points="6.5,0 8.1,4.5 13,4.5 9,7.3 10.2,12 6.5,9 2.8,12 4,7.3 0,4.5 4.9,4.5" fill="#00b67a"/>
-                <polygon points="20.5,0 22.1,4.5 27,4.5 23,7.3 24.2,12 20.5,9 16.8,12 18,7.3 14,4.5 18.9,4.5" fill="#00b67a"/>
-                <polygon points="34.5,0 36.1,4.5 41,4.5 37,7.3 38.2,12 34.5,9 30.8,12 32,7.3 28,4.5 32.9,4.5" fill="#00b67a"/>
-                <polygon points="48.5,0 50.1,4.5 55,4.5 51,7.3 52.2,12 48.5,9 44.8,12 46,7.3 42,4.5 46.9,4.5" fill="#00b67a"/>
-                <polygon points="62.5,0 64.1,4.5 68,4.5 65,7.3 66.2,12 62.5,9 58.8,12 60,7.3 56,4.5 60.9,4.5" fill="#dcdce6"/>
-                <rect x="56" y="0" width="6.5" height="12" fill="#00b67a" clip-path="url(#half-star)"/>
-                <defs><clipPath id="half-star"><rect x="56" y="0" width="6.5" height="12"/></clipPath></defs>
-                <polygon points="62.5,0 64.1,4.5 68,4.5 65,7.3 66.2,12 62.5,9 58.8,12 60,7.3 56,4.5 60.9,4.5" fill="none" stroke="#00b67a" stroke-width="0.3"/>
+            <span class="announcement-bar__tp-rating">{{ section.settings.trustpilot_label_left }}</span>
+            <span class="announcement-bar__tp-stars" aria-label="4.5 out of 5 stars">
+              {%- for i in (1..4) -%}
+                <svg class="announcement-bar__star" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <rect width="14" height="14" rx="1" fill="#00b67a"/>
+                  <polygon points="7,1.5 8.3,5.2 12,5.2 9,7.4 10,11 7,8.8 4,11 5,7.4 2,5.2 5.7,5.2" fill="#fff"/>
+                </svg>
+              {%- endfor -%}
+              <svg class="announcement-bar__star" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <rect width="14" height="14" rx="1" fill="#dcdce6"/>
+                <clipPath id="announce-half-star"><rect x="0" y="0" width="7" height="14"/></clipPath>
+                <rect width="14" height="14" rx="1" fill="#00b67a" clip-path="url(#announce-half-star)"/>
+                <polygon points="7,1.5 8.3,5.2 12,5.2 9,7.4 10,11 7,8.8 4,11 5,7.4 2,5.2 5.7,5.2" fill="#fff"/>
               </svg>
             </span>
-            <span class="announcement-bar__trustpilot-name">{{ section.settings.trustpilot_label_right }}</span>
+            <span class="announcement-bar__tp-name">{{ section.settings.trustpilot_label_right }}</span>
           </div>
         {%- endif -%}
       </div>
@@ -97,13 +99,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#dbeafe"
+      "default": "#d7e9f6"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#1e3a5f"
+      "default": "#1a1a1a"
     },
     {
       "type": "header",

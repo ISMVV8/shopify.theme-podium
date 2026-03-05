@@ -285,60 +285,66 @@ announcement-bar {
 }
 
 .announcement-bar {
-  font-size: 0.75rem;
-  line-height: 1;
+  font-size: 0.8125rem;
+  line-height: 1.3;
 }
 
+/* ── Grid: true-center layout ── */
 .announcement-bar__inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  max-width: none;
+}
+
+/* Zones */
+.announcement-bar__zone {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-  height: 40px;
+  min-width: 0;
 }
 
-.announcement-bar__left,
+.announcement-bar__left {
+  justify-content: flex-start;
+}
+
+.announcement-bar__center {
+  justify-content: center;
+  gap: 6px;
+}
+
 .announcement-bar__right {
-  flex: 0 0 auto;
-  min-width: 120px;
+  justify-content: flex-end;
 }
 
-.announcement-bar__right {
-  text-align: right;
-}
-
-/* Language selector */
+/* ── Language selector (left) ── */
 .announcement-bar__lang {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  cursor: pointer;
-  font-size: 0.75rem;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  padding: 0;
 }
 
 .announcement-bar__lang svg {
-  opacity: 0.7;
+  opacity: 0.65;
 }
 
-/* Center messages carousel */
-.announcement-bar__center {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  min-width: 0;
-  overflow: hidden;
-}
-
+/* ── Center messages carousel ── */
 .announcement-bar__messages {
   position: relative;
   overflow: hidden;
-  flex: 1;
-  max-width: 500px;
   height: 1.4em;
+  text-align: center;
 }
 
 .announcement-bar__message {
@@ -347,81 +353,103 @@ announcement-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   opacity: 0;
   transform: translateY(100%);
   transition: opacity var(--duration-base) var(--ease),
               transform var(--duration-base) var(--ease);
+  pointer-events: none;
 }
 
 .announcement-bar__message.is-active {
   position: relative;
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
-.announcement-bar__message-link {
+.announcement-bar__link {
   color: inherit;
   text-decoration: none;
 }
-.announcement-bar__message-link:hover {
+
+.announcement-bar__link:hover {
   text-decoration: underline;
 }
 
-/* Arrows */
+/* ── Arrows ── */
 .announcement-bar__arrow {
-  padding: 2px;
-  opacity: 0.7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 4px;
+  cursor: pointer;
+  opacity: 0.6;
   transition: opacity var(--duration-fast) var(--ease);
   flex-shrink: 0;
+  line-height: 0;
 }
+
 .announcement-bar__arrow:hover {
   opacity: 1;
 }
 
-/* Trustpilot badge */
+/* ── Trustpilot badge (right) ── */
 .announcement-bar__trustpilot {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
-.announcement-bar__trustpilot-label {
-  font-weight: 600;
+.announcement-bar__tp-rating {
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.announcement-bar__trustpilot-stars {
+.announcement-bar__tp-stars {
   display: inline-flex;
   align-items: center;
+  gap: 2px;
   line-height: 0;
 }
 
-.announcement-bar__trustpilot-name {
-  font-weight: 500;
-  opacity: 0.8;
+.announcement-bar__star {
+  display: block;
 }
 
+.announcement-bar__tp-name {
+  font-weight: 600;
+}
+
+/* ── Responsive ── */
 @media (max-width: 767px) {
   .announcement-bar__inner {
-    height: 36px;
+    grid-template-columns: 1fr;
+    height: 38px;
+    padding: 0 12px;
+    justify-items: center;
   }
-  .announcement-bar__left {
-    display: none;
-  }
+  .announcement-bar__left,
   .announcement-bar__right {
-    min-width: auto;
-  }
-  .announcement-bar__trustpilot-label {
     display: none;
-  }
-  .announcement-bar__messages {
-    max-width: 260px;
   }
   .announcement-bar__message {
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .announcement-bar__tp-rating {
+    display: none;
   }
 }
 
