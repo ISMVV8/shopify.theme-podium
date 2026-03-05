@@ -1,0 +1,134 @@
+<section class="hero-section">
+  <div class="hero-slider" data-hero-slider data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval }}">
+    <div class="hero-slider__track">
+      {%- for block in section.blocks -%}
+        <div class="hero-slider__slide{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+          <div class="hero-slider__split">
+            <div class="hero-slider__image-wrap">
+              {%- if block.settings.image_left != blank -%}
+                <img
+                  src="{{ block.settings.image_left | image_url: width: 960 }}"
+                  alt="{{ block.settings.image_left.alt | escape }}"
+                  class="hero-slider__image"
+                  width="960"
+                  height="1200"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                >
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="hero-slider__image-wrap">
+              {%- if block.settings.image_right != blank -%}
+                <img
+                  src="{{ block.settings.image_right | image_url: width: 960 }}"
+                  alt="{{ block.settings.image_right.alt | escape }}"
+                  class="hero-slider__image"
+                  width="960"
+                  height="1200"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                >
+              {%- else -%}
+                {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slider__placeholder' }}
+              {%- endif -%}
+            </div>
+          </div>
+          {%- if block.settings.cta_text != blank -%}
+            <a href="{{ block.settings.cta_link | default: '#' }}" class="hero-slider__cta btn btn--primary btn--large">
+              {{ block.settings.cta_text }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      {%- if section.blocks.size == 0 -%}
+        <div class="hero-slider__slide is-active">
+          <div class="hero-slider__split">
+            <div class="hero-slider__image-wrap">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__placeholder' }}
+            </div>
+            <div class="hero-slider__image-wrap">
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slider__placeholder' }}
+            </div>
+          </div>
+          <a href="/collections/all" class="hero-slider__cta btn btn--primary btn--large">DÉCOUVRIR</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="hero-slider__dots">
+        {%- for block in section.blocks -%}
+          <button
+            class="hero-slider__dot{% if forloop.first %} is-active{% endif %}"
+            data-slide-index="{{ forloop.index0 }}"
+            aria-label="Slide {{ forloop.index }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero slider",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Autoplay interval",
+      "min": 3000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "default": 5000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_left",
+          "label": "Left image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_right",
+          "label": "Right image"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA text",
+          "default": "DÉCOUVRIR"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero slider",
+      "blocks": [
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

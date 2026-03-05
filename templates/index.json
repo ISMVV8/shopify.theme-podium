@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-split-slider",
+      "type": "hero-slider",
       "settings": {
         "autoplay": true,
         "interval": 5000
@@ -10,7 +10,7 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "cta_text": "Découvrir"
+            "cta_text": "DÉCOUVRIR"
           }
         }
       },
@@ -25,6 +25,32 @@
         "pill_2_label": "Nouveautés",
         "pill_3_label": "Les incontournables"
       }
+    },
+    "collections_grid": {
+      "type": "collections-grid",
+      "settings": {
+        "heading": "Découvrir nos collections",
+        "button_text": "TOUTES LES COLLECTIONS"
+      },
+      "blocks": {
+        "col_1": {
+          "type": "collection",
+          "settings": { "title_override": "THE MARCH EDIT" }
+        },
+        "col_2": {
+          "type": "collection",
+          "settings": { "title_override": "HOME STORY" }
+        },
+        "col_3": {
+          "type": "collection",
+          "settings": { "title_override": "EFFORTLESS" }
+        },
+        "col_4": {
+          "type": "collection",
+          "settings": { "title_override": "STAY COZY" }
+        }
+      },
+      "block_order": ["col_1", "col_2", "col_3", "col_4"]
     },
     "collections_masonry": {
       "type": "collections-masonry",
@@ -56,7 +82,7 @@
       "type": "brand-banner",
       "settings": {
         "heading": "BECAUSE IT'S SHOP O'CLOCK SOMEWHERE",
-        "cta_text": "Nos boutiques"
+        "cta_text": "NOS BOUTIQUES"
       }
     },
     "newsletter": {
@@ -94,6 +120,7 @@
   "order": [
     "hero",
     "featured_products",
+    "collections_grid",
     "collections_masonry",
     "brand_banner",
     "newsletter",
