@@ -1121,6 +1121,16 @@ featured-products {
   padding-block: var(--space-2xl);
 }
 
+/* Tab panels: show/hide */
+.featured-products__panel {
+  display: none;
+}
+
+.featured-products__panel.is-active {
+  display: block;
+}
+
+/* Header: title left, pills right */
 .featured-products__header {
   display: flex;
   justify-content: space-between;
@@ -1131,30 +1141,143 @@ featured-products {
 }
 
 .featured-products__title {
+  font-family: var(--font-heading);
   font-size: calc(1.75rem * var(--font-heading-scale));
+  font-weight: var(--font-heading-weight);
+  margin: 0;
 }
 
 .featured-products__pills {
   display: flex;
-  gap: var(--space-sm);
+  gap: 8px;
   flex-wrap: wrap;
 }
 
-.featured-products__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
-  transition: opacity var(--duration-base) var(--ease);
+/* Pill buttons */
+.featured-products__pill {
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease),
+              border-color var(--duration-fast) var(--ease);
+  white-space: nowrap;
 }
 
-.featured-products__grid.is-loading {
-  opacity: 0.5;
+.featured-products__pill:hover {
+  border-color: var(--color-text);
+}
+
+.featured-products__pill.is-active {
+  background: var(--color-btn-bg);
+  color: var(--color-btn-text);
+  border-color: var(--color-btn-bg);
+}
+
+/* Main layout: 1 big left + grid right */
+.featured-products__layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-lg);
+  transition: opacity var(--duration-base) var(--ease);
+  min-height: 460px;
+}
+
+.featured-products__layout.is-loading {
+  opacity: 0.4;
   pointer-events: none;
 }
 
+/* LEFT: Featured large card */
+.featured-products__featured {
+  position: relative;
+}
+
+.featured-products__featured-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.featured-products__featured-image-wrap {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 100%;
+  min-height: 420px;
+  background: var(--color-border);
+}
+
+.featured-products__featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease);
+}
+
+.featured-products__featured-link:hover .featured-products__featured-image {
+  transform: scale(1.03);
+}
+
+.featured-products__placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay label (bottom-left) */
+.featured-products__featured-label {
+  position: absolute;
+  bottom: 64px;
+  left: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* CTA button (centered bottom) */
+.featured-products__featured-cta {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  padding: 10px 28px;
+  letter-spacing: 0.08em;
+}
+
+/* RIGHT: 4-card grid */
+.featured-products__grid-right {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  align-content: start;
+}
+
+/* Responsive */
 @media (max-width: 1023px) {
-  .featured-products__grid {
-    grid-template-columns: repeat(3, 1fr);
+  .featured-products__layout {
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-md);
+    min-height: 360px;
+  }
+  .featured-products__featured-image-wrap {
+    min-height: 360px;
   }
 }
 
@@ -1162,8 +1285,16 @@ featured-products {
   .featured-products__header {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-sm);
   }
-  .featured-products__grid {
+  .featured-products__layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .featured-products__featured-image-wrap {
+    min-height: 300px;
+  }
+  .featured-products__grid-right {
     grid-template-columns: repeat(2, 1fr);
   }
 }

@@ -414,35 +414,42 @@ class HeroSlider extends HTMLElement {
   disconnectedCallback() { this.stopAutoplay(); }
 }
 
-/* --- Featured Products (pill tab switching) --- */
+/* --- Featured Products (pill tab switching — show/hide panels) --- */
 
 class FeaturedProductsSection extends HTMLElement {
   connectedCallback() {
     this.pills = this.querySelectorAll('[data-pill]');
-    this.grid = this.querySelector('[data-products-grid]');
-    this.sectionId = this.dataset.sectionId;
-    this.pills.forEach((pill, index) => {
-      pill.addEventListener('click', () => this.switchPill(index, pill));
+    this.panels = this.querySelectorAll('[data-panel]');
+    this.activePill = 0;
+
+    if (!this.panels.length) return;
+
+    this.pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const index = parseInt(pill.dataset.pill, 10);
+        if (index === this.activePill) return;
+        this.switchPill(index, pill);
+      });
     });
   }
 
-  async switchPill(index, pill) {
-    this.pills.forEach(p => p.classList.remove('active'));
-    pill.classList.add('active');
-    if (!this.grid || !this.sectionId) return;
-    this.grid.classList.add('is-loading');
-    try {
-      const url = `${window.location.pathname}?section_id=${this.sectionId}&pill_active=${index}`;
-      const res = await fetch(url);
-      const html = await res.text();
-      const temp = document.createElement('div');
-      temp.innerHTML = html;
-      const newGrid = temp.querySelector('[data-products-grid]');
-      if (newGrid) this.grid.innerHTML = newGrid.innerHTML;
-    } catch (error) {
-      console.error('Featured products fetch error:', error);
-    }
-    this.grid.classList.remove('is-loading');
+  switchPill(index, pill) {
+    /* Update pill states */
+    this.pills.forEach(p => {
+      p.classList.remove('is-active');
+      p.setAttribute('aria-selected', 'false');
+      p.setAttribute('aria-pressed', 'false');
+    });
+    pill.classList.add('is-active');
+    pill.setAttribute('aria-selected', 'true');
+    pill.setAttribute('aria-pressed', 'true');
+
+    /* Switch panels */
+    this.panels.forEach(panel => panel.classList.remove('is-active'));
+    const target = this.querySelector(`[data-panel="${index}"]`);
+    if (target) target.classList.add('is-active');
+
+    this.activePill = index;
   }
 }
 

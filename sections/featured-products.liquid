@@ -1,56 +1,269 @@
-{%- assign pill_active = 0 -%}
+{%- liquid
+  assign max_right = section.settings.max_products_right | default: 4
+  assign cta_label = section.settings.cta_label | default: 'VOIR PLUS'
+-%}
 
-<featured-products class="featured-products container" data-section-id="{{ section.id }}">
-  <div class="featured-products__header">
-    <h2 class="featured-products__title">{{ section.settings.heading | default: 'La sélection' }}</h2>
-    <div class="featured-products__pills">
-      {%- if section.settings.pill_1_label != blank -%}
-        <button class="btn btn--pill{% if pill_active == 0 %} active{% endif %}" data-pill="0">
-          {{ section.settings.pill_1_label }}
-        </button>
-      {%- endif -%}
-      {%- if section.settings.pill_2_label != blank -%}
-        <button class="btn btn--pill{% if pill_active == 1 %} active{% endif %}" data-pill="1">
-          {{ section.settings.pill_2_label }}
-        </button>
-      {%- endif -%}
-      {%- if section.settings.pill_3_label != blank -%}
-        <button class="btn btn--pill{% if pill_active == 2 %} active{% endif %}" data-pill="2">
-          {{ section.settings.pill_3_label }}
-        </button>
-      {%- endif -%}
+<featured-products class="featured-products" data-section-id="{{ section.id }}">
+  <div class="featured-products__inner container">
+
+    {%- comment -%} Header: title left, pills right {%- endcomment -%}
+    <div class="featured-products__header">
+      <h2 class="featured-products__title">{{ section.settings.heading | default: 'La sélection' }}</h2>
+      <div class="featured-products__pills" role="tablist">
+        {%- if section.settings.pill_1_label != blank -%}
+          <button
+            class="featured-products__pill is-active"
+            data-pill="0"
+            role="tab"
+            aria-selected="true"
+            aria-pressed="true"
+            type="button"
+          >{{ section.settings.pill_1_label }}</button>
+        {%- endif -%}
+        {%- if section.settings.pill_2_label != blank -%}
+          <button
+            class="featured-products__pill"
+            data-pill="1"
+            role="tab"
+            aria-selected="false"
+            aria-pressed="false"
+            type="button"
+          >{{ section.settings.pill_2_label }}</button>
+        {%- endif -%}
+        {%- if section.settings.pill_3_label != blank -%}
+          <button
+            class="featured-products__pill"
+            data-pill="2"
+            role="tab"
+            aria-selected="false"
+            aria-pressed="false"
+            type="button"
+          >{{ section.settings.pill_3_label }}</button>
+        {%- endif -%}
+      </div>
     </div>
-  </div>
 
-  <div class="featured-products__grid" data-products-grid>
-    {%- liquid
-      if pill_active == 1 and section.settings.pill_2_collection != blank
-        assign active_collection = section.settings.pill_2_collection
-      elsif pill_active == 2 and section.settings.pill_3_collection != blank
-        assign active_collection = section.settings.pill_3_collection
-      else
-        assign active_collection = section.settings.pill_1_collection
-      endif
-    -%}
+    {%- comment -%} Tab panels — all 3 rendered, JS shows/hides {%- endcomment -%}
+    <div class="featured-products__panels">
 
-    {%- if active_collection != blank -%}
-      {%- for product in active_collection.products limit: section.settings.products_count -%}
-        {% render 'product-card', product: product %}
-      {%- endfor -%}
-    {%- else -%}
-      {%- for i in (1..4) -%}
-        <article class="product-card">
-          <div class="product-card__image-wrap">
-            {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+      {%- comment -%} ── Panel 0 ── {%- endcomment -%}
+      {%- assign col1 = section.settings.pill_1_collection -%}
+      <div class="featured-products__panel is-active" data-panel="0" role="tabpanel">
+        <div class="featured-products__layout" data-products-grid>
+          {%- if col1 != blank and col1.products.size > 0 -%}
+            {%- assign featured = col1.products[0] -%}
+            <div class="featured-products__featured">
+              <a href="{{ col1.url }}" class="featured-products__featured-link">
+                <div class="featured-products__featured-image-wrap">
+                  {%- if featured.featured_media -%}
+                    <img
+                      class="featured-products__featured-image"
+                      src="{{ featured.featured_media | image_url: width: 900 }}"
+                      alt="{{ featured.featured_media.alt | escape | default: featured.title }}"
+                      width="900"
+                      height="{{ 900 | divided_by: featured.featured_media.aspect_ratio | round }}"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'featured-products__placeholder-svg' }}
+                  {%- endif -%}
+                  {%- if section.settings.show_featured_label -%}
+                    <span class="featured-products__featured-label">{{ section.settings.pill_1_label }}</span>
+                  {%- endif -%}
+                  <span class="featured-products__featured-cta btn btn--primary">{{ cta_label }}</span>
+                </div>
+              </a>
+            </div>
+            <div class="featured-products__grid-right">
+              {%- for product in col1.products limit: max_right offset: 1 -%}
+                {% render 'product-card', product: product, show_wishlist: false %}
+              {%- endfor -%}
+              {%- assign shown = col1.products.size | minus: 1 -%}
+              {%- if shown < max_right -%}
+                {%- assign remaining = max_right | minus: shown -%}
+                {%- for i in (1..remaining) -%}
+                  <article class="product-card product-card--placeholder">
+                    <div class="product-card__image-wrap">
+                      {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                    </div>
+                    <div class="product-card__info">
+                      <h3 class="product-card__title">Product title</h3>
+                      <p class="product-card__subtitle">Variant</p>
+                      <div class="product-card__price">€29,99</div>
+                    </div>
+                  </article>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            {%- render 'featured-products-placeholder', label: section.settings.pill_1_label, cta_label: cta_label, show_label: section.settings.show_featured_label, max_right: max_right -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ── Panel 1 ── {%- endcomment -%}
+      {%- if section.settings.pill_2_label != blank -%}
+        {%- assign col2 = section.settings.pill_2_collection -%}
+        <div class="featured-products__panel" data-panel="1" role="tabpanel">
+          <div class="featured-products__layout">
+            {%- if col2 != blank and col2.products.size > 0 -%}
+              {%- assign featured2 = col2.products[0] -%}
+              <div class="featured-products__featured">
+                <a href="{{ col2.url }}" class="featured-products__featured-link">
+                  <div class="featured-products__featured-image-wrap">
+                    {%- if featured2.featured_media -%}
+                      <img
+                        class="featured-products__featured-image"
+                        src="{{ featured2.featured_media | image_url: width: 900 }}"
+                        alt="{{ featured2.featured_media.alt | escape | default: featured2.title }}"
+                        width="900"
+                        height="{{ 900 | divided_by: featured2.featured_media.aspect_ratio | round }}"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'featured-products__placeholder-svg' }}
+                    {%- endif -%}
+                    {%- if section.settings.show_featured_label -%}
+                      <span class="featured-products__featured-label">{{ section.settings.pill_2_label }}</span>
+                    {%- endif -%}
+                    <span class="featured-products__featured-cta btn btn--primary">{{ cta_label }}</span>
+                  </div>
+                </a>
+              </div>
+              <div class="featured-products__grid-right">
+                {%- for product in col2.products limit: max_right offset: 1 -%}
+                  {% render 'product-card', product: product, show_wishlist: false %}
+                {%- endfor -%}
+                {%- assign shown2 = col2.products.size | minus: 1 -%}
+                {%- if shown2 < max_right -%}
+                  {%- assign remaining2 = max_right | minus: shown2 -%}
+                  {%- for i in (1..remaining2) -%}
+                    <article class="product-card product-card--placeholder">
+                      <div class="product-card__image-wrap">
+                        {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                      </div>
+                      <div class="product-card__info">
+                        <h3 class="product-card__title">Product title</h3>
+                        <p class="product-card__subtitle">Variant</p>
+                        <div class="product-card__price">€29,99</div>
+                      </div>
+                    </article>
+                  {%- endfor -%}
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <div class="featured-products__featured">
+                <a href="#" class="featured-products__featured-link">
+                  <div class="featured-products__featured-image-wrap">
+                    {{ 'product-1' | placeholder_svg_tag: 'featured-products__placeholder-svg' }}
+                    {%- if section.settings.show_featured_label -%}
+                      <span class="featured-products__featured-label">{{ section.settings.pill_2_label }}</span>
+                    {%- endif -%}
+                    <span class="featured-products__featured-cta btn btn--primary">{{ cta_label }}</span>
+                  </div>
+                </a>
+              </div>
+              <div class="featured-products__grid-right">
+                {%- for i in (1..4) -%}
+                  <article class="product-card product-card--placeholder">
+                    <div class="product-card__image-wrap">
+                      {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                    </div>
+                    <div class="product-card__info">
+                      <h3 class="product-card__title">Product title</h3>
+                      <p class="product-card__subtitle">Variant</p>
+                      <div class="product-card__price">€29,99</div>
+                    </div>
+                  </article>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
           </div>
-          <div class="product-card__info">
-            <h3 class="product-card__title">Product title</h3>
-            <p class="product-card__subtitle">Color</p>
-            <div class="product-card__price">€29,99</div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Panel 2 ── {%- endcomment -%}
+      {%- if section.settings.pill_3_label != blank -%}
+        {%- assign col3 = section.settings.pill_3_collection -%}
+        <div class="featured-products__panel" data-panel="2" role="tabpanel">
+          <div class="featured-products__layout">
+            {%- if col3 != blank and col3.products.size > 0 -%}
+              {%- assign featured3 = col3.products[0] -%}
+              <div class="featured-products__featured">
+                <a href="{{ col3.url }}" class="featured-products__featured-link">
+                  <div class="featured-products__featured-image-wrap">
+                    {%- if featured3.featured_media -%}
+                      <img
+                        class="featured-products__featured-image"
+                        src="{{ featured3.featured_media | image_url: width: 900 }}"
+                        alt="{{ featured3.featured_media.alt | escape | default: featured3.title }}"
+                        width="900"
+                        height="{{ 900 | divided_by: featured3.featured_media.aspect_ratio | round }}"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'featured-products__placeholder-svg' }}
+                    {%- endif -%}
+                    {%- if section.settings.show_featured_label -%}
+                      <span class="featured-products__featured-label">{{ section.settings.pill_3_label }}</span>
+                    {%- endif -%}
+                    <span class="featured-products__featured-cta btn btn--primary">{{ cta_label }}</span>
+                  </div>
+                </a>
+              </div>
+              <div class="featured-products__grid-right">
+                {%- for product in col3.products limit: max_right offset: 1 -%}
+                  {% render 'product-card', product: product, show_wishlist: false %}
+                {%- endfor -%}
+                {%- assign shown3 = col3.products.size | minus: 1 -%}
+                {%- if shown3 < max_right -%}
+                  {%- assign remaining3 = max_right | minus: shown3 -%}
+                  {%- for i in (1..remaining3) -%}
+                    <article class="product-card product-card--placeholder">
+                      <div class="product-card__image-wrap">
+                        {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                      </div>
+                      <div class="product-card__info">
+                        <h3 class="product-card__title">Product title</h3>
+                        <p class="product-card__subtitle">Variant</p>
+                        <div class="product-card__price">€29,99</div>
+                      </div>
+                    </article>
+                  {%- endfor -%}
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <div class="featured-products__featured">
+                <a href="#" class="featured-products__featured-link">
+                  <div class="featured-products__featured-image-wrap">
+                    {{ 'product-1' | placeholder_svg_tag: 'featured-products__placeholder-svg' }}
+                    {%- if section.settings.show_featured_label -%}
+                      <span class="featured-products__featured-label">{{ section.settings.pill_3_label }}</span>
+                    {%- endif -%}
+                    <span class="featured-products__featured-cta btn btn--primary">{{ cta_label }}</span>
+                  </div>
+                </a>
+              </div>
+              <div class="featured-products__grid-right">
+                {%- for i in (1..4) -%}
+                  <article class="product-card product-card--placeholder">
+                    <div class="product-card__image-wrap">
+                      {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                    </div>
+                    <div class="product-card__info">
+                      <h3 class="product-card__title">Product title</h3>
+                      <p class="product-card__subtitle">Variant</p>
+                      <div class="product-card__price">€29,99</div>
+                    </div>
+                  </article>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
           </div>
-        </article>
-      {%- endfor -%}
-    {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
   </div>
 </featured-products>
 
@@ -66,11 +279,23 @@
       "default": "La sélection"
     },
     {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Featured CTA label",
+      "default": "VOIR PLUS"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_label",
+      "label": "Show overlay label on featured card",
+      "default": true
+    },
+    {
       "type": "range",
-      "id": "products_count",
-      "label": "Products to show",
+      "id": "max_products_right",
+      "label": "Products on right grid",
       "min": 2,
-      "max": 8,
+      "max": 6,
       "step": 1,
       "default": 4
     },
@@ -127,4 +352,3 @@
   ]
 }
 {% endschema %}
-

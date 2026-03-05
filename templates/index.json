@@ -33,7 +33,9 @@
       "type": "featured-products",
       "settings": {
         "heading": "La sélection",
-        "products_count": 4,
+        "cta_label": "VOIR PLUS",
+        "show_featured_label": true,
+        "max_products_right": 4,
         "pill_1_label": "Back in stock",
         "pill_1_collection": "",
         "pill_2_label": "Nouveautés",
