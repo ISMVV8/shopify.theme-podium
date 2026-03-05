@@ -280,6 +280,8 @@ h6 { font-size: calc(0.875rem * var(--font-heading-scale)); }
 
 announcement-bar {
   display: block;
+  position: relative;
+  z-index: calc(var(--z-header) + 1);
 }
 
 .announcement-bar {
@@ -552,13 +554,12 @@ announcement-bar {
 
 /* --- Transparent Header (homepage hero overlay) --- */
 
+/* Transparent header: header stays in flow but transparent,
+   hero pulls up behind it with negative margin */
 .header--transparent .header:not(.is-sticky) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   background: transparent;
-  border-bottom-color: rgba(255, 255, 255, 0.15);
+  border-bottom-color: transparent;
+  position: relative;
   z-index: var(--z-header);
 }
 
@@ -596,6 +597,23 @@ announcement-bar {
 
 .header--transparent.header--hero-dark .header:not(.is-sticky) .header__nav-link.is-active::after {
   background: var(--color-text);
+}
+
+/* Pull hero up behind the transparent header so it overlaps */
+.header--transparent #main-content > .shopify-section:first-child {
+  margin-top: -64px;
+}
+.header--transparent #main-content > .shopify-section:first-child .hero-slider__slide {
+  padding-top: 64px;
+}
+
+@media (max-width: 1023px) {
+  .header--transparent #main-content > .shopify-section:first-child {
+    margin-top: -52px;
+  }
+  .header--transparent #main-content > .shopify-section:first-child .hero-slider__slide {
+    padding-top: 52px;
+  }
 }
 
 /* --- Mobile Menu --- */
