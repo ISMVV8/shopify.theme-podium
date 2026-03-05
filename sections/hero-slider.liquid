@@ -1,38 +1,21 @@
 <section class="hero-section">
-  <div class="hero-slider" data-hero-slider data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval }}">
+  <hero-slider class="hero-slider" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval }}">
     <div class="hero-slider__track">
       {%- for block in section.blocks -%}
         <div class="hero-slider__slide{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
-          <div class="hero-slider__split">
-            <div class="hero-slider__image-wrap">
-              {%- if block.settings.image_left != blank -%}
-                <img
-                  src="{{ block.settings.image_left | image_url: width: 960 }}"
-                  alt="{{ block.settings.image_left.alt | escape }}"
-                  class="hero-slider__image"
-                  width="960"
-                  height="1200"
-                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                >
-              {%- else -%}
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__placeholder' }}
-              {%- endif -%}
-            </div>
-            <div class="hero-slider__image-wrap">
-              {%- if block.settings.image_right != blank -%}
-                <img
-                  src="{{ block.settings.image_right | image_url: width: 960 }}"
-                  alt="{{ block.settings.image_right.alt | escape }}"
-                  class="hero-slider__image"
-                  width="960"
-                  height="1200"
-                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                >
-              {%- else -%}
-                {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slider__placeholder' }}
-              {%- endif -%}
-            </div>
-          </div>
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 1920 }}"
+              alt="{{ block.settings.image.alt | escape }}"
+              class="hero-slider__bg"
+              width="1920"
+              height="{{ 1920 | divided_by: block.settings.image.aspect_ratio | round }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            >
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__bg hero-slider__placeholder' }}
+          {%- endif -%}
+          <div class="hero-slider__overlay"></div>
           {%- if block.settings.cta_text != blank -%}
             <a href="{{ block.settings.cta_link | default: '#' }}" class="hero-slider__cta btn btn--primary btn--large">
               {{ block.settings.cta_text }}
@@ -43,14 +26,8 @@
 
       {%- if section.blocks.size == 0 -%}
         <div class="hero-slider__slide is-active">
-          <div class="hero-slider__split">
-            <div class="hero-slider__image-wrap">
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__placeholder' }}
-            </div>
-            <div class="hero-slider__image-wrap">
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slider__placeholder' }}
-            </div>
-          </div>
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slider__bg hero-slider__placeholder' }}
+          <div class="hero-slider__overlay"></div>
           <a href="/collections/all" class="hero-slider__cta btn btn--primary btn--large">DÉCOUVRIR</a>
         </div>
       {%- endif -%}
@@ -60,14 +37,14 @@
       <div class="hero-slider__dots">
         {%- for block in section.blocks -%}
           <button
-            class="hero-slider__dot{% if forloop.first %} is-active{% endif %}"
-            data-slide-index="{{ forloop.index0 }}"
+            class="hero-slider__dot{% if forloop.first %} active{% endif %}"
+            data-slide-dot
             aria-label="Slide {{ forloop.index }}"
           ></button>
         {%- endfor -%}
       </div>
     {%- endif -%}
-  </div>
+  </hero-slider>
 </section>
 
 {% schema %}
@@ -100,13 +77,8 @@
       "settings": [
         {
           "type": "image_picker",
-          "id": "image_left",
-          "label": "Left image"
-        },
-        {
-          "type": "image_picker",
-          "id": "image_right",
-          "label": "Right image"
+          "id": "image",
+          "label": "Background image"
         },
         {
           "type": "text",
@@ -132,5 +104,3 @@
   ]
 }
 {% endschema %}
-
-

@@ -30,6 +30,7 @@
       "type": "collections-grid",
       "settings": {
         "heading": "Découvrir nos collections",
+        "card_link_text": "Découvrir",
         "button_text": "TOUTES LES COLLECTIONS"
       },
       "blocks": {
