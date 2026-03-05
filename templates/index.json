@@ -1,5 +1,72 @@
 {
   "sections": {
+    "hero": {
+      "type": "hero-split-slider",
+      "settings": {
+        "autoplay": true,
+        "interval": 5000
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "cta_text": "Découvrir"
+          }
+        }
+      },
+      "block_order": ["slide_1"]
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "La sélection",
+        "products_count": 4,
+        "pill_1_label": "Back in stock",
+        "pill_2_label": "Nouveautés",
+        "pill_3_label": "Les incontournables"
+      }
+    },
+    "collections_masonry": {
+      "type": "collections-masonry",
+      "settings": {
+        "heading": "Collections",
+        "footer_link_text": "Découvrir toute la collection"
+      },
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": { "title_override": "Nos gilets", "style": "wide" }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": { "title_override": "Nos pulls", "style": "tall" }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": { "title_override": "Nos t-shirts", "style": "wide" }
+        },
+        "tile_4": {
+          "type": "tile",
+          "settings": { "title_override": "Nos chemises", "style": "tall" }
+        }
+      },
+      "block_order": ["tile_1", "tile_2", "tile_3", "tile_4"]
+    },
+    "brand_banner": {
+      "type": "brand-banner",
+      "settings": {
+        "heading": "BECAUSE IT'S SHOP O'CLOCK SOMEWHERE",
+        "cta_text": "Nos boutiques"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Restons en contact",
+        "description": "Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités et offres exclusives.",
+        "consent_text": "En vous inscrivant, vous acceptez notre"
+      }
+    },
     "trust_benefits": {
       "type": "trust-benefits",
       "settings": {},
@@ -18,11 +85,18 @@
         },
         "benefit_4": {
           "type": "benefit",
-          "settings": { "icon": "headset", "label": "Service client" }
+          "settings": { "icon": "headset", "label": "Service client disponible & réactif" }
         }
       },
       "block_order": ["benefit_1", "benefit_2", "benefit_3", "benefit_4"]
     }
   },
-  "order": ["trust_benefits"]
+  "order": [
+    "hero",
+    "featured_products",
+    "collections_masonry",
+    "brand_banner",
+    "newsletter",
+    "trust_benefits"
+  ]
 }
