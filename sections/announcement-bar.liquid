@@ -1,34 +1,85 @@
-{%- if section.settings.enable -%}
-  <div class="announcement-bar" role="complementary" aria-label="{{ 'announcement.default_message' | t }}">
+{%- if section.settings.enable_bar -%}
+  <announcement-bar
+    class="announcement-bar"
+    role="complementary"
+    aria-label="{{ 'announcement.default_message' | t | default: 'Announcement' }}"
+    data-rotate="{{ section.settings.enable_message_rotation }}"
+    data-interval="{{ section.settings.rotation_interval_seconds | times: 1000 }}"
+    style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};"
+  >
     <div class="announcement-bar__inner container">
-      {%- comment -%} Language selector placeholder {%- endcomment -%}
+
+      {%- comment -%} LEFT — Language selector placeholder {%- endcomment -%}
       <div class="announcement-bar__left">
-        {%- if section.settings.show_language_selector -%}
-          {%- form 'localization', class: 'announcement-bar__lang' -%}
-            <select name="locale_code" aria-label="{{ 'header.language' | t }}" onchange="this.form.submit()">
-              {%- for locale in shop.published_locales -%}
-                <option value="{{ locale.iso_code }}" {% if locale.iso_code == form.current_locale.iso_code %}selected{% endif %}>
-                  {{ locale.iso_code | upcase }}
-                </option>
-              {%- endfor -%}
-            </select>
-          {%- endform -%}
+        {%- if section.settings.show_language_left -%}
+          <div class="announcement-bar__lang">
+            <span class="announcement-bar__lang-code">{{ request.locale.iso_code | upcase }}</span>
+            {% render 'icon', name: 'chevron-down', size: 12 %}
+          </div>
         {%- endif -%}
       </div>
 
-      {%- comment -%} Center message {%- endcomment -%}
+      {%- comment -%} CENTER — Messages carousel {%- endcomment -%}
       <div class="announcement-bar__center">
-        <p class="announcement-bar__message">{{ section.settings.message }}</p>
-      </div>
+        {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
+          <button class="announcement-bar__arrow btn--icon" data-announce-prev aria-label="Message précédent">
+            {% render 'icon', name: 'chevron-left', size: 14 %}
+          </button>
+        {%- endif -%}
 
-      {%- comment -%} Optional trust badge {%- endcomment -%}
-      <div class="announcement-bar__right">
-        {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
-          <span class="announcement-bar__badge">{{ section.settings.badge_text }}</span>
+        <div class="announcement-bar__messages" data-announce-track>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'message' -%}
+              <div class="announcement-bar__message{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" class="announcement-bar__message-link">
+                {%- endif -%}
+                  {{ block.settings.message_text }}
+                {%- if block.settings.link != blank -%}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if section.blocks.size == 0 -%}
+            <div class="announcement-bar__message is-active">
+              Livraison offerte dès 75€ d'achat
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
+          <button class="announcement-bar__arrow btn--icon" data-announce-next aria-label="Message suivant">
+            {% render 'icon', name: 'chevron-right', size: 14 %}
+          </button>
         {%- endif -%}
       </div>
+
+      {%- comment -%} RIGHT — Trustpilot mini badge {%- endcomment -%}
+      <div class="announcement-bar__right">
+        {%- if section.settings.show_trustpilot_right -%}
+          <div class="announcement-bar__trustpilot">
+            <span class="announcement-bar__trustpilot-label">{{ section.settings.trustpilot_label_left }}</span>
+            <span class="announcement-bar__trustpilot-stars" aria-label="4.5 out of 5 stars">
+              <svg width="68" height="13" viewBox="0 0 68 13" fill="none" aria-hidden="true">
+                <polygon points="6.5,0 8.1,4.5 13,4.5 9,7.3 10.2,12 6.5,9 2.8,12 4,7.3 0,4.5 4.9,4.5" fill="#00b67a"/>
+                <polygon points="20.5,0 22.1,4.5 27,4.5 23,7.3 24.2,12 20.5,9 16.8,12 18,7.3 14,4.5 18.9,4.5" fill="#00b67a"/>
+                <polygon points="34.5,0 36.1,4.5 41,4.5 37,7.3 38.2,12 34.5,9 30.8,12 32,7.3 28,4.5 32.9,4.5" fill="#00b67a"/>
+                <polygon points="48.5,0 50.1,4.5 55,4.5 51,7.3 52.2,12 48.5,9 44.8,12 46,7.3 42,4.5 46.9,4.5" fill="#00b67a"/>
+                <polygon points="62.5,0 64.1,4.5 68,4.5 65,7.3 66.2,12 62.5,9 58.8,12 60,7.3 56,4.5 60.9,4.5" fill="#dcdce6"/>
+                <rect x="56" y="0" width="6.5" height="12" fill="#00b67a" clip-path="url(#half-star)"/>
+                <defs><clipPath id="half-star"><rect x="56" y="0" width="6.5" height="12"/></clipPath></defs>
+                <polygon points="62.5,0 64.1,4.5 68,4.5 65,7.3 66.2,12 62.5,9 58.8,12 60,7.3 56,4.5 60.9,4.5" fill="none" stroke="#00b67a" stroke-width="0.3"/>
+              </svg>
+            </span>
+            <span class="announcement-bar__trustpilot-name">{{ section.settings.trustpilot_label_right }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
     </div>
-  </div>
+  </announcement-bar>
 {%- endif -%}
 
 {% schema %}
@@ -38,35 +89,113 @@
   "settings": [
     {
       "type": "checkbox",
-      "id": "enable",
+      "id": "enable_bar",
       "label": "Enable announcement bar",
       "default": true
     },
     {
-      "type": "text",
-      "id": "message",
-      "label": "Message",
-      "default": "Livraison offerte dès 75€ d'achat"
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#dbeafe"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1e3a5f"
+    },
+    {
+      "type": "header",
+      "content": "Language selector"
     },
     {
       "type": "checkbox",
-      "id": "show_language_selector",
-      "label": "Show language selector",
+      "id": "show_language_left",
+      "label": "Show language selector (left)",
       "default": true
     },
     {
+      "type": "header",
+      "content": "Trustpilot badge"
+    },
+    {
       "type": "checkbox",
-      "id": "show_badge",
-      "label": "Show trust badge",
-      "default": false
+      "id": "show_trustpilot_right",
+      "label": "Show Trustpilot badge (right)",
+      "default": true
     },
     {
       "type": "text",
-      "id": "badge_text",
-      "label": "Badge text",
-      "default": "★ 4.8/5 Trustpilot"
+      "id": "trustpilot_label_left",
+      "label": "Rating label",
+      "default": "Bien"
+    },
+    {
+      "type": "text",
+      "id": "trustpilot_label_right",
+      "label": "Brand label",
+      "default": "Trustpilot"
+    },
+    {
+      "type": "header",
+      "content": "Message rotation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_message_rotation",
+      "label": "Auto-rotate messages",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_interval_seconds",
+      "label": "Rotation interval",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "message_text",
+          "label": "Message text",
+          "default": "Livraison offerte dès 75€ d'achat"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "message_text": "Votre shopping encore plus facile : Téléchargez notre app !"
+          }
+        }
+      ]
     }
   ]
 }
 {% endschema %}
-

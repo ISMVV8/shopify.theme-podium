@@ -278,11 +278,13 @@ h6 { font-size: calc(0.875rem * var(--font-heading-scale)); }
 
 /* --- Announcement Bar --- */
 
+announcement-bar {
+  display: block;
+}
+
 .announcement-bar {
-  background: #f8f8f8;
-  border-bottom: 1px solid var(--color-border);
   font-size: 0.75rem;
-  padding: var(--space-xs) 0;
+  line-height: 1;
 }
 
 .announcement-bar__inner {
@@ -290,41 +292,134 @@ h6 { font-size: calc(0.875rem * var(--font-heading-scale)); }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
+  height: 40px;
 }
 
 .announcement-bar__left,
 .announcement-bar__right {
   flex: 0 0 auto;
-  min-width: 100px;
+  min-width: 120px;
 }
 
+.announcement-bar__right {
+  text-align: right;
+}
+
+/* Language selector */
+.announcement-bar__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.announcement-bar__lang svg {
+  opacity: 0.7;
+}
+
+/* Center messages carousel */
 .announcement-bar__center {
   flex: 1;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.announcement-bar__messages {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  max-width: 500px;
+  height: 1.4em;
 }
 
 .announcement-bar__message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.75rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity var(--duration-base) var(--ease),
+              transform var(--duration-base) var(--ease);
 }
 
-.announcement-bar__lang select {
-  font-size: 0.75rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 2px 4px;
+.announcement-bar__message.is-active {
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.announcement-bar__badge {
+.announcement-bar__message-link {
+  color: inherit;
+  text-decoration: none;
+}
+.announcement-bar__message-link:hover {
+  text-decoration: underline;
+}
+
+/* Arrows */
+.announcement-bar__arrow {
+  padding: 2px;
+  opacity: 0.7;
+  transition: opacity var(--duration-fast) var(--ease);
+  flex-shrink: 0;
+}
+.announcement-bar__arrow:hover {
+  opacity: 1;
+}
+
+/* Trustpilot badge */
+.announcement-bar__trustpilot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.6875rem;
-  color: var(--color-text-secondary);
+}
+
+.announcement-bar__trustpilot-label {
+  font-weight: 600;
+}
+
+.announcement-bar__trustpilot-stars {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.announcement-bar__trustpilot-name {
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 @media (max-width: 767px) {
-  .announcement-bar__left,
-  .announcement-bar__right {
+  .announcement-bar__inner {
+    height: 36px;
+  }
+  .announcement-bar__left {
     display: none;
+  }
+  .announcement-bar__right {
+    min-width: auto;
+  }
+  .announcement-bar__trustpilot-label {
+    display: none;
+  }
+  .announcement-bar__messages {
+    max-width: 260px;
+  }
+  .announcement-bar__message {
+    font-size: 0.6875rem;
   }
 }
 

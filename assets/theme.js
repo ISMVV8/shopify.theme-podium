@@ -680,6 +680,44 @@ class QuantityStepperElement extends HTMLElement {
   }
 }
 
+/* --- Announcement Bar Carousel --- */
+
+class AnnouncementBarElement extends HTMLElement {
+  connectedCallback() {
+    this.messages = this.querySelectorAll('.announcement-bar__message');
+    this.prevBtn = this.querySelector('[data-announce-prev]');
+    this.nextBtn = this.querySelector('[data-announce-next]');
+    this.current = 0;
+    this.total = this.messages.length;
+    if (this.total <= 1) return;
+
+    if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.prev());
+    if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.next());
+
+    if (this.dataset.rotate === 'true') {
+      this.interval = parseInt(this.dataset.interval) || 4000;
+      this.startAutoplay();
+      this.addEventListener('mouseenter', () => this.stopAutoplay());
+      this.addEventListener('mouseleave', () => this.startAutoplay());
+    }
+  }
+
+  goTo(index) {
+    if (index < 0) index = this.total - 1;
+    if (index >= this.total) index = 0;
+    this.messages[this.current].classList.remove('is-active');
+    this.current = index;
+    this.messages[this.current].classList.add('is-active');
+  }
+
+  prev() { this.goTo(this.current - 1); }
+  next() { this.goTo(this.current + 1); }
+  startAutoplay() { this.timer = setInterval(() => this.next(), this.interval); }
+  stopAutoplay() { clearInterval(this.timer); }
+
+  disconnectedCallback() { this.stopAutoplay(); }
+}
+
 /* --- Password Reveal --- */
 
 function initPasswordReveal() {
@@ -715,6 +753,7 @@ function initNewsletterForms() {
 /* --- Register Custom Elements --- */
 
 document.addEventListener('DOMContentLoaded', () => {
+  customElements.define('announcement-bar', AnnouncementBarElement);
   customElements.define('sticky-header', StickyHeader);
   customElements.define('mobile-menu', MobileMenuDrawer);
   customElements.define('search-overlay', SearchOverlayElement);
