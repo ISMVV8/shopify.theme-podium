@@ -1,20 +1,33 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero-slider",
-      "settings": {
-        "autoplay": true,
-        "interval": 5000
-      },
       "blocks": {
         "slide_1": {
           "type": "slide",
           "settings": {
-            "cta_text": "DÉCOUVRIR"
+            "image": "shopify://shop_images/Image_5-03-26_a_05.30.png",
+            "cta_text": "DÉCOUVRIR",
+            "cta_link": ""
           }
         }
       },
-      "block_order": ["slide_1"]
+      "block_order": [
+        "slide_1"
+      ],
+      "settings": {
+        "autoplay": true,
+        "interval": 5000
+      }
     },
     "featured_products": {
       "type": "featured-products",
@@ -22,68 +35,112 @@
         "heading": "La sélection",
         "products_count": 4,
         "pill_1_label": "Back in stock",
+        "pill_1_collection": "",
         "pill_2_label": "Nouveautés",
-        "pill_3_label": "Les incontournables"
+        "pill_2_collection": "",
+        "pill_3_label": "Les incontournables",
+        "pill_3_collection": ""
       }
     },
     "collections_grid": {
       "type": "collections-grid",
-      "settings": {
-        "heading": "Découvrir nos collections",
-        "card_link_text": "Découvrir",
-        "button_text": "TOUTES LES COLLECTIONS"
-      },
       "blocks": {
         "col_1": {
           "type": "collection",
-          "settings": { "title_override": "THE MARCH EDIT" }
+          "settings": {
+            "collection": "",
+            "title_override": "THE MARCH EDIT"
+          }
         },
         "col_2": {
           "type": "collection",
-          "settings": { "title_override": "HOME STORY" }
+          "settings": {
+            "collection": "",
+            "title_override": "HOME STORY"
+          }
         },
         "col_3": {
           "type": "collection",
-          "settings": { "title_override": "EFFORTLESS" }
+          "settings": {
+            "collection": "",
+            "title_override": "EFFORTLESS"
+          }
         },
         "col_4": {
           "type": "collection",
-          "settings": { "title_override": "STAY COZY" }
+          "settings": {
+            "collection": "",
+            "title_override": "STAY COZY"
+          }
         }
       },
-      "block_order": ["col_1", "col_2", "col_3", "col_4"]
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3",
+        "col_4"
+      ],
+      "settings": {
+        "heading": "Découvrir nos collections",
+        "card_link_text": "Découvrir",
+        "button_text": "TOUTES LES COLLECTIONS",
+        "button_link": ""
+      }
     },
     "collections_masonry": {
       "type": "collections-masonry",
-      "settings": {
-        "heading": "Collections",
-        "footer_link_text": "Découvrir toute la collection"
-      },
       "blocks": {
         "tile_1": {
           "type": "tile",
-          "settings": { "title_override": "Nos gilets", "style": "wide" }
+          "settings": {
+            "collection": "",
+            "title_override": "Nos gilets",
+            "style": "wide"
+          }
         },
         "tile_2": {
           "type": "tile",
-          "settings": { "title_override": "Nos pulls", "style": "tall" }
+          "settings": {
+            "collection": "",
+            "title_override": "Nos pulls",
+            "style": "tall"
+          }
         },
         "tile_3": {
           "type": "tile",
-          "settings": { "title_override": "Nos t-shirts", "style": "wide" }
+          "settings": {
+            "collection": "",
+            "title_override": "Nos t-shirts",
+            "style": "wide"
+          }
         },
         "tile_4": {
           "type": "tile",
-          "settings": { "title_override": "Nos chemises", "style": "tall" }
+          "settings": {
+            "collection": "",
+            "title_override": "Nos chemises",
+            "style": "tall"
+          }
         }
       },
-      "block_order": ["tile_1", "tile_2", "tile_3", "tile_4"]
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4"
+      ],
+      "settings": {
+        "heading": "Collections",
+        "footer_link_text": "Découvrir toute la collection",
+        "footer_link_url": ""
+      }
     },
     "brand_banner": {
       "type": "brand-banner",
       "settings": {
         "heading": "BECAUSE IT'S SHOP O'CLOCK SOMEWHERE",
-        "cta_text": "NOS BOUTIQUES"
+        "cta_text": "NOS BOUTIQUES",
+        "cta_link": ""
       }
     },
     "newsletter": {
@@ -91,31 +148,49 @@
       "settings": {
         "heading": "Restons en contact",
         "description": "Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités et offres exclusives.",
-        "consent_text": "En vous inscrivant, vous acceptez notre"
+        "consent_text": "En vous inscrivant, vous acceptez notre",
+        "policy_link": ""
       }
     },
     "trust_benefits": {
       "type": "trust-benefits",
-      "settings": {},
       "blocks": {
         "benefit_1": {
           "type": "benefit",
-          "settings": { "icon": "truck", "label": "Livraison rapide" }
+          "settings": {
+            "icon": "truck",
+            "label": "Livraison rapide"
+          }
         },
         "benefit_2": {
           "type": "benefit",
-          "settings": { "icon": "return", "label": "Retour sous 14 jours" }
+          "settings": {
+            "icon": "return",
+            "label": "Retour sous 14 jours"
+          }
         },
         "benefit_3": {
           "type": "benefit",
-          "settings": { "icon": "lock", "label": "Paiement sécurisé" }
+          "settings": {
+            "icon": "lock",
+            "label": "Paiement sécurisé"
+          }
         },
         "benefit_4": {
           "type": "benefit",
-          "settings": { "icon": "headset", "label": "Service client disponible & réactif" }
+          "settings": {
+            "icon": "headset",
+            "label": "Service client disponible & réactif"
+          }
         }
       },
-      "block_order": ["benefit_1", "benefit_2", "benefit_3", "benefit_4"]
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "benefit_4"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -128,4 +203,3 @@
     "trust_benefits"
   ]
 }
-
