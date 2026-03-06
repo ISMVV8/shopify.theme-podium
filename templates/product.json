@@ -2,7 +2,60 @@
   "sections": {
     "product_content": {
       "type": "product-content",
-      "settings": {}
+      "blocks": {
+        "model_1": {
+          "type": "model_info",
+          "settings": {
+            "text": "Le mannequin mesure 1m78 et porte la taille S"
+          }
+        },
+        "installments_1": {
+          "type": "installments",
+          "settings": {
+            "text": "<p>Payez en 3x sans frais avec Scalapay</p>"
+          }
+        },
+        "accordion_1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Composition & entretien",
+            "content": "<p>100% Coton bio. Lavage en machine à 30°C. Ne pas utiliser de sèche-linge.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Livraisons & retours",
+            "content": "<p>Livraison standard sous 3-5 jours ouvrés. Livraison express sous 24-48h. Retour gratuit sous 14 jours.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Moyens de paiement",
+            "content": "<p>Visa, Mastercard, American Express, PayPal, Scalapay (3x sans frais).</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "model_1",
+        "installments_1",
+        "accordion_1",
+        "accordion_2",
+        "accordion_3"
+      ],
+      "settings": {
+        "size_guide_url": "",
+        "trust_shipping_title": "Livraison offerte",
+        "trust_shipping_desc": "Dès 150€ d'achat",
+        "trust_return_title": "Retours gratuits",
+        "trust_return_desc": "Sous 14 jours",
+        "trust_payment_title": "Paiement sécurisé",
+        "trust_payment_desc": "Visa, Mastercard, PayPal"
+      }
     },
     "cross_sell": {
       "type": "product-cross-sell",

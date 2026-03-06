@@ -1,16 +1,32 @@
-{%- if section.blocks.size > 0 or section.settings.use_metafield -%}
-  <section class="cross-sell-section section">
-    <div class="container">
-      <h2 class="cross-sell-section__title">{{ section.settings.heading | default: 'Complétez le look' }}</h2>
-      <div class="cross-sell-grid">
-        {%- comment -%} Manual product selection via blocks {%- endcomment -%}
+{%- comment -%}
+  "Complétez le look" — cross-sell section
+  Scoped class prefix: pcs-
+{%- endcomment -%}
+
+{%- liquid
+  assign has_products = false
+  for block in section.blocks
+    if block.type == 'product' and block.settings.product != blank
+      assign has_products = true
+      break
+    endif
+  endfor
+  if section.settings.use_metafield and product.metafields.custom.cross_sell_products.value
+    assign has_products = true
+  endif
+-%}
+
+{%- if has_products -%}
+  <section class="pcs-section">
+    <div class="pcs-container">
+      <h2 class="pcs-title">{{ section.settings.heading | default: 'Complétez le look' }}</h2>
+      <div class="pcs-grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'product' and block.settings.product != blank -%}
             {% render 'product-card', product: block.settings.product %}
           {%- endif -%}
         {%- endfor -%}
 
-        {%- comment -%} Metafield-based selection {%- endcomment -%}
         {%- if section.settings.use_metafield and product.metafields.custom.cross_sell_products.value -%}
           {%- for cross_product in product.metafields.custom.cross_sell_products.value -%}
             {% render 'product-card', product: cross_product %}
@@ -20,6 +36,54 @@
     </div>
   </section>
 {%- endif -%}
+
+<style>
+.pcs-section {
+  padding: 48px 0 56px;
+  border-top: 1px solid #eae8e4;
+}
+
+.pcs-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pcs-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0 0 28px;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.pcs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1023px) {
+  .pcs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .pcs-section { padding: 36px 0 44px; }
+  .pcs-container { padding: 0 16px; }
+  .pcs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .pcs-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+}
+</style>
 
 {% schema %}
 {
@@ -57,4 +121,3 @@
   "presets": [{"name": "Cross-sell"}]
 }
 {% endschema %}
-

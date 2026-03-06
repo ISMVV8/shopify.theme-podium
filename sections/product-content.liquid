@@ -1,55 +1,87 @@
 {%- comment -%}
-  Product content section: wraps gallery, info, and description in the 2-column layout.
-  This is a single section that handles all main product content.
+  Product content section — gallery + info + description + accordions
+  Scoped class prefix: pp-
 {%- endcomment -%}
 
-<section class="section">
-  <div class="container">
-    <div class="product-page">
-      {%- comment -%} Left column: Gallery {%- endcomment -%}
-      <div class="product-page__gallery">
-        <product-gallery class="product-gallery-wrapper">
-          <div class="product-gallery">
-            {%- comment -%} Thumbnails {%- endcomment -%}
-            <div class="product-gallery__thumbs" role="list">
-              {%- for media in product.media -%}
-                <button
-                  class="product-gallery__thumb{% if forloop.first %} active{% endif %}"
-                  data-thumb="{{ forloop.index0 }}"
-                  data-full-src="{{ media | image_url: width: 1200 }}"
-                  role="listitem"
-                  aria-label="{{ 'accessibility.slide_number' | t: number: forloop.index, total: product.media.size }}"
-                >
-                  <img
-                    src="{{ media | image_url: width: 120 }}"
-                    alt="{{ media.alt | escape | default: product.title }}"
-                    width="60"
-                    height="80"
-                    loading="lazy"
-                  >
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign first_image = product.featured_media
+-%}
+
+<section class="pp-section">
+  <div class="pp-container">
+
+    {%- comment -%} ── Breadcrumbs ── {%- endcomment -%}
+    <nav class="pp-breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="{{ routes.root_url }}">Accueil</a></li>
+        {%- if product.collections.size > 0 -%}
+          <li><a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a></li>
+        {%- endif -%}
+        <li aria-current="page">{{ product.title }}</li>
+      </ol>
+    </nav>
+
+    {%- comment -%} ── Two-column layout ── {%- endcomment -%}
+    <div class="pp-layout">
+
+      {%- comment -%} ═══ LEFT: Gallery ═══ {%- endcomment -%}
+      <div class="pp-gallery-col">
+        <product-gallery class="pp-gallery-wrap">
+          <div class="pp-gallery">
+
+            {%- comment -%} Vertical thumbnails strip {%- endcomment -%}
+            {%- if product.media.size > 1 -%}
+              <div class="pp-thumbs">
+                <button class="pp-thumbs__arrow pp-thumbs__arrow--up" data-thumbs-up aria-label="Scroll thumbnails up">
+                  {% render 'icon', name: 'chevron-down', size: 14 %}
                 </button>
-              {%- endfor -%}
-            </div>
+                <div class="pp-thumbs__list" data-thumbs-list role="list">
+                  {%- for media in product.media -%}
+                    <button
+                      class="pp-thumb{% if forloop.first %} is-active{% endif %}"
+                      data-thumb="{{ forloop.index0 }}"
+                      data-full-src="{{ media | image_url: width: 1200 }}"
+                      role="listitem"
+                      aria-label="Image {{ forloop.index }} sur {{ product.media.size }}"
+                    >
+                      <img
+                        src="{{ media | image_url: width: 120 }}"
+                        alt="{{ media.alt | escape | default: product.title }}"
+                        width="60"
+                        height="80"
+                        loading="lazy"
+                      >
+                    </button>
+                  {%- endfor -%}
+                </div>
+                <button class="pp-thumbs__arrow pp-thumbs__arrow--down" data-thumbs-down aria-label="Scroll thumbnails down">
+                  {% render 'icon', name: 'chevron-down', size: 14 %}
+                </button>
+              </div>
+            {%- endif -%}
 
             {%- comment -%} Main image {%- endcomment -%}
-            <div class="product-gallery__main">
-              {%- if product.featured_media -%}
+            <div class="pp-main-image">
+              {%- if first_image -%}
                 <img
                   data-main-image
-                  src="{{ product.featured_media | image_url: width: 1200 }}"
-                  alt="{{ product.featured_media.alt | escape | default: product.title }}"
+                  src="{{ first_image | image_url: width: 1200 }}"
+                  alt="{{ first_image.alt | escape | default: product.title }}"
                   width="1200"
-                  height="{{ 1200 | divided_by: product.featured_media.aspect_ratio | round }}"
+                  height="{{ 1200 | divided_by: first_image.aspect_ratio | round }}"
                 >
               {%- else -%}
-                {{ 'product-1' | placeholder_svg_tag }}
+                <div class="pp-main-image__placeholder">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
               {%- endif -%}
 
               {%- if product.media.size > 1 -%}
-                <button class="product-gallery__nav product-gallery__nav--prev" data-gallery-prev aria-label="{{ 'accessibility.previous_slide' | t }}">
+                <button class="pp-nav pp-nav--prev" data-gallery-prev aria-label="Image précédente">
                   {% render 'icon', name: 'chevron-left', size: 18 %}
                 </button>
-                <button class="product-gallery__nav product-gallery__nav--next" data-gallery-next aria-label="{{ 'accessibility.next_slide' | t }}">
+                <button class="pp-nav pp-nav--next" data-gallery-next aria-label="Image suivante">
                   {% render 'icon', name: 'chevron-right', size: 18 %}
                 </button>
               {%- endif -%}
@@ -58,37 +90,43 @@
         </product-gallery>
       </div>
 
-      {%- comment -%} Right column: Info {%- endcomment -%}
-      <div class="product-page__info">
-        <div class="product-info">
-          <h1 class="product-info__title">{{ product.title }}</h1>
+      {%- comment -%} ═══ RIGHT: Product info ═══ {%- endcomment -%}
+      <div class="pp-info-col">
+        <div class="pp-info">
 
+          {%- comment -%} Title {%- endcomment -%}
+          <h1 class="pp-title">{{ product.title }}</h1>
+
+          {%- comment -%} Color label {%- endcomment -%}
           {%- for option in product.options_with_values -%}
             {%- if option.name == 'Color' or option.name == 'Couleur' -%}
-              <p class="product-info__color-label">
-                {{ 'product.color' | t }}: <span>{{ option.selected_value }}</span>
+              <p class="pp-color-label">
+                Couleur : <span data-color-name>{{ option.selected_value }}</span>
               </p>
             {%- endif -%}
           {%- endfor -%}
 
-          <div class="product-info__price">
-            <span data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
-            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
-              <span data-compare-price class="price__compare">
-                <s>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+          {%- comment -%} Price {%- endcomment -%}
+          <div class="pp-price">
+            <span class="pp-price__current" data-product-price>{{ current_variant.price | money }}</span>
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="pp-price__compare" data-compare-price>
+                <s>{{ current_variant.compare_at_price | money }}</s>
               </span>
             {%- else -%}
-              <span data-compare-price class="price__compare" style="display:none;"></span>
+              <span class="pp-price__compare" data-compare-price style="display:none;"></span>
             {%- endif -%}
           </div>
 
-          {%- form 'product', product, id: 'product-form' -%}
+          {%- comment -%} Product form {%- endcomment -%}
+          {%- form 'product', product, id: 'product-form', data-product-form: '' -%}
             <variant-selector>
               <script type="application/json" data-variants>{{ product.variants | json }}</script>
 
               {%- for option in product.options_with_values -%}
                 {%- if option.name == 'Color' or option.name == 'Couleur' -%}
-                  <div class="product-info__swatches">
+                  {%- comment -%} Color swatches {%- endcomment -%}
+                  <div class="pp-swatches">
                     {%- for value in option.values -%}
                       {%- liquid
                         assign variant_for_color = nil
@@ -101,7 +139,7 @@
                       -%}
                       <button
                         type="button"
-                        class="swatch{% if option.selected_value == value %} active{% endif %}"
+                        class="pp-swatch{% if option.selected_value == value %} is-active{% endif %}"
                         data-option
                         data-option-position="{{ forloop.parentloop.index }}"
                         data-value="{{ value }}"
@@ -111,25 +149,46 @@
                         {%- if variant_for_color and variant_for_color.featured_image -%}
                           <img src="{{ variant_for_color.featured_image | image_url: width: 72 }}" alt="{{ value }}" width="36" height="36">
                         {%- else -%}
-                          <span class="swatch--color" style="background-color: {{ value | handleize }};"></span>
+                          <span class="pp-swatch__dot" style="background-color: {{ value | handleize }};"></span>
                         {%- endif -%}
                       </button>
                     {%- endfor -%}
                   </div>
+
                 {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
-                  <p class="product-info__size-label">{{ 'product.size' | t }}</p>
-                  <div class="product-info__sizes">
+                  {%- comment -%} Size pills {%- endcomment -%}
+                  <div class="pp-size-row">
+                    <span class="pp-size-label">{{ option.name }}</span>
+                    {%- if section.settings.size_guide_url != blank -%}
+                      <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">Guide des tailles</a>
+                    {%- endif -%}
+                  </div>
+                  <div class="pp-sizes">
                     {%- for value in option.values -%}
-                      <button type="button" class="size-btn{% if option.selected_value == value %} active{% endif %}" data-option data-option-position="{{ forloop.parentloop.index }}" data-value="{{ value }}">
+                      <button
+                        type="button"
+                        class="pp-size{% if option.selected_value == value %} is-active{% endif %}"
+                        data-option
+                        data-option-position="{{ forloop.parentloop.index }}"
+                        data-value="{{ value }}"
+                      >
                         {{ value }}
                       </button>
                     {%- endfor -%}
                   </div>
+
                 {%- else -%}
-                  <p class="product-info__size-label">{{ option.name }}</p>
-                  <div class="product-info__sizes">
+                  {%- comment -%} Generic option (pills) {%- endcomment -%}
+                  <p class="pp-size-label">{{ option.name }}</p>
+                  <div class="pp-sizes">
                     {%- for value in option.values -%}
-                      <button type="button" class="size-btn{% if option.selected_value == value %} active{% endif %}" data-option data-option-position="{{ forloop.parentloop.index }}" data-value="{{ value }}">
+                      <button
+                        type="button"
+                        class="pp-size{% if option.selected_value == value %} is-active{% endif %}"
+                        data-option
+                        data-option-position="{{ forloop.parentloop.index }}"
+                        data-value="{{ value }}"
+                      >
                         {{ value }}
                       </button>
                     {%- endfor -%}
@@ -137,61 +196,75 @@
                 {%- endif -%}
               {%- endfor -%}
 
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
             </variant-selector>
 
-            {%- if section.settings.size_guide_url != blank -%}
-              <a href="{{ section.settings.size_guide_url }}" class="product-info__size-guide">{{ 'product.size_guide' | t }}</a>
-            {%- endif -%}
-
+            {%- comment -%} Model info blocks {%- endcomment -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'model_info' -%}
-                <p class="product-info__model" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                <p class="pp-model-info" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
             {%- endfor -%}
 
+            {%- comment -%} Installments {%- endcomment -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'installments' -%}
-                <div class="product-info__installments" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+                <div class="pp-installments" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
               {%- endif -%}
             {%- endfor -%}
 
             <input type="hidden" name="quantity" value="1">
 
+            {%- comment -%} Add to cart {%- endcomment -%}
             <button
               type="submit"
-              class="btn btn--primary product-info__add-btn"
+              class="pp-add-btn"
               data-add-to-cart
               data-add-text="{{ 'product.add_to_cart' | t }}"
               data-soldout-text="{{ 'product.sold_out' | t }}"
               data-unavailable-text="{{ 'product.unavailable' | t }}"
-              {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+              {% unless current_variant.available %}disabled{% endunless %}
             >
-              {%- if product.selected_or_first_available_variant.available -%}
+              {%- if current_variant.available -%}
                 {{ 'product.add_to_cart' | t }}
               {%- else -%}
                 {{ 'product.sold_out' | t }}
               {%- endif -%}
             </button>
 
-            <div class="product-info__express-btn">
+            {%- comment -%} Dynamic checkout {%- endcomment -%}
+            <div class="pp-express-btn">
               {{ form | payment_button }}
             </div>
           {%- endform -%}
 
-          <div class="product-info__trust">
-            <span class="product-info__trust-item">{% render 'icon', name: 'return', size: 16 %} {{ 'trust.returns' | t }}</span>
-            <span class="product-info__trust-item">{% render 'icon', name: 'truck', size: 16 %} {{ 'trust.fast_shipping' | t }}</span>
+          {%- comment -%} Trust benefits box {%- endcomment -%}
+          <div class="pp-trust-box">
+            <div class="pp-trust-item">
+              {% render 'icon', name: 'truck', size: 18 %}
+              <div class="pp-trust-item__text">
+                <strong>{{ section.settings.trust_shipping_title | default: 'Livraison offerte' }}</strong>
+                <span>{{ section.settings.trust_shipping_desc | default: 'Dès 150€ d\'achat' }}</span>
+              </div>
+            </div>
+            <div class="pp-trust-item">
+              {% render 'icon', name: 'return', size: 18 %}
+              <div class="pp-trust-item__text">
+                <strong>{{ section.settings.trust_return_title | default: 'Retours gratuits' }}</strong>
+                <span>{{ section.settings.trust_return_desc | default: 'Sous 14 jours' }}</span>
+              </div>
+            </div>
+            <div class="pp-trust-item">
+              {% render 'icon', name: 'lock', size: 18 %}
+              <div class="pp-trust-item__text">
+                <strong>{{ section.settings.trust_payment_title | default: 'Paiement sécurisé' }}</strong>
+                <span>{{ section.settings.trust_payment_desc | default: 'Visa, Mastercard, PayPal' }}</span>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {%- comment -%} Description + Accordions below info on right column {%- endcomment -%}
-        <div class="product-description">
-          {%- if product.description != blank -%}
-            <div class="product-description__content">{{ product.description }}</div>
-          {%- endif -%}
-
-          <div class="product-description__accordions">
+          {%- comment -%} Accordions {%- endcomment -%}
+          <div class="pp-accordions">
             {%- for block in section.blocks -%}
               {%- if block.type == 'accordion' -%}
                 {% render 'accordion', title: block.settings.title, content: block.settings.content, id: block.id, open: block.settings.open_by_default %}
@@ -208,11 +281,522 @@
               {% render 'accordion', title: 'Moyens de paiement', content: '<p>Visa, Mastercard, American Express, PayPal, Scalapay (3x sans frais).</p>', id: 'payment' %}
             {%- endunless -%}
           </div>
+
         </div>
       </div>
-    </div>
+
+    </div>{%- comment -%} /pp-layout {%- endcomment -%}
   </div>
 </section>
+
+<style>
+/* ── Product page scoped styles ── */
+
+.pp-section {
+  padding: 0 0 20px;
+}
+
+.pp-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Breadcrumbs */
+.pp-breadcrumbs {
+  padding: 16px 0;
+  font-size: 0.78rem;
+  color: #999;
+}
+
+.pp-breadcrumbs ol {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pp-breadcrumbs li {
+  display: flex;
+  align-items: center;
+}
+
+.pp-breadcrumbs li:not(:last-child)::after {
+  content: '/';
+  margin: 0 8px;
+  color: #ccc;
+}
+
+.pp-breadcrumbs a {
+  color: #999;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.pp-breadcrumbs a:hover {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.pp-breadcrumbs li[aria-current="page"] {
+  color: var(--color-text);
+}
+
+/* Two-column layout */
+.pp-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ═══ Gallery ═══ */
+.pp-gallery-col {
+  position: sticky;
+  top: 100px;
+}
+
+.pp-gallery-wrap { display: block; }
+
+.pp-gallery {
+  display: flex;
+  gap: 12px;
+}
+
+/* Thumbnails */
+.pp-thumbs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  width: 64px;
+}
+
+.pp-thumbs__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.pp-thumbs__arrow:hover { color: var(--color-text); }
+
+.pp-thumbs__arrow--up svg {
+  transform: rotate(180deg);
+}
+
+.pp-thumbs__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: 520px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pp-thumbs__list::-webkit-scrollbar { display: none; }
+
+.pp-thumb {
+  width: 60px;
+  height: 78px;
+  border: 1.5px solid #e0ddd8;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+  background: none;
+}
+
+.pp-thumb.is-active,
+.pp-thumb:hover {
+  opacity: 1;
+  border-color: var(--color-text);
+}
+
+.pp-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Main image */
+.pp-main-image {
+  position: relative;
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f5f3ef;
+}
+
+.pp-main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pp-main-image__placeholder {
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0ede8;
+}
+
+.pp-main-image__placeholder svg {
+  width: 60%;
+  opacity: 0.4;
+}
+
+/* Gallery nav arrows */
+.pp-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  transition: opacity 0.2s;
+  color: #333;
+  padding: 0;
+}
+
+.pp-nav:hover { opacity: 0.8; }
+.pp-nav--prev { left: 12px; }
+.pp-nav--next { right: 12px; }
+
+/* ═══ Product Info ═══ */
+.pp-info-col {
+  position: sticky;
+  top: 100px;
+}
+
+.pp-info {
+  max-width: 500px;
+}
+
+.pp-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0 0 6px;
+  color: var(--color-text);
+}
+
+.pp-color-label {
+  font-size: 0.82rem;
+  color: #888;
+  margin: 0 0 14px;
+}
+
+.pp-color-label span {
+  color: var(--color-text);
+}
+
+.pp-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.pp-price__current {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.pp-price__compare {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.pp-price__compare s {
+  text-decoration: line-through;
+}
+
+/* Swatches */
+.pp-swatches {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.pp-swatch {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #e0ddd8;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 2px;
+  transition: border-color 0.2s;
+  background: none;
+}
+
+.pp-swatch.is-active {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-text);
+}
+
+.pp-swatch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.pp-swatch__dot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* Sizes */
+.pp-size-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.pp-size-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.pp-size-guide {
+  font-size: 0.78rem;
+  color: #888;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.pp-size-guide:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.pp-sizes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.pp-size {
+  min-width: 44px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d0cdc8;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0 14px;
+  color: var(--color-text);
+}
+
+.pp-size:hover { border-color: var(--color-text); }
+
+.pp-size.is-active {
+  background: var(--color-text);
+  color: #fff;
+  border-color: var(--color-text);
+}
+
+.pp-size:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Model info */
+.pp-model-info {
+  font-size: 0.78rem;
+  color: #999;
+  margin: 0 0 4px;
+  line-height: 1.5;
+}
+
+/* Installments */
+.pp-installments {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 12px 0 0;
+  padding: 10px 0;
+  border-top: 1px solid #eae8e4;
+}
+
+.pp-installments p { margin: 0; }
+
+/* Add to cart button */
+.pp-add-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 16px;
+  background: var(--color-text);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.pp-add-btn:hover { opacity: 0.85; }
+
+.pp-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Express checkout */
+.pp-express-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Trust box */
+.pp-trust-box {
+  margin-top: 24px;
+  border: 1px solid #eae8e4;
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.pp-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.pp-trust-item:not(:last-child) {
+  border-bottom: 1px solid #eae8e4;
+}
+
+.pp-trust-item svg {
+  flex-shrink: 0;
+  color: #888;
+  margin-top: 1px;
+}
+
+.pp-trust-item__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pp-trust-item__text strong {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.pp-trust-item__text span {
+  font-size: 0.73rem;
+  color: #999;
+}
+
+/* Accordions wrapper */
+.pp-accordions {
+  margin-top: 24px;
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 1023px) {
+  .pp-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .pp-gallery-col,
+  .pp-info-col {
+    position: static;
+  }
+
+  .pp-gallery {
+    flex-direction: column;
+  }
+
+  .pp-thumbs {
+    flex-direction: row;
+    width: auto;
+    order: 2;
+  }
+
+  .pp-thumbs__list {
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+  }
+
+  .pp-thumbs__arrow { display: none; }
+
+  .pp-thumb {
+    width: 48px;
+    height: 62px;
+  }
+
+  .pp-info {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .pp-container {
+    padding: 0 16px;
+  }
+
+  .pp-title {
+    font-size: 1.35rem;
+  }
+
+  .pp-trust-item {
+    padding: 12px 14px;
+  }
+}
+</style>
 
 {% schema %}
 {
@@ -223,6 +807,46 @@
       "type": "url",
       "id": "size_guide_url",
       "label": "Size guide URL"
+    },
+    {
+      "type": "header",
+      "content": "Trust benefits"
+    },
+    {
+      "type": "text",
+      "id": "trust_shipping_title",
+      "label": "Shipping title",
+      "default": "Livraison offerte"
+    },
+    {
+      "type": "text",
+      "id": "trust_shipping_desc",
+      "label": "Shipping description",
+      "default": "Dès 150€ d'achat"
+    },
+    {
+      "type": "text",
+      "id": "trust_return_title",
+      "label": "Returns title",
+      "default": "Retours gratuits"
+    },
+    {
+      "type": "text",
+      "id": "trust_return_desc",
+      "label": "Returns description",
+      "default": "Sous 14 jours"
+    },
+    {
+      "type": "text",
+      "id": "trust_payment_title",
+      "label": "Payment title",
+      "default": "Paiement sécurisé"
+    },
+    {
+      "type": "text",
+      "id": "trust_payment_desc",
+      "label": "Payment description",
+      "default": "Visa, Mastercard, PayPal"
     }
   ],
   "blocks": [
@@ -279,4 +903,3 @@
   "presets": [{"name": "Product content"}]
 }
 {% endschema %}
-

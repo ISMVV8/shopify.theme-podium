@@ -1,7 +1,12 @@
-<section class="recommendations-section section" data-product-id="{{ product.id }}">
-  <div class="container">
-    <h2 class="recommendations-section__title">{{ section.settings.heading | default: 'Vous aimerez aussi' }}</h2>
-    <div class="recommendations-grid" id="product-recommendations">
+{%- comment -%}
+  "Vous aimerez aussi" — product recommendations
+  Scoped class prefix: prec-
+{%- endcomment -%}
+
+<section class="prec-section" data-product-id="{{ product.id }}">
+  <div class="prec-container">
+    <h2 class="prec-title">{{ section.settings.heading | default: 'Vous aimerez aussi' }}</h2>
+    <div class="prec-grid" id="product-recommendations">
       {%- if recommendations.performed and recommendations.products_count > 0 -%}
         {%- for rec_product in recommendations.products limit: section.settings.limit -%}
           {% render 'product-card', product: rec_product %}
@@ -13,25 +18,73 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('.recommendations-section');
+    var section = document.querySelector('.prec-section');
     if (!section) return;
-    const productId = section.dataset.productId;
-    const limit = {{ section.settings.limit | default: 4 }};
-    const url = `${window.Shopify.routes.root}recommendations/products?product_id=${productId}&limit=${limit}&section_id={{ section.id }}`;
+    var productId = section.dataset.productId;
+    var limit = {{ section.settings.limit | default: 4 }};
+    var url = (window.Shopify.routes.root || '/') + 'recommendations/products?product_id=' + productId + '&limit=' + limit + '&section_id={{ section.id }}';
 
     fetch(url)
-      .then(res => res.text())
-      .then(html => {
-        const temp = document.createElement('div');
+      .then(function(res) { return res.text(); })
+      .then(function(html) {
+        var temp = document.createElement('div');
         temp.innerHTML = html;
-        const grid = temp.querySelector('#product-recommendations');
+        var grid = temp.querySelector('#product-recommendations');
         if (grid && grid.innerHTML.trim()) {
           document.getElementById('product-recommendations').innerHTML = grid.innerHTML;
         }
       })
-      .catch(err => console.error('Recommendations fetch error:', err));
+      .catch(function(err) { console.error('Recommendations fetch error:', err); });
   });
 </script>
+
+<style>
+.prec-section {
+  padding: 48px 0 56px;
+  border-top: 1px solid #eae8e4;
+}
+
+.prec-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.prec-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0 0 28px;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.prec-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1023px) {
+  .prec-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .prec-section { padding: 36px 0 44px; }
+  .prec-container { padding: 0 16px; }
+  .prec-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .prec-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+}
+</style>
 
 {% schema %}
 {
@@ -57,4 +110,3 @@
   "presets": [{"name": "Product recommendations"}]
 }
 {% endschema %}
-

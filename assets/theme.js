@@ -459,8 +459,11 @@ class ProductGalleryElement extends HTMLElement {
   connectedCallback() {
     this.mainImage = this.querySelector('[data-main-image]');
     this.thumbs = this.querySelectorAll('[data-thumb]');
+    this.thumbsList = this.querySelector('[data-thumbs-list]');
     this.prevBtn = this.querySelector('[data-gallery-prev]');
     this.nextBtn = this.querySelector('[data-gallery-next]');
+    this.thumbUpBtn = this.querySelector('[data-thumbs-up]');
+    this.thumbDownBtn = this.querySelector('[data-thumbs-down]');
     this.images = Array.from(this.querySelectorAll('[data-thumb]')).map(t => ({
       src: t.dataset.fullSrc,
       alt: t.querySelector('img')?.alt || ''
@@ -473,9 +476,17 @@ class ProductGalleryElement extends HTMLElement {
     if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.goTo(this.current - 1));
     if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.goTo(this.current + 1));
 
+    // Thumbnail scroll arrows
+    if (this.thumbUpBtn && this.thumbsList) {
+      this.thumbUpBtn.addEventListener('click', () => this.scrollThumbs(-1));
+    }
+    if (this.thumbDownBtn && this.thumbsList) {
+      this.thumbDownBtn.addEventListener('click', () => this.scrollThumbs(1));
+    }
+
     // Touch on main image
     let startX = 0;
-    const mainWrap = this.querySelector('.product-gallery__main');
+    const mainWrap = this.querySelector('.pp-main-image');
     if (mainWrap) {
       mainWrap.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
       mainWrap.addEventListener('touchend', (e) => {
@@ -502,8 +513,19 @@ class ProductGalleryElement extends HTMLElement {
       this.mainImage.alt = this.images[index].alt;
     }
     this.thumbs.forEach((thumb, i) => {
+      thumb.classList.toggle('is-active', i === index);
       thumb.classList.toggle('active', i === index);
     });
+    // Scroll active thumb into view
+    if (this.thumbs[index] && this.thumbsList) {
+      this.thumbs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    }
+  }
+
+  scrollThumbs(direction) {
+    if (!this.thumbsList) return;
+    var scrollAmount = 90 * direction;
+    this.thumbsList.scrollBy({ top: scrollAmount, behavior: 'smooth' });
   }
 }
 
@@ -523,6 +545,10 @@ class VariantSelectorElement extends HTMLElement {
     this.comparePriceEl = this.closest('form')?.parentElement?.querySelector('[data-compare-price]');
     this.addBtn = this.closest('form')?.querySelector('[data-add-to-cart]');
 
+    // Color name label reference
+    this.colorNameEl = this.closest('.pp-info')?.querySelector('[data-color-name]') ||
+                       this.closest('.product-info')?.querySelector('[data-color-name]');
+
     this.querySelectorAll('[data-option]').forEach(el => {
       el.addEventListener('click', () => {
         const position = el.dataset.optionPosition;
@@ -530,8 +556,15 @@ class VariantSelectorElement extends HTMLElement {
         // Update active state within same option group
         this.querySelectorAll(`[data-option-position="${position}"]`).forEach(opt => {
           opt.classList.toggle('active', opt.dataset.value === value);
+          opt.classList.toggle('is-active', opt.dataset.value === value);
         });
         this.options[position] = value;
+
+        // Update color name label if this is a color option
+        if (this.colorNameEl && (position === '1')) {
+          this.colorNameEl.textContent = value;
+        }
+
         this.updateVariant();
       });
     });
