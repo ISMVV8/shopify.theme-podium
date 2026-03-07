@@ -584,46 +584,47 @@ announcement-bar {
 
 /* --- Transparent Header (homepage hero overlay) --- */
 
-/* Transparent header: header stays in flow but transparent,
-   hero pulls up behind it with negative margin */
-.header--transparent .header:not(.is-sticky) {
+/* Transparent when over the hero: driven entirely by static data-attributes
+   on the wrapper + the is-sticky class. NO body-class toggling at scroll,
+   so no style-recalc oscillation can occur. */
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky) {
   background: transparent;
   border-bottom-color: transparent;
 }
 
 /* Light style: white text/icons on hero */
-.header--transparent.header--hero-light .header:not(.is-sticky) {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) {
   color: #fff;
 }
 
-.header--transparent.header--hero-light .header:not(.is-sticky) .header__logo-text {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) .header__logo-text {
   color: #fff;
 }
 
-.header--transparent.header--hero-light .header:not(.is-sticky) .header__nav-link {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) .header__nav-link {
   color: #fff;
 }
 
-.header--transparent.header--hero-light .header:not(.is-sticky) .header__nav-link.is-active::after {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) .header__nav-link.is-active::after {
   background: #fff;
 }
 
-.header--transparent.header--hero-light .header:not(.is-sticky) .header__icon,
-.header--transparent.header--hero-light .header:not(.is-sticky) .header__menu-btn {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) .header__icon,
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) .header__menu-btn {
   color: #fff;
 }
 
-.header--transparent.header--hero-light .header:not(.is-sticky) .header__cart-count {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) .header__cart-count {
   background: #fff;
   color: #000;
 }
 
 /* Dark style: dark text/icons on hero (for light hero images) */
-.header--transparent.header--hero-dark .header:not(.is-sticky) {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="dark"] .header:not(.is-sticky) {
   color: var(--color-text);
 }
 
-.header--transparent.header--hero-dark .header:not(.is-sticky) .header__nav-link.is-active::after {
+.header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="dark"] .header:not(.is-sticky) .header__nav-link.is-active::after {
   background: var(--color-text);
 }
 

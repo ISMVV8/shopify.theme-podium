@@ -87,16 +87,10 @@ class StickyHeader extends HTMLElement {
   connectedCallback() {
     this.header = this.querySelector('.header');
     if (!this.header) return;
-
-    // Transparent header on homepage hero
-    this.initTransparentHeader();
-
-    // Sticky behavior — CSS makes the header always position:fixed.
-    // The wrapper permanently reserves its height so no layout shift
-    // can ever occur. JS only toggles the box-shadow class.
     if (this.dataset.sticky !== 'true') return;
 
-    // Permanently reserve header height on the wrapper
+    // CSS makes the header always position:fixed.
+    // Reserve the wrapper height permanently so no layout shift occurs.
     const reserveHeight = () => {
       this.style.height = this.header.offsetHeight + 'px';
     };
@@ -104,56 +98,39 @@ class StickyHeader extends HTMLElement {
     this._resizeObserver = new ResizeObserver(reserveHeight);
     this._resizeObserver.observe(this.header);
 
-    // Sentinel to detect when page has scrolled past the header
+    // On the homepage with a hero, add the layout class (margin overlap)
+    // and place the sentinel at the hero bottom so that is-sticky fires
+    // exactly when the hero scrolls out.  This single observer handles
+    // BOTH the box-shadow AND the transparent→opaque transition (via CSS
+    // :not(.is-sticky) selectors), with zero body-class toggling.
+    const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
+      ? document.getElementById('home-hero')
+      : null;
+
+    if (hero) {
+      document.body.classList.add('header--has-hero');
+    }
+
+    // Sentinel: after the hero bottom on homepage, before the wrapper otherwise
     this.sentinel = document.createElement('div');
     this.sentinel.style.height = '1px';
     this.sentinel.style.marginBottom = '-1px';
-    this.parentNode.insertBefore(this.sentinel, this);
+    if (hero) {
+      hero.after(this.sentinel);
+    } else {
+      this.parentNode.insertBefore(this.sentinel, this);
+    }
+
     this.stickyObserver = new IntersectionObserver(([entry]) => {
       this.header.classList.toggle('is-sticky', !entry.isIntersecting);
     });
     this.stickyObserver.observe(this.sentinel);
   }
 
-  initTransparentHeader() {
-    if (this.dataset.transparentHeader !== 'true') return;
-    if (this.dataset.template !== 'index') return;
-
-    const hero = document.getElementById('home-hero');
-    if (!hero) return;
-
-    const style = this.dataset.headerHeroStyle || 'light';
-    // header--has-hero drives the negative-margin layout overlap and is
-    // NEVER removed — this prevents the IntersectionObserver ↔ layout-shift
-    // feedback loop that caused the scroll bounce-back.
-    document.body.classList.add('header--has-hero', 'header--transparent', 'header--hero-' + style);
-
-    if ('IntersectionObserver' in window) {
-      this.heroObserver = new IntersectionObserver(([entry]) => {
-        // Only toggle visual styles (colors/background), not layout
-        document.body.classList.toggle('header--transparent', entry.isIntersecting);
-      }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
-      this.heroObserver.observe(hero);
-    } else {
-      // Fallback: scroll listener
-      const onScroll = () => {
-        const heroBottom = hero.getBoundingClientRect().bottom;
-        document.body.classList.toggle('header--transparent', heroBottom > 80);
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      this._scrollFallback = onScroll;
-    }
-  }
-
   disconnectedCallback() {
     if (this.stickyObserver) this.stickyObserver.disconnect();
     if (this._resizeObserver) this._resizeObserver.disconnect();
-    if (this.heroObserver) this.heroObserver.disconnect();
     if (this.sentinel) this.sentinel.remove();
-    if (this._scrollFallback) {
-      window.removeEventListener('scroll', this._scrollFallback);
-    }
-    document.body.classList.remove('header--transparent');
   }
 }
 
