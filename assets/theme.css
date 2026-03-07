@@ -460,12 +460,6 @@ announcement-bar {
   display: block;
 }
 
-.header-wrapper[data-sticky="true"] {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-header);
-}
-
 .header {
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
@@ -475,6 +469,17 @@ announcement-bar {
               color var(--duration-base) var(--ease),
               border-color var(--duration-base) var(--ease),
               box-shadow var(--duration-base) var(--ease);
+}
+
+/* When sticky is enabled the header is ALWAYS position:fixed.
+   The wrapper height is set by JS to reserve the space permanently,
+   so position never toggles and no layout shift can occur. */
+.header-wrapper[data-sticky="true"] .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
 }
 
 .header.is-sticky {
@@ -584,8 +589,6 @@ announcement-bar {
 .header--transparent .header:not(.is-sticky) {
   background: transparent;
   border-bottom-color: transparent;
-  position: relative;
-  z-index: var(--z-header);
 }
 
 /* Light style: white text/icons on hero */
