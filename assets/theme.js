@@ -89,7 +89,7 @@ class StickyHeader extends HTMLElement {
     if (!this.header) return;
     if (this.dataset.sticky !== 'true') return;
 
-    // CSS makes the header always position:fixed.
+    // Header is always position:fixed via CSS.
     // Reserve the wrapper height permanently so no layout shift occurs.
     const reserveHeight = () => {
       this.style.height = this.header.offsetHeight + 'px';
@@ -98,11 +98,7 @@ class StickyHeader extends HTMLElement {
     this._resizeObserver = new ResizeObserver(reserveHeight);
     this._resizeObserver.observe(this.header);
 
-    // On the homepage with a hero, add the layout class (margin overlap)
-    // and place the sentinel at the hero bottom so that is-sticky fires
-    // exactly when the hero scrolls out.  This single observer handles
-    // BOTH the box-shadow AND the transparent→opaque transition (via CSS
-    // :not(.is-sticky) selectors), with zero body-class toggling.
+    // Layout class for hero overlap (negative margin)
     const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
       ? document.getElementById('home-hero')
       : null;
@@ -111,26 +107,13 @@ class StickyHeader extends HTMLElement {
       document.body.classList.add('header--has-hero');
     }
 
-    // Sentinel: after the hero bottom on homepage, before the wrapper otherwise
-    this.sentinel = document.createElement('div');
-    this.sentinel.style.height = '1px';
-    this.sentinel.style.marginBottom = '-1px';
-    if (hero) {
-      hero.after(this.sentinel);
-    } else {
-      this.parentNode.insertBefore(this.sentinel, this);
-    }
-
-    this.stickyObserver = new IntersectionObserver(([entry]) => {
-      this.header.classList.toggle('is-sticky', !entry.isIntersecting);
-    }, { rootMargin: '-2px 0px 0px 0px' }); // 2px dead-zone prevents oscillation
-    this.stickyObserver.observe(this.sentinel);
+    // Header is always opaque with shadow — no observers, no toggling,
+    // nothing dynamic at any scroll position.
+    this.header.classList.add('is-sticky');
   }
 
   disconnectedCallback() {
-    if (this.stickyObserver) this.stickyObserver.disconnect();
     if (this._resizeObserver) this._resizeObserver.disconnect();
-    if (this.sentinel) this.sentinel.remove();
   }
 }
 
