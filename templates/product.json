@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "product_content": {
@@ -48,13 +57,7 @@
         "accordion_3"
       ],
       "settings": {
-        "size_guide_url": "",
-        "trust_shipping_title": "Livraison offerte",
-        "trust_shipping_desc": "Dès 150€ d'achat",
-        "trust_return_title": "Retours gratuits",
-        "trust_return_desc": "Sous 14 jours",
-        "trust_payment_title": "Paiement sécurisé",
-        "trust_payment_desc": "Visa, Mastercard, PayPal"
+        "size_guide_url": ""
       }
     },
     "cross_sell": {
@@ -72,5 +75,9 @@
       }
     }
   },
-  "order": ["product_content", "cross_sell", "recommendations"]
+  "order": [
+    "product_content",
+    "cross_sell",
+    "recommendations"
+  ]
 }

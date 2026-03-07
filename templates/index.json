@@ -33,8 +33,11 @@
       "type": "featured-products",
       "settings": {
         "heading": "La sélection",
+        "cta_label": "VOIR PLUS",
+        "show_featured_label": true,
+        "max_products_right": 4,
         "pill_1_label": "Back in stock",
-        "pill_1_collection": "",
+        "pill_1_collection": "frontpage",
         "pill_2_label": "Nouveautés",
         "pill_2_collection": "",
         "pill_3_label": "Les incontournables",
@@ -47,29 +50,34 @@
         "col_1": {
           "type": "collection",
           "settings": {
-            "collection": "",
-            "title_override": "THE MARCH EDIT"
+            "collection": "frontpage",
+            "image_override": "shopify://shop_images/74ca4772-1c49-4bbc-818f-857250512bd52.jpg",
+            "title_override": "THE MARCH EDIT",
+            "link_label": ""
           }
         },
         "col_2": {
           "type": "collection",
           "settings": {
             "collection": "",
-            "title_override": "HOME STORY"
+            "title_override": "HOME STORY",
+            "link_label": ""
           }
         },
         "col_3": {
           "type": "collection",
           "settings": {
             "collection": "",
-            "title_override": "EFFORTLESS"
+            "title_override": "EFFORTLESS",
+            "link_label": ""
           }
         },
         "col_4": {
           "type": "collection",
           "settings": {
             "collection": "",
-            "title_override": "STAY COZY"
+            "title_override": "STAY COZY",
+            "link_label": ""
           }
         }
       },
@@ -93,8 +101,9 @@
           "type": "tile",
           "settings": {
             "collection": "",
+            "image_override": "shopify://shop_images/74ca4772-1c49-4bbc-818f-857250512bd5.jpg",
             "title_override": "Nos gilets",
-            "style": "wide"
+            "cta_label": ""
           }
         },
         "tile_2": {
@@ -102,7 +111,7 @@
           "settings": {
             "collection": "",
             "title_override": "Nos pulls",
-            "style": "tall"
+            "cta_label": ""
           }
         },
         "tile_3": {
@@ -110,7 +119,7 @@
           "settings": {
             "collection": "",
             "title_override": "Nos t-shirts",
-            "style": "wide"
+            "cta_label": ""
           }
         },
         "tile_4": {
@@ -118,7 +127,7 @@
           "settings": {
             "collection": "",
             "title_override": "Nos chemises",
-            "style": "tall"
+            "cta_label": ""
           }
         }
       },
@@ -130,8 +139,7 @@
       ],
       "settings": {
         "heading": "Collections",
-        "footer_link_text": "Découvrir toute la collection",
-        "footer_link_url": ""
+        "cta_default": "Découvrir toute la collection"
       }
     },
     "brand_banner": {
