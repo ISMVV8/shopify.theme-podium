@@ -91,21 +91,17 @@ class StickyHeader extends HTMLElement {
     // Transparent header on homepage hero
     this.initTransparentHeader();
 
-    // Sticky behavior
+    // Sticky behavior — CSS handles position:sticky on the wrapper,
+    // JS only toggles the box-shadow class.
     if (this.dataset.sticky !== 'true') return;
+    // Insert a 1px sentinel right before the wrapper. When it scrolls
+    // out of view the header is "stuck" and we add the shadow.
     this.sentinel = document.createElement('div');
     this.sentinel.style.height = '1px';
-    this.sentinel.style.position = 'absolute';
-    this.sentinel.style.top = this.offsetTop + this.offsetHeight + 'px';
-    this.sentinel.style.left = '0';
-    this.sentinel.style.width = '100%';
-    this.sentinel.style.pointerEvents = 'none';
-    document.body.appendChild(this.sentinel);
+    this.sentinel.style.marginBottom = '-1px'; // invisible, no layout impact
+    this.parentNode.insertBefore(this.sentinel, this);
     this.stickyObserver = new IntersectionObserver(([entry]) => {
-      const isSticky = !entry.isIntersecting;
-      this.header.classList.toggle('is-sticky', isSticky);
-      // Reserve header height to prevent layout shift when switching to position:fixed
-      this.style.minHeight = isSticky ? this.header.offsetHeight + 'px' : '';
+      this.header.classList.toggle('is-sticky', !entry.isIntersecting);
     });
     this.stickyObserver.observe(this.sentinel);
   }

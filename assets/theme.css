@@ -460,6 +460,12 @@ announcement-bar {
   display: block;
 }
 
+.header-wrapper[data-sticky="true"] {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}
+
 .header {
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
@@ -472,17 +478,7 @@ announcement-bar {
 }
 
 .header.is-sticky {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
-  animation: slideDown var(--duration-base) var(--ease);
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
 }
 
 .header__inner {
