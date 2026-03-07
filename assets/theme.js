@@ -798,6 +798,74 @@ function initNewsletterForms() {
   });
 }
 
+/* --- Wishlist --- */
+
+const PodiumWishlist = {
+  KEY: 'podium_wishlist',
+
+  getAll() {
+    try { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); }
+    catch (e) { return []; }
+  },
+
+  save(list) {
+    localStorage.setItem(this.KEY, JSON.stringify(list));
+    document.dispatchEvent(new CustomEvent('wishlist:updated', { detail: { wishlist: list } }));
+  },
+
+  has(handle) {
+    return this.getAll().includes(handle);
+  },
+
+  toggle(handle) {
+    const list = this.getAll();
+    const index = list.indexOf(handle);
+    if (index === -1) {
+      list.push(handle);
+    } else {
+      list.splice(index, 1);
+    }
+    this.save(list);
+    return index === -1; // true = added, false = removed
+  },
+
+  remove(handle) {
+    const list = this.getAll().filter(h => h !== handle);
+    this.save(list);
+  }
+};
+
+function initWishlistToggles() {
+  // Mark active wishlist buttons on page load
+  function syncButtons() {
+    document.querySelectorAll('[data-wishlist-toggle]').forEach(btn => {
+      const handle = btn.dataset.productHandle;
+      if (handle && PodiumWishlist.has(handle)) {
+        btn.classList.add('is-wishlisted');
+      } else {
+        btn.classList.remove('is-wishlisted');
+      }
+    });
+  }
+
+  syncButtons();
+
+  // Toggle on click
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-wishlist-toggle]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const handle = btn.dataset.productHandle;
+    if (!handle) return;
+    const added = PodiumWishlist.toggle(handle);
+    btn.classList.toggle('is-wishlisted', added);
+  });
+
+  // Re-sync when wishlist changes (e.g. removal from wishlist page)
+  document.addEventListener('wishlist:updated', syncButtons);
+}
+
 /* --- Register Custom Elements --- */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -817,5 +885,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initProductForms();
   initPasswordReveal();
   initNewsletterForms();
+  initWishlistToggles();
 });
 

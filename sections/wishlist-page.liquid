@@ -3,8 +3,14 @@
     <h1 class="wishlist-page__title">{{ 'wishlist.title' | t }}</h1>
 
     <div class="wishlist-page__empty" id="wishlist-empty">
-      <p>{{ 'wishlist.empty' | t }}</p>
-      <p>{{ 'wishlist.empty_subtitle' | t }}</p>
+      <div class="wishlist-page__empty-icon">
+        {% render 'icon', name: 'heart', size: 48 %}
+      </div>
+      <p class="wishlist-page__empty-text">{{ 'wishlist.empty' | t }}</p>
+      <p class="wishlist-page__empty-sub">{{ 'wishlist.empty_subtitle' | t }}</p>
+      <a href="{{ routes.all_products_collection_url | default: routes.root_url }}" class="btn btn--primary wishlist-page__empty-cta">
+        {{ 'cart.empty_cta' | t | default: "Let's go" }}
+      </a>
     </div>
 
     <div class="wishlist-page__grid" id="wishlist-grid" style="display:none;">
@@ -15,35 +21,92 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const grid = document.getElementById('wishlist-grid');
-    const empty = document.getElementById('wishlist-empty');
+    var grid = document.getElementById('wishlist-grid');
+    var empty = document.getElementById('wishlist-empty');
     if (!grid || !empty) return;
 
-    const wishlist = JSON.parse(localStorage.getItem('podium_wishlist') || '[]');
-    if (wishlist.length === 0) return;
+    function renderWishlist() {
+      var wishlist = [];
+      try { wishlist = JSON.parse(localStorage.getItem('podium_wishlist') || '[]'); } catch(e) {}
 
-    empty.style.display = 'none';
-    grid.style.display = '';
+      grid.innerHTML = '';
 
-    // Fetch product data for each wishlist item
-    wishlist.forEach(function(handle) {
-      fetch('/products/' + handle + '.js')
-        .then(function(res) { return res.json(); })
-        .then(function(product) {
-          const card = document.createElement('div');
-          card.className = 'product-card';
-          const imgSrc = product.featured_image ? product.featured_image.replace('.jpg', '_600x.jpg').replace('.png', '_600x.png') : '';
-          card.innerHTML = '<a href="/products/' + product.handle + '" class="product-card__link">' +
-            '<div class="product-card__image-wrap">' +
-            (imgSrc ? '<img class="product-card__image" src="' + imgSrc + '" alt="' + product.title + '" loading="lazy">' : '') +
-            '</div>' +
-            '<div class="product-card__info">' +
-            '<h3 class="product-card__title">' + product.title + '</h3>' +
-            '<div class="product-card__price">' + (product.price / 100).toFixed(2).replace('.', ',') + ' €</div>' +
-            '</div></a>';
-          grid.appendChild(card);
-        })
-        .catch(function() { /* product not found, skip */ });
+      if (wishlist.length === 0) {
+        empty.style.display = '';
+        grid.style.display = 'none';
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display = '';
+
+      wishlist.forEach(function(handle) {
+        fetch('/products/' + handle + '.js')
+          .then(function(res) { return res.json(); })
+          .then(function(product) {
+            var card = document.createElement('div');
+            card.className = 'wishlist-card';
+            card.dataset.handle = product.handle;
+            var imgSrc = product.featured_image
+              ? product.featured_image.replace(/\.([a-z]+)\?/, '_600x.$1?').replace(/\.([a-z]+)$/, '_600x.$1')
+              : '';
+            var priceFormatted = (product.price / 100).toFixed(2).replace('.', ',') + ' \u20AC';
+            var compareHtml = '';
+            if (product.compare_at_price && product.compare_at_price > product.price) {
+              compareHtml = '<span class="wishlist-card__compare"><s>' +
+                (product.compare_at_price / 100).toFixed(2).replace('.', ',') + ' \u20AC</s></span>';
+            }
+
+            card.innerHTML =
+              '<a href="/products/' + product.handle + '" class="wishlist-card__link">' +
+                '<div class="wishlist-card__image-wrap">' +
+                  (imgSrc ? '<img class="wishlist-card__image" src="' + imgSrc + '" alt="' + product.title + '" loading="lazy">' : '') +
+                '</div>' +
+                '<div class="wishlist-card__info">' +
+                  '<h3 class="wishlist-card__title">' + product.title + '</h3>' +
+                  '<div class="wishlist-card__price">' +
+                    '<span class="wishlist-card__amount">' + priceFormatted + '</span>' +
+                    compareHtml +
+                  '</div>' +
+                '</div>' +
+              '</a>' +
+              '<button class="wishlist-card__remove btn--icon" data-wishlist-remove="' + product.handle + '" aria-label="{{ "wishlist.remove" | t }}">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+              '</button>';
+
+            grid.appendChild(card);
+          })
+          .catch(function() { /* product not found, skip */ });
+      });
+    }
+
+    renderWishlist();
+
+    // Handle remove button clicks
+    grid.addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-wishlist-remove]');
+      if (!btn) return;
+      e.preventDefault();
+      var handle = btn.dataset.wishlistRemove;
+      var list = [];
+      try { list = JSON.parse(localStorage.getItem('podium_wishlist') || '[]'); } catch(ex) {}
+      list = list.filter(function(h) { return h !== handle; });
+      localStorage.setItem('podium_wishlist', JSON.stringify(list));
+      document.dispatchEvent(new CustomEvent('wishlist:updated', { detail: { wishlist: list } }));
+
+      // Remove the card with animation
+      var card = btn.closest('.wishlist-card');
+      if (card) {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.9)';
+        setTimeout(function() {
+          card.remove();
+          if (grid.children.length === 0) {
+            empty.style.display = '';
+            grid.style.display = 'none';
+          }
+        }, 250);
+      }
     });
   });
 </script>
@@ -56,4 +119,3 @@
   "presets": [{"name": "Wishlist"}]
 }
 {% endschema %}
-
