@@ -1,17 +1,25 @@
 {%- comment -%}
   "Vous aimerez aussi" — product recommendations
+  Horizontal scrollable row with navigation arrow.
   Scoped class prefix: prec-
 {%- endcomment -%}
 
 <section class="prec-section" data-product-id="{{ product.id }}">
   <div class="prec-container">
     <h2 class="prec-title">{{ section.settings.heading | default: 'Vous aimerez aussi' }}</h2>
-    <div class="prec-grid" id="product-recommendations">
-      {%- if recommendations.performed and recommendations.products_count > 0 -%}
-        {%- for rec_product in recommendations.products limit: section.settings.limit -%}
-          {% render 'product-card', product: rec_product %}
-        {%- endfor -%}
-      {%- endif -%}
+    <div class="prec-carousel-wrap">
+      <div class="prec-carousel" id="product-recommendations" data-recs-track>
+        {%- if recommendations.performed and recommendations.products_count > 0 -%}
+          {%- for rec_product in recommendations.products limit: section.settings.limit -%}
+            <div class="prec-card">
+              {% render 'product-card', product: rec_product %}
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <button class="prec-arrow" data-recs-next aria-label="Voir plus">
+        {% render 'icon', name: 'chevron-right', size: 20 %}
+      </button>
     </div>
   </div>
 </section>
@@ -21,7 +29,7 @@
     var section = document.querySelector('.prec-section');
     if (!section) return;
     var productId = section.dataset.productId;
-    var limit = {{ section.settings.limit | default: 4 }};
+    var limit = {{ section.settings.limit | default: 8 }};
     var url = (window.Shopify.routes.root || '/') + 'recommendations/products?product_id=' + productId + '&limit=' + limit + '&section_id={{ section.id }}';
 
     fetch(url)
@@ -35,12 +43,29 @@
         }
       })
       .catch(function(err) { console.error('Recommendations fetch error:', err); });
+
+    /* Carousel scroll arrow */
+    var track = section.querySelector('[data-recs-track]');
+    var nextBtn = section.querySelector('[data-recs-next]');
+    if (track && nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        var cardW = track.querySelector('.prec-card');
+        var scrollAmt = cardW ? cardW.offsetWidth + 20 : 300;
+        track.scrollBy({ left: scrollAmt, behavior: 'smooth' });
+      });
+      /* Hide arrow when scrolled to end */
+      track.addEventListener('scroll', function() {
+        var atEnd = track.scrollLeft + track.offsetWidth >= track.scrollWidth - 10;
+        nextBtn.style.opacity = atEnd ? '0' : '1';
+        nextBtn.style.pointerEvents = atEnd ? 'none' : 'auto';
+      });
+    }
   });
 </script>
 
 <style>
 .prec-section {
-  padding: 52px 0 56px;
+  padding: 48px 0 56px;
   border-top: 1px solid #eae8e4;
 }
 
@@ -52,7 +77,7 @@
 
 .prec-title {
   font-family: var(--font-heading);
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   font-weight: 400;
   letter-spacing: -0.01em;
   margin: 0 0 32px;
@@ -60,29 +85,82 @@
   text-align: center;
 }
 
-.prec-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+.prec-carousel-wrap {
+  position: relative;
+}
+
+.prec-carousel {
+  display: flex;
   gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+
+.prec-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.prec-card {
+  flex: 0 0 calc(20% - 16px);
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+.prec-arrow {
+  position: absolute;
+  right: -8px;
+  top: 38%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #eae8e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 3;
+  color: #333;
+  padding: 0;
+  transition: opacity 0.25s, box-shadow 0.2s;
+}
+
+.prec-arrow:hover {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 1200px) {
+  .prec-card {
+    flex: 0 0 calc(25% - 15px);
+  }
 }
 
 @media (max-width: 1023px) {
-  .prec-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  .prec-card {
+    flex: 0 0 calc(33.333% - 14px);
   }
 }
 
 @media (max-width: 767px) {
-  .prec-section { padding: 40px 0 44px; }
+  .prec-section { padding: 36px 0 44px; }
   .prec-container { padding: 0 16px; }
-  .prec-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .prec-card {
+    flex: 0 0 calc(50% - 8px);
+  }
+  .prec-carousel {
     gap: 12px;
   }
   .prec-title {
     font-size: 1.2rem;
     margin-bottom: 24px;
+  }
+  .prec-arrow {
+    display: none;
   }
 }
 </style>
@@ -102,10 +180,10 @@
       "type": "range",
       "id": "limit",
       "label": "Products to show",
-      "min": 2,
-      "max": 8,
+      "min": 4,
+      "max": 12,
       "step": 1,
-      "default": 4
+      "default": 8
     }
   ],
   "presets": [{"name": "Product recommendations"}]

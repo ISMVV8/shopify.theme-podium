@@ -57,27 +57,21 @@
         "accordion_3"
       ],
       "settings": {
-        "size_guide_url": ""
-      }
-    },
-    "cross_sell": {
-      "type": "product-cross-sell",
-      "settings": {
-        "heading": "Complétez le look",
-        "use_metafield": false
+        "size_guide_url": "",
+        "trust_return_text": "Retour sous 14 jours",
+        "trust_shipping_text": "Livraison Rapide"
       }
     },
     "recommendations": {
       "type": "product-recommendations",
       "settings": {
         "heading": "Vous aimerez aussi",
-        "limit": 4
+        "limit": 8
       }
     }
   },
   "order": [
     "product_content",
-    "cross_sell",
     "recommendations"
   ]
 }

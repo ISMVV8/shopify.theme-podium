@@ -2155,12 +2155,27 @@ accordion-toggle {
 }
 
 .accordion__icon {
-  transition: transform var(--duration-base) var(--ease);
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
-.accordion__trigger[aria-expanded="true"] .accordion__icon {
-  transform: rotate(180deg);
+.accordion__icon-plus,
+.accordion__icon-minus {
+  display: flex;
+  align-items: center;
+}
+
+.accordion__icon-minus {
+  display: none;
+}
+
+.accordion__trigger[aria-expanded="true"] .accordion__icon-plus {
+  display: none;
+}
+
+.accordion__trigger[aria-expanded="true"] .accordion__icon-minus {
+  display: flex;
 }
 
 .accordion__panel {

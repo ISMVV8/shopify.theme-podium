@@ -545,9 +545,12 @@ class VariantSelectorElement extends HTMLElement {
     this.comparePriceEl = this.closest('form')?.parentElement?.querySelector('[data-compare-price]');
     this.addBtn = this.closest('form')?.querySelector('[data-add-to-cart]');
 
-    // Color name label reference
-    this.colorNameEl = this.closest('.pp-info')?.querySelector('[data-color-name]') ||
-                       this.closest('.product-info')?.querySelector('[data-color-name]');
+    // Color name labels (support multiple elements)
+    var infoWrap = this.closest('.pp-info') || this.closest('.product-info');
+    this.colorNameEls = infoWrap ? infoWrap.querySelectorAll('[data-color-name]') : [];
+
+    // Size value label
+    this.sizeValueEl = infoWrap ? infoWrap.querySelector('[data-size-value]') : null;
 
     this.querySelectorAll('[data-option]').forEach(el => {
       el.addEventListener('click', () => {
@@ -560,9 +563,14 @@ class VariantSelectorElement extends HTMLElement {
         });
         this.options[position] = value;
 
-        // Update color name label if this is a color option
-        if (this.colorNameEl && (position === '1')) {
-          this.colorNameEl.textContent = value;
+        // Update color name labels if clicking a swatch (color option)
+        if (this.colorNameEls.length && el.closest('.pp-swatches')) {
+          this.colorNameEls.forEach(function(nameEl) { nameEl.textContent = value; });
+        }
+
+        // Update size value label if clicking a size pill
+        if (this.sizeValueEl && el.closest('.pp-sizes')) {
+          this.sizeValueEl.textContent = value;
         }
 
         this.updateVariant();
