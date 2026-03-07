@@ -17,9 +17,9 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
-  font-weight: var(--font-body-weight);
-  font-style: var(--font-body-style);
+  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
   color: var(--color-text);
   background-color: var(--color-bg);
   line-height: 1.6;
@@ -52,9 +52,9 @@ input, select, textarea {
 ul, ol { list-style: none; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: var(--font-heading-weight);
-  font-style: var(--font-heading-style);
+  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-style: normal;
   line-height: 1.2;
 }
 
