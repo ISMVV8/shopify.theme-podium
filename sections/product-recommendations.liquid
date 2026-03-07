@@ -40,22 +40,22 @@
 
 <style>
 .prec-section {
-  padding: 48px 0 56px;
+  padding: 52px 0 56px;
   border-top: 1px solid #eae8e4;
 }
 
 .prec-container {
-  max-width: 1280px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 .prec-title {
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: 400;
   letter-spacing: -0.01em;
-  margin: 0 0 28px;
+  margin: 0 0 32px;
   color: var(--color-text);
   text-align: center;
 }
@@ -63,17 +63,18 @@
 .prec-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 
 @media (max-width: 1023px) {
   .prec-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 }
 
 @media (max-width: 767px) {
-  .prec-section { padding: 36px 0 44px; }
+  .prec-section { padding: 40px 0 44px; }
   .prec-container { padding: 0 16px; }
   .prec-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -81,7 +82,7 @@
   }
   .prec-title {
     font-size: 1.2rem;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 }
 </style>

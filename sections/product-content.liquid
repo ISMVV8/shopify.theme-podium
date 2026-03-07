@@ -1,6 +1,7 @@
 {%- comment -%}
   Product content section — gallery + info + description + accordions
   Scoped class prefix: pp-
+  Full rebuild for clean premium fashion layout.
 {%- endcomment -%}
 
 {%- liquid
@@ -22,21 +23,21 @@
       </ol>
     </nav>
 
-    {%- comment -%} ── Two-column layout ── {%- endcomment -%}
+    {%- comment -%} ── Two-column product layout ── {%- endcomment -%}
     <div class="pp-layout">
 
-      {%- comment -%} ═══ LEFT: Gallery ═══ {%- endcomment -%}
+      {%- comment -%} ═══ LEFT COLUMN: Gallery ═══ {%- endcomment -%}
       <div class="pp-gallery-col">
         <product-gallery class="pp-gallery-wrap">
           <div class="pp-gallery">
 
-            {%- comment -%} Vertical thumbnails strip {%- endcomment -%}
+            {%- comment -%} Vertical thumbnail rail {%- endcomment -%}
             {%- if product.media.size > 1 -%}
               <div class="pp-thumbs">
                 <button class="pp-thumbs__arrow pp-thumbs__arrow--up" data-thumbs-up aria-label="Scroll thumbnails up">
                   {% render 'icon', name: 'chevron-down', size: 14 %}
                 </button>
-                <div class="pp-thumbs__list" data-thumbs-list role="list">
+                <div class="pp-thumbs__track" data-thumbs-list role="list">
                   {%- for media in product.media -%}
                     <button
                       class="pp-thumb{% if forloop.first %} is-active{% endif %}"
@@ -61,7 +62,7 @@
               </div>
             {%- endif -%}
 
-            {%- comment -%} Main image {%- endcomment -%}
+            {%- comment -%} Main media area {%- endcomment -%}
             <div class="pp-main-image">
               {%- if first_image -%}
                 <img
@@ -90,14 +91,14 @@
         </product-gallery>
       </div>
 
-      {%- comment -%} ═══ RIGHT: Product info ═══ {%- endcomment -%}
+      {%- comment -%} ═══ RIGHT COLUMN: Product Info ═══ {%- endcomment -%}
       <div class="pp-info-col">
         <div class="pp-info">
 
-          {%- comment -%} Title {%- endcomment -%}
+          {%- comment -%} 1. Title {%- endcomment -%}
           <h1 class="pp-title">{{ product.title }}</h1>
 
-          {%- comment -%} Color label {%- endcomment -%}
+          {%- comment -%} 2. Color label {%- endcomment -%}
           {%- for option in product.options_with_values -%}
             {%- if option.name == 'Color' or option.name == 'Couleur' -%}
               <p class="pp-color-label">
@@ -106,7 +107,7 @@
             {%- endif -%}
           {%- endfor -%}
 
-          {%- comment -%} Price {%- endcomment -%}
+          {%- comment -%} 3. Price {%- endcomment -%}
           <div class="pp-price">
             <span class="pp-price__current" data-product-price>{{ current_variant.price | money }}</span>
             {%- if current_variant.compare_at_price > current_variant.price -%}
@@ -156,9 +157,9 @@
                   </div>
 
                 {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
-                  {%- comment -%} Size pills {%- endcomment -%}
+                  {%- comment -%} 4–5. Size label row + pills {%- endcomment -%}
                   <div class="pp-size-row">
-                    <span class="pp-size-label">{{ option.name }}</span>
+                    <span class="pp-size-label">Taille</span>
                     {%- if section.settings.size_guide_url != blank -%}
                       <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">Guide des tailles</a>
                     {%- endif -%}
@@ -178,8 +179,8 @@
                   </div>
 
                 {%- else -%}
-                  {%- comment -%} Generic option (pills) {%- endcomment -%}
-                  <p class="pp-size-label">{{ option.name }}</p>
+                  {%- comment -%} Generic option pills {%- endcomment -%}
+                  <p class="pp-size-label" style="margin-bottom:10px;">{{ option.name }}</p>
                   <div class="pp-sizes">
                     {%- for value in option.values -%}
                       <button
@@ -199,14 +200,14 @@
               <input type="hidden" name="id" value="{{ current_variant.id }}">
             </variant-selector>
 
-            {%- comment -%} Model info blocks {%- endcomment -%}
+            {%- comment -%} 6. Model info {%- endcomment -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'model_info' -%}
                 <p class="pp-model-info" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
             {%- endfor -%}
 
-            {%- comment -%} Installments {%- endcomment -%}
+            {%- comment -%} 7. Installments {%- endcomment -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'installments' -%}
                 <div class="pp-installments" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
@@ -215,7 +216,7 @@
 
             <input type="hidden" name="quantity" value="1">
 
-            {%- comment -%} Add to cart {%- endcomment -%}
+            {%- comment -%} 8. Add to cart {%- endcomment -%}
             <button
               type="submit"
               class="pp-add-btn"
@@ -232,38 +233,38 @@
               {%- endif -%}
             </button>
 
-            {%- comment -%} Dynamic checkout {%- endcomment -%}
+            {%- comment -%} 9. Dynamic checkout {%- endcomment -%}
             <div class="pp-express-btn">
               {{ form | payment_button }}
             </div>
           {%- endform -%}
 
-          {%- comment -%} Trust benefits box {%- endcomment -%}
+          {%- comment -%} 10. Trust box — 2-column layout {%- endcomment -%}
           <div class="pp-trust-box">
-            <div class="pp-trust-item">
-              {% render 'icon', name: 'truck', size: 18 %}
-              <div class="pp-trust-item__text">
-                <strong>{{ section.settings.trust_shipping_title | default: 'Livraison offerte' }}</strong>
-                <span>{{ section.settings.trust_shipping_desc | default: 'Dès 150€ d\'achat' }}</span>
-              </div>
-            </div>
-            <div class="pp-trust-item">
+            <div class="pp-trust-cell">
               {% render 'icon', name: 'return', size: 18 %}
-              <div class="pp-trust-item__text">
+              <div class="pp-trust-cell__text">
                 <strong>{{ section.settings.trust_return_title | default: 'Retours gratuits' }}</strong>
                 <span>{{ section.settings.trust_return_desc | default: 'Sous 14 jours' }}</span>
               </div>
             </div>
-            <div class="pp-trust-item">
-              {% render 'icon', name: 'lock', size: 18 %}
-              <div class="pp-trust-item__text">
-                <strong>{{ section.settings.trust_payment_title | default: 'Paiement sécurisé' }}</strong>
-                <span>{{ section.settings.trust_payment_desc | default: 'Visa, Mastercard, PayPal' }}</span>
+            <div class="pp-trust-cell">
+              {% render 'icon', name: 'truck', size: 18 %}
+              <div class="pp-trust-cell__text">
+                <strong>{{ section.settings.trust_shipping_title | default: 'Livraison offerte' }}</strong>
+                <span>{{ section.settings.trust_shipping_desc | default: 'Dès 150€ d\'achat' }}</span>
               </div>
             </div>
           </div>
 
-          {%- comment -%} Accordions {%- endcomment -%}
+          {%- comment -%} 11. Description {%- endcomment -%}
+          {%- if product.description != blank -%}
+            <div class="pp-description">
+              {{ product.description }}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} 12. Accordions {%- endcomment -%}
           <div class="pp-accordions">
             {%- for block in section.blocks -%}
               {%- if block.type == 'accordion' -%}
@@ -285,26 +286,30 @@
         </div>
       </div>
 
-    </div>{%- comment -%} /pp-layout {%- endcomment -%}
+    </div>
   </div>
 </section>
 
 <style>
-/* ── Product page scoped styles ── */
+/* ============================================================
+   PRODUCT PAGE — Scoped styles (pp-*)
+   Premium fashion layout, clean structure, no hacks.
+   ============================================================ */
 
+/* ── Section wrapper ── */
 .pp-section {
-  padding: 0 0 20px;
+  padding: 0 0 40px;
 }
 
 .pp-container {
-  max-width: 1280px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
-/* Breadcrumbs */
+/* ── Breadcrumbs ── */
 .pp-breadcrumbs {
-  padding: 16px 0;
+  padding: 14px 0 20px;
   font-size: 0.78rem;
   color: #999;
 }
@@ -312,10 +317,11 @@
 .pp-breadcrumbs ol {
   display: flex;
   align-items: center;
-  gap: 0;
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-wrap: wrap;
+  gap: 0;
 }
 
 .pp-breadcrumbs li {
@@ -344,28 +350,32 @@
   color: var(--color-text);
 }
 
-/* Two-column layout */
+/* ── Two-column layout ── */
 .pp-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 58% 1fr;
+  gap: 52px;
   align-items: start;
 }
 
-/* ═══ Gallery ═══ */
+/* ═══════════════════════════════════════════════
+   LEFT COLUMN: Gallery
+   ═══════════════════════════════════════════════ */
 .pp-gallery-col {
   position: sticky;
-  top: 100px;
+  top: 90px;
 }
 
-.pp-gallery-wrap { display: block; }
+.pp-gallery-wrap {
+  display: block;
+}
 
 .pp-gallery {
   display: flex;
   gap: 12px;
 }
 
-/* Thumbnails */
+/* Thumbnail rail */
 .pp-thumbs {
   display: flex;
   flex-direction: column;
@@ -390,23 +400,27 @@
   padding: 0;
 }
 
-.pp-thumbs__arrow:hover { color: var(--color-text); }
+.pp-thumbs__arrow:hover {
+  color: var(--color-text);
+}
 
 .pp-thumbs__arrow--up svg {
   transform: rotate(180deg);
 }
 
-.pp-thumbs__list {
+.pp-thumbs__track {
   display: flex;
   flex-direction: column;
   gap: 8px;
   overflow-y: auto;
-  max-height: 520px;
+  max-height: 560px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-.pp-thumbs__list::-webkit-scrollbar { display: none; }
+.pp-thumbs__track::-webkit-scrollbar {
+  display: none;
+}
 
 .pp-thumb {
   width: 60px;
@@ -435,13 +449,15 @@
   display: block;
 }
 
-/* Main image */
+/* Main media area — constrained aspect ratio */
 .pp-main-image {
   position: relative;
   flex: 1;
+  min-width: 0;
   border-radius: 8px;
   overflow: hidden;
   background: #f5f3ef;
+  aspect-ratio: 3 / 4;
 }
 
 .pp-main-image img {
@@ -452,7 +468,8 @@
 }
 
 .pp-main-image__placeholder {
-  aspect-ratio: 3/4;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -460,47 +477,53 @@
 }
 
 .pp-main-image__placeholder svg {
-  width: 60%;
-  opacity: 0.4;
+  width: 50%;
+  opacity: 0.35;
 }
 
-/* Gallery nav arrows */
+/* Gallery prev/next arrows */
 .pp-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.92);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-  transition: opacity 0.2s;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.2s, transform 0.2s;
   color: #333;
   padding: 0;
+  z-index: 2;
 }
 
-.pp-nav:hover { opacity: 0.8; }
+.pp-nav:hover {
+  opacity: 0.85;
+}
+
 .pp-nav--prev { left: 12px; }
 .pp-nav--next { right: 12px; }
 
-/* ═══ Product Info ═══ */
+/* ═══════════════════════════════════════════════
+   RIGHT COLUMN: Product Info
+   ═══════════════════════════════════════════════ */
 .pp-info-col {
-  position: sticky;
-  top: 100px;
+  min-width: 0;
 }
 
 .pp-info {
-  max-width: 500px;
+  max-width: 480px;
 }
 
+/* 1. Title */
 .pp-title {
   font-family: var(--font-heading);
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.25;
@@ -508,6 +531,7 @@
   color: var(--color-text);
 }
 
+/* 2. Color label */
 .pp-color-label {
   font-size: 0.82rem;
   color: #888;
@@ -518,15 +542,16 @@
   color: var(--color-text);
 }
 
+/* 3. Price */
 .pp-price {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .pp-price__current {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: var(--color-text);
 }
@@ -540,11 +565,11 @@
   text-decoration: line-through;
 }
 
-/* Swatches */
+/* Color swatches */
 .pp-swatches {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   flex-wrap: wrap;
 }
 
@@ -580,7 +605,7 @@
   border-radius: 50%;
 }
 
-/* Sizes */
+/* 4. Size row (label left, guide link right) */
 .pp-size-row {
   display: flex;
   align-items: center;
@@ -607,6 +632,7 @@
   text-decoration: underline;
 }
 
+/* 5. Size pills */
 .pp-sizes {
   display: flex;
   gap: 8px;
@@ -615,8 +641,8 @@
 }
 
 .pp-size {
-  min-width: 44px;
-  height: 38px;
+  min-width: 46px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -630,7 +656,9 @@
   color: var(--color-text);
 }
 
-.pp-size:hover { border-color: var(--color-text); }
+.pp-size:hover {
+  border-color: var(--color-text);
+}
 
 .pp-size.is-active {
   background: var(--color-text);
@@ -644,7 +672,7 @@
   text-decoration: line-through;
 }
 
-/* Model info */
+/* 6. Model info */
 .pp-model-info {
   font-size: 0.78rem;
   color: #999;
@@ -652,7 +680,7 @@
   line-height: 1.5;
 }
 
-/* Installments */
+/* 7. Installments */
 .pp-installments {
   font-size: 0.8rem;
   color: #888;
@@ -661,12 +689,14 @@
   border-top: 1px solid #eae8e4;
 }
 
-.pp-installments p { margin: 0; }
+.pp-installments p {
+  margin: 0;
+}
 
-/* Add to cart button */
+/* 8. Add to cart button */
 .pp-add-btn {
   width: 100%;
-  height: 48px;
+  height: 54px;
   margin-top: 16px;
   background: var(--color-text);
   color: #fff;
@@ -680,76 +710,126 @@
   transition: opacity 0.2s;
 }
 
-.pp-add-btn:hover { opacity: 0.85; }
+.pp-add-btn:hover {
+  opacity: 0.85;
+}
 
 .pp-add-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* Express checkout */
+/* 9. Dynamic checkout */
 .pp-express-btn {
   width: 100%;
   margin-top: 8px;
 }
 
-/* Trust box */
+/* 10. Trust box — 2-column grid */
 .pp-trust-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   margin-top: 24px;
   border: 1px solid #eae8e4;
   border-radius: 8px;
-  padding: 0;
   overflow: hidden;
 }
 
-.pp-trust-item {
+.pp-trust-cell {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 10px;
+  padding: 16px;
 }
 
-.pp-trust-item:not(:last-child) {
-  border-bottom: 1px solid #eae8e4;
+.pp-trust-cell:first-child {
+  border-right: 1px solid #eae8e4;
 }
 
-.pp-trust-item svg {
+.pp-trust-cell svg {
   flex-shrink: 0;
   color: #888;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
-.pp-trust-item__text {
+.pp-trust-cell__text {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 
-.pp-trust-item__text strong {
-  font-size: 0.8rem;
-  font-weight: 500;
+.pp-trust-cell__text strong {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.pp-trust-cell__text span {
+  font-size: 0.72rem;
+  color: #999;
+  line-height: 1.3;
+}
+
+/* 11. Description */
+.pp-description {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #eae8e4;
+  font-size: 0.88rem;
+  line-height: 1.75;
   color: var(--color-text);
 }
 
-.pp-trust-item__text span {
-  font-size: 0.73rem;
-  color: #999;
+.pp-description p {
+  margin: 0 0 12px;
 }
 
-/* Accordions wrapper */
+.pp-description p:last-child {
+  margin-bottom: 0;
+}
+
+.pp-description ul,
+.pp-description ol {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0 0 12px;
+}
+
+.pp-description li {
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* 12. Accordions */
 .pp-accordions {
   margin-top: 24px;
 }
 
-/* ═══ Responsive ═══ */
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+
+/* Tablet: keep 2 columns, tighter */
+@media (max-width: 1200px) {
+  .pp-layout {
+    gap: 36px;
+  }
+
+  .pp-info {
+    max-width: 100%;
+  }
+}
+
+/* Mobile: single column */
 @media (max-width: 1023px) {
   .pp-layout {
     grid-template-columns: 1fr;
     gap: 28px;
   }
 
-  .pp-gallery-col,
-  .pp-info-col {
+  .pp-gallery-col {
     position: static;
   }
 
@@ -763,7 +843,7 @@
     order: 2;
   }
 
-  .pp-thumbs__list {
+  .pp-thumbs__track {
     flex-direction: row;
     max-height: none;
     overflow-x: auto;
@@ -771,11 +851,17 @@
     max-width: 100%;
   }
 
-  .pp-thumbs__arrow { display: none; }
+  .pp-thumbs__arrow {
+    display: none;
+  }
 
   .pp-thumb {
     width: 48px;
     height: 62px;
+  }
+
+  .pp-main-image {
+    aspect-ratio: 3 / 4;
   }
 
   .pp-info {
@@ -792,8 +878,17 @@
     font-size: 1.35rem;
   }
 
-  .pp-trust-item {
-    padding: 12px 14px;
+  .pp-trust-box {
+    grid-template-columns: 1fr;
+  }
+
+  .pp-trust-cell:first-child {
+    border-right: none;
+    border-bottom: 1px solid #eae8e4;
+  }
+
+  .pp-trust-cell {
+    padding: 14px;
   }
 }
 </style>
