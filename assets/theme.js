@@ -98,15 +98,6 @@ class StickyHeader extends HTMLElement {
     this._resizeObserver = new ResizeObserver(reserveHeight);
     this._resizeObserver.observe(this.header);
 
-    // Layout class for hero overlap (negative margin)
-    const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
-      ? document.getElementById('home-hero')
-      : null;
-
-    if (hero) {
-      document.body.classList.add('header--has-hero');
-    }
-
     // Header is always opaque with shadow — no observers, no toggling,
     // nothing dynamic at any scroll position.
     this.header.classList.add('is-sticky');

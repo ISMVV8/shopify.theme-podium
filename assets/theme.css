@@ -475,7 +475,6 @@ announcement-bar {
   left: 0;
   right: 0;
   z-index: var(--z-header);
-  will-change: transform;  /* own GPU layer – no scroll-thread interference */
 }
 
 .header.is-sticky {
