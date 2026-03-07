@@ -13,7 +13,6 @@ html {
   font-size: var(--font-body-size, 14px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -465,10 +464,6 @@ announcement-bar {
   border-bottom: 1px solid var(--color-border);
   position: relative;
   z-index: var(--z-header);
-  transition: background var(--duration-base) var(--ease),
-              color var(--duration-base) var(--ease),
-              border-color var(--duration-base) var(--ease),
-              box-shadow var(--duration-base) var(--ease);
 }
 
 /* When sticky is enabled the header is ALWAYS position:fixed.
@@ -480,6 +475,7 @@ announcement-bar {
   left: 0;
   right: 0;
   z-index: var(--z-header);
+  will-change: transform;  /* own GPU layer – no scroll-thread interference */
 }
 
 .header.is-sticky {

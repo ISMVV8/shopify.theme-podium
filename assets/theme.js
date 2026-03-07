@@ -123,7 +123,7 @@ class StickyHeader extends HTMLElement {
 
     this.stickyObserver = new IntersectionObserver(([entry]) => {
       this.header.classList.toggle('is-sticky', !entry.isIntersecting);
-    });
+    }, { rootMargin: '-2px 0px 0px 0px' }); // 2px dead-zone prevents oscillation
     this.stickyObserver.observe(this.sentinel);
   }
 
