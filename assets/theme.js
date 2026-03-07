@@ -118,26 +118,22 @@ class StickyHeader extends HTMLElement {
     if (!hero) return;
 
     const style = this.dataset.headerHeroStyle || 'light';
-    document.body.classList.add('header--transparent', 'header--hero-' + style);
+    // header--has-hero drives the negative-margin layout overlap and is
+    // NEVER removed — this prevents the IntersectionObserver ↔ layout-shift
+    // feedback loop that caused the scroll bounce-back.
+    document.body.classList.add('header--has-hero', 'header--transparent', 'header--hero-' + style);
 
     if ('IntersectionObserver' in window) {
       this.heroObserver = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting) {
-          document.body.classList.add('header--transparent');
-        } else {
-          document.body.classList.remove('header--transparent');
-        }
+        // Only toggle visual styles (colors/background), not layout
+        document.body.classList.toggle('header--transparent', entry.isIntersecting);
       }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
       this.heroObserver.observe(hero);
     } else {
       // Fallback: scroll listener
       const onScroll = () => {
         const heroBottom = hero.getBoundingClientRect().bottom;
-        if (heroBottom > 80) {
-          document.body.classList.add('header--transparent');
-        } else {
-          document.body.classList.remove('header--transparent');
-        }
+        document.body.classList.toggle('header--transparent', heroBottom > 80);
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       this._scrollFallback = onScroll;

@@ -628,19 +628,21 @@ announcement-bar {
   background: var(--color-text);
 }
 
-/* Pull hero up behind the transparent header so it overlaps */
-.header--transparent #main-content > .shopify-section:first-child {
+/* Pull hero up behind the header so it overlaps.
+   Uses header--has-hero (set once on load, never toggled) to avoid
+   layout-shift feedback loops with the IntersectionObserver. */
+.header--has-hero #main-content > .shopify-section:first-child {
   margin-top: -64px;
 }
-.header--transparent #main-content > .shopify-section:first-child .hero-slider__slide {
+.header--has-hero #main-content > .shopify-section:first-child .hero-slider__slide {
   padding-top: 64px;
 }
 
 @media (max-width: 1023px) {
-  .header--transparent #main-content > .shopify-section:first-child {
+  .header--has-hero #main-content > .shopify-section:first-child {
     margin-top: -52px;
   }
-  .header--transparent #main-content > .shopify-section:first-child .hero-slider__slide {
+  .header--has-hero #main-content > .shopify-section:first-child .hero-slider__slide {
     padding-top: 52px;
   }
 }
