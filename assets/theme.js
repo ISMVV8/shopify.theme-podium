@@ -102,7 +102,10 @@ class StickyHeader extends HTMLElement {
     this.sentinel.style.pointerEvents = 'none';
     document.body.appendChild(this.sentinel);
     this.stickyObserver = new IntersectionObserver(([entry]) => {
-      this.header.classList.toggle('is-sticky', !entry.isIntersecting);
+      const isSticky = !entry.isIntersecting;
+      this.header.classList.toggle('is-sticky', isSticky);
+      // Reserve header height to prevent layout shift when switching to position:fixed
+      this.style.minHeight = isSticky ? this.header.offsetHeight + 'px' : '';
     });
     this.stickyObserver.observe(this.sentinel);
   }
