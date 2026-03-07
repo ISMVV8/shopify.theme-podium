@@ -418,7 +418,7 @@
   align-items: center;
   gap: 0;
   flex-shrink: 0;
-  width: 76px;
+  width: 110px;
 }
 
 .pp-thumbs__track {
@@ -426,7 +426,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  max-height: 620px;
+  max-height: 650px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -436,10 +436,10 @@
 }
 
 .pp-thumb {
-  width: 70px;
-  height: 92px;
+  width: 100px;
+  height: 130px;
   border: 1.5px solid transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
   opacity: 0.6;
@@ -585,7 +585,7 @@
 
 .pp-title {
   font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.25;
@@ -610,9 +610,9 @@
 
 /* Subtitle */
 .pp-subtitle {
-  font-size: 0.86rem;
-  color: #777;
-  margin: 4px 0 0;
+  font-size: 0.95rem;
+  color: #555;
+  margin: 8px 0 0;
   font-weight: 400;
 }
 
@@ -621,17 +621,17 @@
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin: 18px 0 0;
+  margin: 28px 0 0;
 }
 
 .pp-price__current {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: var(--color-text);
 }
 
 .pp-price__compare {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #aaa;
 }
 
@@ -642,15 +642,15 @@
 /* Dividers */
 .pp-divider {
   border: none;
-  border-top: 1px solid #eae8e4;
-  margin: 16px 0;
+  border-top: 1px solid #e5e2dd;
+  margin: 24px 0;
 }
 
 /* Option label */
 .pp-option-label {
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   color: #777;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
 }
 
 .pp-option-label span {
@@ -660,15 +660,15 @@
 /* Color swatches */
 .pp-swatches {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 0;
   flex-wrap: wrap;
 }
 
 .pp-swatch {
-  width: 50px;
-  height: 50px;
-  border-radius: 3px;
+  width: 62px;
+  height: 80px;
+  border-radius: 4px;
   border: 1.5px solid #e0ddd8;
   overflow: hidden;
   cursor: pointer;
@@ -701,20 +701,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .pp-size-label {
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   font-weight: 500;
   color: var(--color-text);
 }
 
 .pp-size-guide {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #777;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
   transition: color 0.2s;
 }
 
@@ -725,24 +725,24 @@
 /* Size pills */
 .pp-sizes {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 0;
 }
 
 .pp-size {
-  min-width: 42px;
-  height: 38px;
+  min-width: 48px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid #d4d1cc;
-  border-radius: 5px;
+  border-radius: 6px;
   background: transparent;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   cursor: pointer;
   transition: all 0.2s;
-  padding: 0 14px;
+  padding: 0 16px;
   color: var(--color-text);
 }
 
@@ -764,24 +764,24 @@
 
 /* Model info */
 .pp-model-info {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: #777;
-  margin: 14px 0 0;
-  line-height: 1.5;
+  margin: 22px 0 0;
+  line-height: 1.6;
 }
 
 .pp-model-info a {
   color: var(--color-text);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
 }
 
 /* Installments */
 .pp-installments {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #777;
-  margin: 14px 0 0;
-  line-height: 1.5;
+  margin: 20px 0 0;
+  line-height: 1.55;
 }
 
 .pp-installments p {
@@ -791,14 +791,14 @@
 /* ATC button */
 .pp-add-btn {
   width: 100%;
-  height: 50px;
-  margin-top: 18px;
+  height: 52px;
+  margin-top: 24px;
   background: #333;
   color: #fff;
   border: none;
   border-radius: 5px;
   font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -831,7 +831,7 @@
 .pp-trust-box {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: 18px;
+  margin-top: 22px;
   border: 1px solid #e5e2dd;
   border-radius: 6px;
   overflow: hidden;
@@ -842,8 +842,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 18px 14px;
+  gap: 8px;
+  padding: 22px 16px;
   text-align: center;
 }
 
@@ -869,13 +869,13 @@
 }
 
 .pp-info .accordion:first-of-type {
-  margin-top: 18px;
+  margin-top: 22px;
 }
 
 .pp-info .accordion__trigger {
-  padding: 14px 0;
+  padding: 16px 0;
   font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 500;
 }
 
@@ -959,8 +959,8 @@
   }
 
   .pp-thumb {
-    width: 52px;
-    height: 68px;
+    width: 60px;
+    height: 78px;
   }
 
   .pp-main-image {
