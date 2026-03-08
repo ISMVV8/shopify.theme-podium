@@ -87,68 +87,33 @@ class StickyHeader extends HTMLElement {
   connectedCallback() {
     this.header = this.querySelector('.header');
     if (!this.header) return;
-
-    // Transparent header on homepage hero
-    this.initTransparentHeader();
-
-    // Sticky behavior
     if (this.dataset.sticky !== 'true') return;
-    this.sentinel = document.createElement('div');
-    this.sentinel.style.height = '1px';
-    this.sentinel.style.position = 'absolute';
-    this.sentinel.style.top = this.offsetTop + this.offsetHeight + 'px';
-    this.sentinel.style.left = '0';
-    this.sentinel.style.width = '100%';
-    this.sentinel.style.pointerEvents = 'none';
-    document.body.appendChild(this.sentinel);
-    this.stickyObserver = new IntersectionObserver(([entry]) => {
-      this.header.classList.toggle('is-sticky', !entry.isIntersecting);
-    });
-    this.stickyObserver.observe(this.sentinel);
-  }
 
-  initTransparentHeader() {
-    if (this.dataset.transparentHeader !== 'true') return;
-    if (this.dataset.template !== 'index') return;
+    // Header is always position:fixed via CSS.
+    // Reserve the wrapper height permanently so no layout shift occurs.
+    const reserveHeight = () => {
+      this.style.height = this.header.offsetHeight + 'px';
+    };
+    reserveHeight();
+    this._resizeObserver = new ResizeObserver(reserveHeight);
+    this._resizeObserver.observe(this.header);
 
-    const hero = document.getElementById('home-hero');
-    if (!hero) return;
+    // Layout class for hero overlap (negative margin)
+    const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
+      ? document.getElementById('home-hero')
+      : null;
 
-    const style = this.dataset.headerHeroStyle || 'light';
-    document.body.classList.add('header--transparent', 'header--hero-' + style);
-
-    if ('IntersectionObserver' in window) {
-      this.heroObserver = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting) {
-          document.body.classList.add('header--transparent');
-        } else {
-          document.body.classList.remove('header--transparent');
-        }
-      }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
-      this.heroObserver.observe(hero);
-    } else {
-      // Fallback: scroll listener
-      const onScroll = () => {
-        const heroBottom = hero.getBoundingClientRect().bottom;
-        if (heroBottom > 80) {
-          document.body.classList.add('header--transparent');
-        } else {
-          document.body.classList.remove('header--transparent');
-        }
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      this._scrollFallback = onScroll;
+    if (hero) {
+      document.body.classList.add('header--has-hero');
     }
+
+    // Header is always opaque with shadow — no observers, no toggling,
+    // nothing dynamic at any scroll position.
+    this.header.classList.add('is-sticky');
   }
 
   disconnectedCallback() {
-    if (this.stickyObserver) this.stickyObserver.disconnect();
-    if (this.heroObserver) this.heroObserver.disconnect();
-    if (this.sentinel) this.sentinel.remove();
-    if (this._scrollFallback) {
-      window.removeEventListener('scroll', this._scrollFallback);
-    }
-    document.body.classList.remove('header--transparent');
+    if (this._resizeObserver) this._resizeObserver.disconnect();
   }
 }
 
@@ -798,6 +763,74 @@ function initNewsletterForms() {
   });
 }
 
+/* --- Wishlist --- */
+
+const PodiumWishlist = {
+  KEY: 'podium_wishlist',
+
+  getAll() {
+    try { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); }
+    catch (e) { return []; }
+  },
+
+  save(list) {
+    localStorage.setItem(this.KEY, JSON.stringify(list));
+    document.dispatchEvent(new CustomEvent('wishlist:updated', { detail: { wishlist: list } }));
+  },
+
+  has(handle) {
+    return this.getAll().includes(handle);
+  },
+
+  toggle(handle) {
+    const list = this.getAll();
+    const index = list.indexOf(handle);
+    if (index === -1) {
+      list.push(handle);
+    } else {
+      list.splice(index, 1);
+    }
+    this.save(list);
+    return index === -1; // true = added, false = removed
+  },
+
+  remove(handle) {
+    const list = this.getAll().filter(h => h !== handle);
+    this.save(list);
+  }
+};
+
+function initWishlistToggles() {
+  // Mark active wishlist buttons on page load
+  function syncButtons() {
+    document.querySelectorAll('[data-wishlist-toggle]').forEach(btn => {
+      const handle = btn.dataset.productHandle;
+      if (handle && PodiumWishlist.has(handle)) {
+        btn.classList.add('is-wishlisted');
+      } else {
+        btn.classList.remove('is-wishlisted');
+      }
+    });
+  }
+
+  syncButtons();
+
+  // Toggle on click
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-wishlist-toggle]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const handle = btn.dataset.productHandle;
+    if (!handle) return;
+    const added = PodiumWishlist.toggle(handle);
+    btn.classList.toggle('is-wishlisted', added);
+  });
+
+  // Re-sync when wishlist changes (e.g. removal from wishlist page)
+  document.addEventListener('wishlist:updated', syncButtons);
+}
+
 /* --- Register Custom Elements --- */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -817,5 +850,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initProductForms();
   initPasswordReveal();
   initNewsletterForms();
+  initWishlistToggles();
 });
 

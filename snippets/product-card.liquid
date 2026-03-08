@@ -76,7 +76,7 @@
   </a>
 
   {%- if show_wishlist -%}
-    <button class="product-card__wishlist btn--icon" data-wishlist-toggle data-product-id="{{ product.id }}" aria-label="{{ 'header.wishlist' | t }}">
+    <button class="product-card__wishlist btn--icon" data-wishlist-toggle data-product-handle="{{ product.handle }}" aria-label="{{ 'header.wishlist' | t }}">
       {% render 'icon', name: 'heart', size: 18 %}
     </button>
   {%- endif -%}
