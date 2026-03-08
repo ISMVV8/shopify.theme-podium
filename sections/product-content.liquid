@@ -131,7 +131,7 @@
           {%- comment -%} 1. Title + Wishlist {%- endcomment -%}
           <div class="pp-title-row">
             <h1 class="pp-title">{{ product.title }}</h1>
-            <button class="pp-wishlist btn--icon" data-wishlist-toggle data-product-id="{{ product.id }}" aria-label="Ajouter aux favoris">
+            <button class="pp-wishlist btn--icon" data-wishlist-toggle data-product-handle="{{ product.handle }}" aria-label="Ajouter aux favoris">
               {% render 'icon', name: 'heart', size: 20 %}
             </button>
           </div>
