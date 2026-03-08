@@ -44,6 +44,54 @@
         "pill_3_collection": ""
       }
     },
+    "collections_masonry": {
+      "type": "collections-masonry",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "image_override": "shopify://shop_images/74ca4772-1c49-4bbc-818f-857250512bd5.jpg",
+            "title_override": "Nos gilets",
+            "cta_label": ""
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "title_override": "Nos pulls",
+            "cta_label": ""
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "title_override": "Nos t-shirts",
+            "cta_label": ""
+          }
+        },
+        "tile_4": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "title_override": "Nos chemises",
+            "cta_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4"
+      ],
+      "settings": {
+        "heading": "Collections",
+        "cta_default": "Découvrir toute la collection"
+      }
+    },
     "collections_grid": {
       "type": "collections-grid",
       "blocks": {
@@ -92,54 +140,6 @@
         "card_link_text": "Découvrir",
         "button_text": "TOUTES LES COLLECTIONS",
         "button_link": ""
-      }
-    },
-    "collections_masonry": {
-      "type": "collections-masonry",
-      "blocks": {
-        "tile_1": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "image_override": "shopify://shop_images/74ca4772-1c49-4bbc-818f-857250512bd5.jpg",
-            "title_override": "Nos gilets",
-            "cta_label": ""
-          }
-        },
-        "tile_2": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title_override": "Nos pulls",
-            "cta_label": ""
-          }
-        },
-        "tile_3": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title_override": "Nos t-shirts",
-            "cta_label": ""
-          }
-        },
-        "tile_4": {
-          "type": "tile",
-          "settings": {
-            "collection": "",
-            "title_override": "Nos chemises",
-            "cta_label": ""
-          }
-        }
-      },
-      "block_order": [
-        "tile_1",
-        "tile_2",
-        "tile_3",
-        "tile_4"
-      ],
-      "settings": {
-        "heading": "Collections",
-        "cta_default": "Découvrir toute la collection"
       }
     },
     "brand_banner": {
@@ -203,8 +203,8 @@
   "order": [
     "hero",
     "featured_products",
-    "collections_grid",
     "collections_masonry",
+    "collections_grid",
     "brand_banner",
     "newsletter",
     "trust_benefits"
