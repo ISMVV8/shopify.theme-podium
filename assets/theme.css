@@ -466,14 +466,14 @@ announcement-bar {
   z-index: var(--z-header);
 }
 
-/* When sticky is enabled the header is ALWAYS position:fixed.
-   The wrapper height is set by JS to reserve the space permanently,
-   so position never toggles and no layout shift can occur. */
+/* TEST: position:fixed DISABLED to isolate trembling cause.
+   Header will scroll with the page temporarily. */
 .header-wrapper[data-sticky="true"] .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  /* position: fixed; */
+  /* top: 0; */
+  /* left: 0; */
+  /* right: 0; */
+  position: relative;
   z-index: var(--z-header);
 }
 
