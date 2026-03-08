@@ -13,6 +13,7 @@ html {
   font-size: var(--font-body-size, 14px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -466,14 +467,14 @@ announcement-bar {
   z-index: var(--z-header);
 }
 
-/* TEST: position:fixed DISABLED to isolate trembling cause.
-   Header will scroll with the page temporarily. */
+/* When sticky is enabled the header is ALWAYS position:fixed.
+   The wrapper height is set by JS to reserve the space permanently,
+   so position never toggles and no layout shift can occur. */
 .header-wrapper[data-sticky="true"] .header {
-  /* position: fixed; */
-  /* top: 0; */
-  /* left: 0; */
-  /* right: 0; */
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: var(--z-header);
 }
 

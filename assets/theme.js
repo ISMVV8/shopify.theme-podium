@@ -89,12 +89,32 @@ class StickyHeader extends HTMLElement {
     if (!this.header) return;
     if (this.dataset.sticky !== 'true') return;
 
-    // TEST: No ResizeObserver, no dynamic height.
-    // Just add the visual class statically.
+    // Header is always position:fixed via CSS.
+    // Reserve the wrapper height permanently so no layout shift occurs.
+    const reserveHeight = () => {
+      this.style.height = this.header.offsetHeight + 'px';
+    };
+    reserveHeight();
+    this._resizeObserver = new ResizeObserver(reserveHeight);
+    this._resizeObserver.observe(this.header);
+
+    // Layout class for hero overlap (negative margin)
+    const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
+      ? document.getElementById('home-hero')
+      : null;
+
+    if (hero) {
+      document.body.classList.add('header--has-hero');
+    }
+
+    // Header is always opaque with shadow — no observers, no toggling,
+    // nothing dynamic at any scroll position.
     this.header.classList.add('is-sticky');
   }
 
-  disconnectedCallback() {}
+  disconnectedCallback() {
+    if (this._resizeObserver) this._resizeObserver.disconnect();
+  }
 }
 
 /* --- Mobile Menu --- */
@@ -322,13 +342,12 @@ class HeroSlider extends HTMLElement {
     if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.next());
 
     // Autoplay
-    // TEST: autoplay disabled to isolate trembling
-    // if (this.dataset.autoplay === 'true') {
-    //   this.interval = parseInt(this.dataset.interval) || 5000;
-    //   this.startAutoplay();
-    //   this.addEventListener('mouseenter', () => this.stopAutoplay());
-    //   this.addEventListener('mouseleave', () => this.startAutoplay());
-    // }
+    if (this.dataset.autoplay === 'true') {
+      this.interval = parseInt(this.dataset.interval) || 5000;
+      this.startAutoplay();
+      this.addEventListener('mouseenter', () => this.stopAutoplay());
+      this.addEventListener('mouseleave', () => this.startAutoplay());
+    }
 
     // Touch support
     let startX = 0;
