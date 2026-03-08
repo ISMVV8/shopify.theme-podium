@@ -1917,12 +1917,14 @@ featured-products {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.product-card__wishlist.is-wishlisted {
+.product-card__wishlist.is-wishlisted,
+.pp-wishlist.is-wishlisted {
   opacity: 1;
   color: var(--color-sale, #c00);
 }
 
-.product-card__wishlist.is-wishlisted svg {
+.product-card__wishlist.is-wishlisted svg,
+.pp-wishlist.is-wishlisted svg {
   fill: currentColor;
 }
 
