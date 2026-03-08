@@ -15,7 +15,7 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Image_5-03-26_a_05.30.png",
+            "image": "shopify://shop_images/Gemini_Generated_Image_y01ds7y01ds7y01d-2.png",
             "cta_text": "DÉCOUVRIR",
             "cta_link": ""
           }
@@ -50,8 +50,7 @@
         "tile_1": {
           "type": "tile",
           "settings": {
-            "collection": "",
-            "image_override": "shopify://shop_images/74ca4772-1c49-4bbc-818f-857250512bd5.jpg",
+            "collection": "pulls",
             "title_override": "Nos gilets",
             "cta_label": ""
           }
@@ -59,7 +58,7 @@
         "tile_2": {
           "type": "tile",
           "settings": {
-            "collection": "",
+            "collection": "cardigans",
             "title_override": "Nos pulls",
             "cta_label": ""
           }
@@ -67,7 +66,7 @@
         "tile_3": {
           "type": "tile",
           "settings": {
-            "collection": "",
+            "collection": "ensembles",
             "title_override": "Nos t-shirts",
             "cta_label": ""
           }
@@ -75,7 +74,7 @@
         "tile_4": {
           "type": "tile",
           "settings": {
-            "collection": "",
+            "collection": "gilets",
             "title_override": "Nos chemises",
             "cta_label": ""
           }
@@ -98,33 +97,32 @@
         "col_1": {
           "type": "collection",
           "settings": {
-            "collection": "frontpage",
-            "image_override": "shopify://shop_images/74ca4772-1c49-4bbc-818f-857250512bd52.jpg",
-            "title_override": "THE MARCH EDIT",
+            "collection": "robes",
+            "title_override": "ROBES",
             "link_label": ""
           }
         },
         "col_2": {
           "type": "collection",
           "settings": {
-            "collection": "",
-            "title_override": "HOME STORY",
+            "collection": "trench",
+            "title_override": "TRENCH",
             "link_label": ""
           }
         },
         "col_3": {
           "type": "collection",
           "settings": {
-            "collection": "",
-            "title_override": "EFFORTLESS",
+            "collection": "vestes",
+            "title_override": "VESTES",
             "link_label": ""
           }
         },
         "col_4": {
           "type": "collection",
           "settings": {
-            "collection": "",
-            "title_override": "STAY COZY",
+            "collection": "collection-bnaaty",
+            "title_override": "BNAATY",
             "link_label": ""
           }
         }
