@@ -90,13 +90,18 @@ class StickyHeader extends HTMLElement {
     if (this.dataset.sticky !== 'true') return;
 
     // Header is always position:fixed via CSS.
-    // Reserve the wrapper height permanently so no layout shift occurs.
-    const reserveHeight = () => {
+    // Offset it below the announcement bar and reserve wrapper height.
+    this._announcementBar = document.querySelector('announcement-bar');
+
+    const updatePosition = () => {
+      const abHeight = this._announcementBar ? this._announcementBar.offsetHeight : 0;
+      this.header.style.top = abHeight + 'px';
       this.style.height = this.header.offsetHeight + 'px';
     };
-    reserveHeight();
-    this._resizeObserver = new ResizeObserver(reserveHeight);
+    updatePosition();
+    this._resizeObserver = new ResizeObserver(updatePosition);
     this._resizeObserver.observe(this.header);
+    if (this._announcementBar) this._resizeObserver.observe(this._announcementBar);
 
     // Layout class for hero overlap (negative margin)
     const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
