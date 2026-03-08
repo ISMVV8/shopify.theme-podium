@@ -51,7 +51,7 @@
           "type": "tile",
           "settings": {
             "collection": "pulls",
-            "title_override": "Nos gilets",
+            "title_override": "Nos pulls",
             "cta_label": ""
           }
         },
@@ -59,7 +59,7 @@
           "type": "tile",
           "settings": {
             "collection": "cardigans",
-            "title_override": "Nos pulls",
+            "title_override": "Nos cardigans",
             "cta_label": ""
           }
         },
@@ -67,7 +67,7 @@
           "type": "tile",
           "settings": {
             "collection": "ensembles",
-            "title_override": "Nos t-shirts",
+            "title_override": "Nos ensembles",
             "cta_label": ""
           }
         },
@@ -75,7 +75,7 @@
           "type": "tile",
           "settings": {
             "collection": "gilets",
-            "title_override": "Nos chemises",
+            "title_override": "Nos gilets",
             "cta_label": ""
           }
         }
