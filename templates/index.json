@@ -17,7 +17,7 @@
           "settings": {
             "image": "shopify://shop_images/IMG_1778.png",
             "cta_text": "DÉCOUVRIR",
-            "cta_link": ""
+            "cta_link": "shopify://collections"
           }
         }
       },
