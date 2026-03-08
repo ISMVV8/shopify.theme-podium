@@ -36,12 +36,12 @@
         "cta_label": "VOIR PLUS",
         "show_featured_label": true,
         "max_products_right": 4,
-        "pill_1_label": "Back in stock",
-        "pill_1_collection": "frontpage",
-        "pill_2_label": "Nouveautés",
-        "pill_2_collection": "",
-        "pill_3_label": "Les incontournables",
-        "pill_3_collection": ""
+        "pill_1_label": "Nos Cardigans",
+        "pill_1_collection": "cardigans",
+        "pill_2_label": "Nos Cardigan",
+        "pill_2_collection": "cardigans",
+        "pill_3_label": "BNAATY Collection",
+        "pill_3_collection": "collection-bnaaty"
       }
     },
     "collections_masonry": {
