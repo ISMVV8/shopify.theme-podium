@@ -93,12 +93,22 @@ class StickyHeader extends HTMLElement {
     // Offset it below the announcement bar and reserve wrapper height.
     this._announcementBar = document.querySelector('announcement-bar');
 
+    this._abHeight = 0;
+
     const updatePosition = () => {
-      const abHeight = this._announcementBar ? this._announcementBar.offsetHeight : 0;
-      this.header.style.top = abHeight + 'px';
+      this._abHeight = this._announcementBar ? this._announcementBar.offsetHeight : 0;
+      this._onScroll();
       this.style.height = this.header.offsetHeight + 'px';
     };
+
+    this._onScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const offset = Math.max(this._abHeight - scrollY, 0);
+      this.header.style.top = offset + 'px';
+    };
+
     updatePosition();
+    window.addEventListener('scroll', this._onScroll, { passive: true });
     this._resizeObserver = new ResizeObserver(updatePosition);
     this._resizeObserver.observe(this.header);
     if (this._announcementBar) this._resizeObserver.observe(this._announcementBar);
@@ -119,6 +129,7 @@ class StickyHeader extends HTMLElement {
 
   disconnectedCallback() {
     if (this._resizeObserver) this._resizeObserver.disconnect();
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
   }
 }
 
