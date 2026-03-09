@@ -1,0 +1,219 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "customer_accounts": {
+    "orders": {
+      "order_status": {
+        "delivered_description_gift_card": {
+          "many": "De cadeaubonnen werden per e-mail verzonden."
+        },
+        "gift_card_label": {
+          "many": "Cadeaukaarten"
+        },
+        "confirmed_gift_card_additional_description": {
+          "many": "Elke cadeaukaart wordt in een aparte e-mail verzonden."
+        },
+        "delivered_description_gift_card_text": {
+          "many": "De cadeaubonnen werden via sms verzonden."
+        },
+        "confirmed_gift_card_additional_description_text": {
+          "many": "Elke cadeaukaart wordt in een apart sms-bericht verzonden."
+        },
+        "gift_resend_success": {
+          "many": "Geretourneerde cadeaubonnen"
+        },
+        "gift_resend_failure": {
+          "many": "Er is een probleem opgetreden bij het versturen van uw cadeaubonnen. Probeer het opnieuw of neem contact met ons op."
+        },
+        "tracking_number": {
+          "many": "Volgnummers"
+        },
+        "gift_card_resend_button": {
+          "many": "Verstuur de cadeaukaarten opnieuw."
+        }
+      }
+    },
+    "order_details": {
+      "image_gallery": {
+        "load_more_items": {
+          "many": "Laad {{count}} extra items"
+        }
+      },
+      "subtotal_label_with_quantity": {
+        "many": "Subtotaal · {{count}} items"
+      },
+      "discount_order_stacking": {
+        "many": "Korting op bestellingen"
+      }
+    },
+    "B2B": {
+      "orders": {
+        "draft_order_list": {
+          "pending_tab_accessibility_label": {
+            "pending_orders": {
+              "many": "U heeft {{count}} openstaande bestellingen."
+            }
+          }
+        }
+      },
+      "draft_order_details": {
+        "payment_status": {
+          "pending": {
+            "banner_overdue": {
+              "many": "U bent {{count}} dagen te laat met uw betaling."
+            },
+            "banner_due": {
+              "many": "Uw betaling dient binnen {{count}} dagen te worden voldaan."
+            },
+            "banner_overdue_for_single_fulfillment": {
+              "many": "De betaling van {{amount}} is {{count}} dagen te laat. {{link}}"
+            }
+          }
+        }
+      }
+    },
+    "errors": {
+      "banner_title": {
+        "many": "Er zijn {{count}} fouten"
+      }
+    },
+    "payment_methods": {
+      "add_payment_method": {
+        "subscription_contracts": {
+          "more_items": {
+            "many": "{{count}} extra producten"
+          },
+          "product_count": {
+            "many": "{{count}} producten"
+          }
+        },
+        "updating_contracts": {
+          "many": "{{count}} abonnementscontracten bijwerken..."
+        },
+        "contracts_updated": {
+          "many": "{{count}} abonnementscontracten zijn succesvol bijgewerkt"
+        }
+      }
+    },
+    "ui_components": {
+      "autocompleteOptionsAvailable": {
+        "many": "{{count}} artikelen beschikbaar"
+      },
+      "month": {
+        "many": "maand"
+      },
+      "mapClusterTitle": {
+        "many": "Cluster van {{number}} markers"
+      }
+    },
+    "date": {
+      "humanize": {
+        "lessThanOneHourAgo": {
+          "many": "{{count}} minuten geleden"
+        }
+      }
+    }
+  },
+  "general": {
+    "skip_to_content": "Ga direct naar de inhoud",
+    "close": "Dichtbij",
+    "open": "Open",
+    "search": "Om onderzoek te doen",
+    "loading": "Laden...",
+    "home": "Welkom",
+    "pagination": {
+      "previous": "Vorig",
+      "next": "Volgend",
+      "page": "Pagina {{ number }}"
+    }
+  },
+  "header": {
+    "search": "Om onderzoek te doen",
+    "account": "Rekening",
+    "cart": "Mand",
+    "wishlist": "Favorieten",
+    "language": "Taal",
+    "view_all_category": "Bekijk alle categorieën",
+    "discover_collection": "Ontdek de complete collectie"
+  },
+  "announcement": {
+    "default_message": "Gratis verzending bij bestellingen boven €75."
+  },
+  "search": {
+    "title": "Om onderzoek te doen",
+    "placeholder": "Om onderzoek te doen",
+    "frequent": "Veelgebruikte zoektermen:",
+    "results_count": "{{ count }} resultaten",
+    "no_results": "Geen resultaten gevonden voor \" {{ query }} \"",
+    "no_results_suggestion": "Probeer een andere zoekterm."
+  },
+  "cart": {
+    "title": "Mand",
+    "empty_title": "Je winkelmandje is leeg :(",
+    "empty_subtitle": "Begin nu met winkelen",
+    "empty_cta": "Ik lig helemaal dubbel van het lachen.",
+    "subtotal": "Subtotaal",
+    "checkout": "Volgorde",
+    "remove": "VERWIJDEREN",
+    "quantity": "Hoeveelheid",
+    "free_shipping_note": "Gratis verzending bij bestellingen boven €75*",
+    "shipping_note": "Verzendkosten worden berekend bij het afrekenen.",
+    "continue_shopping": "Ga verder met winkelen"
+  },
+  "product": {
+    "add_to_cart": "TOEVOEGEN AAN WINKELWAGEN",
+    "sold_out": "UITGEPUT",
+    "unavailable": "Niet beschikbaar",
+    "size_guide": "Maattabel",
+    "color": "Kleur",
+    "size": "Maat",
+    "quantity": "Hoeveelheid",
+    "product_details": "Productdetails",
+    "description": "Beschrijving",
+    "composition": "Samenstelling en verzorging",
+    "shipping": "Leveringen en retouren",
+    "payment_methods": "Betaalmethoden",
+    "complete_look": "Maak de look compleet.",
+    "you_may_like": "Dit vind je misschien ook leuk",
+    "model_info": "Modelinformatie",
+    "installments": "Betaal in termijnen",
+    "added_to_cart": "Toegevoegd aan winkelwagen",
+    "quick_buy": "Snel kopen"
+  },
+  "collection": {
+    "title": "Verzameling",
+    "results_count": "{{ count }} resultaten",
+    "sort": "Soort",
+    "filter": "Filter",
+    "clear_filters": "Verwijder alles",
+    "apply_filters": "Toepassen",
+    "availability": "Beschikbaarheid",
+    "in_stock": "Op voorraad",
+    "in_stock_only": "Producten op voorraad",
+    "price": "Prijs",
+    "all_collections": "Collecties",
+    "discover": "Ontdekken",
+    "no_products": "Geen producten gevonden."
+  },
+  "customer": {
+    "login": {
+      "title": "Login",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "forgot_password": "Wachtwoord vergeten?",
+      "sign_in": "INLOGGEN",
+      "new_customer": "Nieuw bij {{ shop_name }} ?",
+      "create_account": "REGISTER"
+    },
+    "register": {
+      "title": "Een account aanmaken"
+    }
+  }
+}
