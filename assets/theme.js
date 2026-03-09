@@ -447,58 +447,49 @@ class FeaturedProductsSection extends HTMLElement {
   }
 }
 
-/* --- Product Gallery --- */
+/* --- Product Gallery (dots or thumbnails) --- */
 
 class ProductGalleryElement extends HTMLElement {
   connectedCallback() {
     this.mainImage = this.querySelector('[data-main-image]');
-    this.thumbs = this.querySelectorAll('[data-thumb]');
-    this.thumbsList = this.querySelector('[data-thumbs-list]');
-    this.prevBtn = this.querySelector('[data-gallery-prev]');
-    this.nextBtn = this.querySelector('[data-gallery-next]');
-    this.thumbUpBtn = this.querySelector('[data-thumbs-up]');
-    this.thumbDownBtn = this.querySelector('[data-thumbs-down]');
-    this.images = Array.from(this.querySelectorAll('[data-thumb]')).map(t => ({
-      src: t.dataset.fullSrc,
-      alt: t.querySelector('img')?.alt || ''
-    }));
+    this.dots = this.querySelectorAll('[data-dot]');
     this.current = 0;
 
-    this.thumbs.forEach((thumb, i) => {
-      thumb.addEventListener('click', () => this.goTo(i));
-    });
-    if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.goTo(this.current - 1));
-    if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.goTo(this.current + 1));
-
-    // Thumbnail scroll arrows
-    if (this.thumbUpBtn && this.thumbsList) {
-      this.thumbUpBtn.addEventListener('click', () => this.scrollThumbs(-1));
-    }
-    if (this.thumbDownBtn && this.thumbsList) {
-      this.thumbDownBtn.addEventListener('click', () => this.scrollThumbs(1));
+    // Parse images from JSON script or from data-thumb/data-dot
+    var imagesScript = this.querySelector('[data-gallery-images]');
+    if (imagesScript) {
+      try { this.images = JSON.parse(imagesScript.textContent); } catch (e) { this.images = []; }
+    } else {
+      this.images = [];
     }
 
-    // Touch on main image
-    let startX = 0;
-    const mainWrap = this.querySelector('.pp-main-image');
+    // Dot navigation
+    this.dots.forEach(function(dot, i) {
+      dot.addEventListener('click', function() { this.goTo(i); }.bind(this));
+    }.bind(this));
+
+    // Touch support on gallery
+    var mainWrap = this.querySelector('.pp-gallery__main');
     if (mainWrap) {
-      mainWrap.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
-      mainWrap.addEventListener('touchend', (e) => {
-        const diff = startX - e.changedTouches[0].clientX;
+      var startX = 0;
+      mainWrap.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+      mainWrap.addEventListener('touchend', function(e) {
+        var diff = startX - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 50) {
           diff > 0 ? this.goTo(this.current + 1) : this.goTo(this.current - 1);
         }
-      }, { passive: true });
+      }.bind(this), { passive: true });
     }
 
     // Listen for variant image changes
-    document.addEventListener('variant:imageChanged', (e) => {
-      const idx = this.images.findIndex(img => img.src === e.detail.src);
+    document.addEventListener('variant:imageChanged', function(e) {
+      var idx = this.images.findIndex(function(img) { return img.src === e.detail.src; });
       if (idx !== -1) this.goTo(idx);
-    });
+    }.bind(this));
   }
 
   goTo(index) {
+    if (this.images.length === 0) return;
     if (index < 0) index = this.images.length - 1;
     if (index >= this.images.length) index = 0;
     this.current = index;
@@ -506,20 +497,37 @@ class ProductGalleryElement extends HTMLElement {
       this.mainImage.src = this.images[index].src;
       this.mainImage.alt = this.images[index].alt;
     }
-    this.thumbs.forEach((thumb, i) => {
-      thumb.classList.toggle('is-active', i === index);
-      thumb.classList.toggle('active', i === index);
+    this.dots.forEach(function(dot, i) {
+      dot.classList.toggle('is-active', i === index);
     });
-    // Scroll active thumb into view
-    if (this.thumbs[index] && this.thumbsList) {
-      this.thumbs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-    }
   }
+}
 
-  scrollThumbs(direction) {
-    if (!this.thumbsList) return;
-    var scrollAmount = 90 * direction;
-    this.thumbsList.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+/* --- Product Tabs --- */
+
+class ProductTabsElement extends HTMLElement {
+  connectedCallback() {
+    this.buttons = this.querySelectorAll('[data-tab]');
+    this.panels = this.querySelectorAll('[data-tab-panel]');
+
+    this.buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var tabId = btn.dataset.tab;
+
+        // Update active button
+        this.buttons.forEach(function(b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Update active panel
+        this.panels.forEach(function(panel) {
+          panel.classList.toggle('is-active', panel.dataset.tabPanel === tabId);
+        });
+      }.bind(this));
+    }.bind(this));
   }
 }
 
@@ -871,6 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
   customElements.define('hero-slider', HeroSlider);
   customElements.define('featured-products', FeaturedProductsSection);
   customElements.define('product-gallery', ProductGalleryElement);
+  customElements.define('product-tabs', ProductTabsElement);
   customElements.define('variant-selector', VariantSelectorElement);
   customElements.define('filter-drawer', FilterDrawerElement);
   customElements.define('accordion-toggle', AccordionToggle);

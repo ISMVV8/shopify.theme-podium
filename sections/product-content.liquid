@@ -1,7 +1,7 @@
 {%- comment -%}
-  Product content section — gallery + info + cross-sell + accordions
+  Product page — Merrachi-inspired minimal layout
+  50/50 split: image left (with dot nav), info right (tabs, cross-sell)
   Scoped class prefix: pp-
-  Matching reference: premium fashion product page layout.
 {%- endcomment -%}
 
 {%- liquid
@@ -10,311 +10,276 @@
 -%}
 
 <section class="pp-section">
-  <div class="pp-container">
+  <div class="pp-layout">
 
-    {%- comment -%} ── Breadcrumbs ── {%- endcomment -%}
-    <nav class="pp-breadcrumbs" aria-label="Breadcrumb">
-      <ol>
-        <li><a href="{{ routes.root_url }}">Accueil</a></li>
-        {%- if product.collections.size > 0 -%}
-          <li><a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a></li>
-        {%- endif -%}
-        <li aria-current="page">{{ product.title }}</li>
-      </ol>
-    </nav>
+    {%- comment -%} ═══ LEFT — Gallery with dot navigation ═══ {%- endcomment -%}
+    <product-gallery class="pp-gallery">
+      {%- if product.media.size > 1 -%}
+        <div class="pp-gallery__dots">
+          {%- for media in product.media -%}
+            <button
+              class="pp-dot{% if forloop.first %} is-active{% endif %}"
+              data-dot="{{ forloop.index0 }}"
+              aria-label="Image {{ forloop.index }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
 
-    {%- comment -%} ── Two-column product layout ── {%- endcomment -%}
-    <div class="pp-layout">
-
-      {%- comment -%} ═══ LEFT COLUMN: Gallery + Cross-sell ═══ {%- endcomment -%}
-      <div class="pp-left-col">
-
-        {%- comment -%} Gallery ── {%- endcomment -%}
-        <product-gallery class="pp-gallery-wrap">
-          <div class="pp-gallery">
-
-            {%- comment -%} Vertical thumbnail rail {%- endcomment -%}
-            {%- if product.media.size > 1 -%}
-              <div class="pp-thumbs">
-                <div class="pp-thumbs__track" data-thumbs-list role="list">
-                  {%- for media in product.media -%}
-                    <button
-                      class="pp-thumb{% if forloop.first %} is-active{% endif %}"
-                      data-thumb="{{ forloop.index0 }}"
-                      data-full-src="{{ media | image_url: width: 1200 }}"
-                      role="listitem"
-                      aria-label="Image {{ forloop.index }} sur {{ product.media.size }}"
-                    >
-                      <img
-                        src="{{ media | image_url: width: 120 }}"
-                        alt="{{ media.alt | escape | default: product.title }}"
-                        width="60"
-                        height="80"
-                        loading="lazy"
-                      >
-                    </button>
-                  {%- endfor -%}
-                </div>
-                <button class="pp-thumbs__arrow" data-thumbs-down aria-label="Plus d'images">
-                  {% render 'icon', name: 'chevron-down', size: 12 %}
-                </button>
-              </div>
-            {%- endif -%}
-
-            {%- comment -%} Main media area {%- endcomment -%}
-            <div class="pp-main-image">
-              {%- if first_image -%}
-                <img
-                  data-main-image
-                  src="{{ first_image | image_url: width: 1200 }}"
-                  alt="{{ first_image.alt | escape | default: product.title }}"
-                  width="1200"
-                  height="{{ 1200 | divided_by: first_image.aspect_ratio | round }}"
-                >
-              {%- else -%}
-                <div class="pp-main-image__placeholder">
-                  {{ 'product-1' | placeholder_svg_tag }}
-                </div>
-              {%- endif -%}
-
-              {%- if product.media.size > 1 -%}
-                <button class="pp-nav pp-nav--prev" data-gallery-prev aria-label="Image précédente">
-                  {% render 'icon', name: 'chevron-left', size: 18 %}
-                </button>
-                <button class="pp-nav pp-nav--next" data-gallery-next aria-label="Image suivante">
-                  {% render 'icon', name: 'chevron-right', size: 18 %}
-                </button>
-              {%- endif -%}
-            </div>
-          </div>
-        </product-gallery>
-
-        {%- comment -%} Cross-sell: Complétez le look ── {%- endcomment -%}
-        {%- liquid
-          assign has_cross_sell = false
-          for block in section.blocks
-            if block.type == 'cross_sell_product' and block.settings.product != blank
-              assign has_cross_sell = true
-              break
-            endif
-          endfor
-          if section.settings.cross_sell_metafield and product.metafields.custom.cross_sell_products.value
-            assign has_cross_sell = true
-          endif
-        -%}
-
-        {%- if has_cross_sell -%}
-          <div class="pp-cross-sell">
-            <h2 class="pp-cross-sell__title">{{ section.settings.cross_sell_heading | default: 'Complétez le look' }}</h2>
-            <div class="pp-cross-sell__grid">
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'cross_sell_product' and block.settings.product != blank -%}
-                  {% render 'product-card', product: block.settings.product %}
-                {%- endif -%}
-              {%- endfor -%}
-
-              {%- if section.settings.cross_sell_metafield and product.metafields.custom.cross_sell_products.value -%}
-                {%- for cross_product in product.metafields.custom.cross_sell_products.value -%}
-                  {% render 'product-card', product: cross_product %}
-                {%- endfor -%}
-              {%- endif -%}
-            </div>
+      <div class="pp-gallery__main">
+        {%- if first_image -%}
+          <img
+            data-main-image
+            src="{{ first_image | image_url: width: 1400 }}"
+            alt="{{ first_image.alt | escape | default: product.title }}"
+            width="1400"
+            height="{{ 1400 | divided_by: first_image.aspect_ratio | round }}"
+          >
+        {%- else -%}
+          <div class="pp-gallery__placeholder">
+            {{ 'product-1' | placeholder_svg_tag: 'pp-gallery__placeholder-svg' }}
           </div>
         {%- endif -%}
-
       </div>
 
-      {%- comment -%} ═══ RIGHT COLUMN: Product Info ═══ {%- endcomment -%}
-      <div class="pp-info-col">
-        <div class="pp-info">
+      <script type="application/json" data-gallery-images>
+        [
+          {%- for media in product.media -%}
+            {
+              "src": {{ media | image_url: width: 1400 | json }},
+              "alt": {{ media.alt | default: product.title | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      </script>
+    </product-gallery>
 
-          {%- comment -%} 1. Title + Wishlist {%- endcomment -%}
-          <div class="pp-title-row">
-            <h1 class="pp-title">{{ product.title }}</h1>
-            <button class="pp-wishlist btn--icon" data-wishlist-toggle data-product-handle="{{ product.handle }}" aria-label="Ajouter aux favoris">
-              {% render 'icon', name: 'heart', size: 20 %}
-            </button>
-          </div>
+    {%- comment -%} ═══ RIGHT — Product information ═══ {%- endcomment -%}
+    <div class="pp-info">
 
-          {%- comment -%} 2. Subtitle (selected color value) {%- endcomment -%}
+      {%- comment -%} Color / variant label {%- endcomment -%}
+      {%- for option in product.options_with_values -%}
+        {%- if option.name == 'Color' or option.name == 'Couleur' -%}
+          <p class="pp-variant-label" data-color-name>{{ option.selected_value }}</p>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Title {%- endcomment -%}
+      <h1 class="pp-title">{{ product.title }}</h1>
+
+      {%- comment -%} Price {%- endcomment -%}
+      <p class="pp-price">
+        <span data-product-price>{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span class="pp-price--compare" data-compare-price>
+            <s>{{ current_variant.compare_at_price | money }}</s>
+          </span>
+        {%- else -%}
+          <span class="pp-price--compare" data-compare-price style="display:none;"></span>
+        {%- endif -%}
+      </p>
+
+      {%- comment -%} ── Product form ── {%- endcomment -%}
+      {%- form 'product', product, id: 'product-form', data-product-form: '' -%}
+        <variant-selector>
+          <script type="application/json" data-variants>{{ product.variants | json }}</script>
+
           {%- for option in product.options_with_values -%}
             {%- if option.name == 'Color' or option.name == 'Couleur' -%}
-              <p class="pp-subtitle" data-color-name>{{ option.selected_value }}</p>
-            {%- endif -%}
-          {%- endfor -%}
-
-          {%- comment -%} 3. Price {%- endcomment -%}
-          <div class="pp-price">
-            <span class="pp-price__current" data-product-price>{{ current_variant.price | money }}</span>
-            {%- if current_variant.compare_at_price > current_variant.price -%}
-              <span class="pp-price__compare" data-compare-price>
-                <s>{{ current_variant.compare_at_price | money }}</s>
-              </span>
-            {%- else -%}
-              <span class="pp-price__compare" data-compare-price style="display:none;"></span>
-            {%- endif -%}
-          </div>
-
-          {%- comment -%} Product form {%- endcomment -%}
-          {%- form 'product', product, id: 'product-form', data-product-form: '' -%}
-            <variant-selector>
-              <script type="application/json" data-variants>{{ product.variants | json }}</script>
-
-              {%- for option in product.options_with_values -%}
-                {%- if option.name == 'Color' or option.name == 'Couleur' -%}
-                  {%- comment -%} Divider + Color {%- endcomment -%}
-                  <hr class="pp-divider">
-                  <p class="pp-option-label">Couleur : <span data-color-name>{{ option.selected_value }}</span></p>
-                  <div class="pp-swatches">
-                    {%- for value in option.values -%}
-                      {%- liquid
-                        assign variant_for_color = nil
-                        for variant in product.variants
-                          if variant.options[forloop.parentloop.index0] == value
-                            assign variant_for_color = variant
-                            break
-                          endif
-                        endfor
-                      -%}
-                      <button
-                        type="button"
-                        class="pp-swatch{% if option.selected_value == value %} is-active{% endif %}"
-                        data-option
-                        data-option-position="{{ forloop.parentloop.index }}"
-                        data-value="{{ value }}"
-                        aria-label="{{ value }}"
-                        title="{{ value }}"
-                      >
-                        {%- if variant_for_color and variant_for_color.featured_image -%}
-                          <img src="{{ variant_for_color.featured_image | image_url: width: 120 }}" alt="{{ value }}" width="52" height="52">
-                        {%- else -%}
-                          <span class="pp-swatch__dot" style="background-color: {{ value | handleize }};"></span>
-                        {%- endif -%}
-                      </button>
-                    {%- endfor -%}
-                  </div>
-
-                {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
-                  {%- comment -%} Divider + Size {%- endcomment -%}
-                  <hr class="pp-divider">
-                  <div class="pp-size-row">
-                    <span class="pp-size-label">Taille <span data-size-value>{{ option.selected_value }}</span></span>
-                    {%- if section.settings.size_guide_url != blank -%}
-                      <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">Guide des tailles</a>
+              {%- comment -%} Color swatches — small circles {%- endcomment -%}
+              <div class="pp-swatches">
+                {%- for value in option.values -%}
+                  {%- liquid
+                    assign variant_for_color = nil
+                    for variant in product.variants
+                      if variant.options[forloop.parentloop.index0] == value
+                        assign variant_for_color = variant
+                        break
+                      endif
+                    endfor
+                  -%}
+                  <button
+                    type="button"
+                    class="pp-swatch{% if option.selected_value == value %} is-active{% endif %}"
+                    data-option
+                    data-option-position="{{ forloop.parentloop.index }}"
+                    data-value="{{ value }}"
+                    aria-label="{{ value }}"
+                    title="{{ value }}"
+                  >
+                    {%- if variant_for_color and variant_for_color.featured_image -%}
+                      <img src="{{ variant_for_color.featured_image | image_url: width: 80 }}" alt="{{ value }}" width="32" height="32">
+                    {%- else -%}
+                      <span class="pp-swatch__color" style="background-color: {{ value | handleize }};"></span>
                     {%- endif -%}
-                  </div>
-                  <div class="pp-sizes">
-                    {%- for value in option.values -%}
-                      <button
-                        type="button"
-                        class="pp-size{% if option.selected_value == value %} is-active{% endif %}"
-                        data-option
-                        data-option-position="{{ forloop.parentloop.index }}"
-                        data-value="{{ value }}"
-                      >
-                        {{ value }}
-                      </button>
-                    {%- endfor -%}
-                  </div>
+                  </button>
+                {%- endfor -%}
+              </div>
 
-                {%- else -%}
-                  {%- comment -%} Generic option {%- endcomment -%}
-                  <hr class="pp-divider">
-                  <p class="pp-option-label">{{ option.name }}</p>
-                  <div class="pp-sizes">
-                    {%- for value in option.values -%}
-                      <button
-                        type="button"
-                        class="pp-size{% if option.selected_value == value %} is-active{% endif %}"
-                        data-option
-                        data-option-position="{{ forloop.parentloop.index }}"
-                        data-value="{{ value }}"
-                      >
-                        {{ value }}
-                      </button>
-                    {%- endfor -%}
-                  </div>
+            {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
+              {%- comment -%} Model info blocks (rendered above sizes) {%- endcomment -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'model_info' -%}
+                  <p class="pp-model-info" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
                 {%- endif -%}
               {%- endfor -%}
 
-              <input type="hidden" name="id" value="{{ current_variant.id }}">
-            </variant-selector>
+              {%- comment -%} Size options + Size Chart link {%- endcomment -%}
+              <div class="pp-size-row">
+                <div class="pp-sizes">
+                  {%- for value in option.values -%}
+                    <button
+                      type="button"
+                      class="pp-size{% if option.selected_value == value %} is-active{% endif %}"
+                      data-option
+                      data-option-position="{{ forloop.parentloop.index }}"
+                      data-value="{{ value }}"
+                    >{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+                {%- if section.settings.size_guide_url != blank -%}
+                  <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">Size Chart</a>
+                {%- endif -%}
+              </div>
 
-            {%- comment -%} Model info blocks {%- endcomment -%}
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'model_info' -%}
-                <p class="pp-model-info" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
-              {%- endif -%}
-            {%- endfor -%}
-
-            {%- comment -%} Installments {%- endcomment -%}
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'installments' -%}
-                <div class="pp-installments" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
-              {%- endif -%}
-            {%- endfor -%}
-
-            <input type="hidden" name="quantity" value="1">
-
-            {%- comment -%} Add to cart {%- endcomment -%}
-            <button
-              type="submit"
-              class="pp-add-btn"
-              data-add-to-cart
-              data-add-text="{{ 'product.add_to_cart' | t }}"
-              data-soldout-text="{{ 'product.sold_out' | t }}"
-              data-unavailable-text="{{ 'product.unavailable' | t }}"
-              {% unless current_variant.available %}disabled{% endunless %}
-            >
-              {%- if current_variant.available -%}
-                {{ 'product.add_to_cart' | t }}
-              {%- else -%}
-                {{ 'product.sold_out' | t }}
-              {%- endif -%}
-            </button>
-
-            {%- comment -%} Dynamic checkout {%- endcomment -%}
-            <div class="pp-express-btn">
-              {{ form | payment_button }}
-            </div>
-          {%- endform -%}
-
-          {%- comment -%} Trust box — 2 columns, icons centered above text {%- endcomment -%}
-          <div class="pp-trust-box">
-            <div class="pp-trust-cell">
-              {% render 'icon', name: 'return', size: 22 %}
-              <span>{{ section.settings.trust_return_text | default: 'Retour sous 14 jours' }}</span>
-            </div>
-            <div class="pp-trust-cell">
-              {% render 'icon', name: 'truck', size: 22 %}
-              <span>{{ section.settings.trust_shipping_text | default: 'Livraison Rapide' }}</span>
-            </div>
-          </div>
-
-          {%- comment -%} Description accordion (open by default) {%- endcomment -%}
-          {%- if product.description != blank -%}
-            {% render 'accordion', title: 'Description', content: product.description, id: 'product-description', open: true %}
-          {%- endif -%}
-
-          {%- comment -%} Other accordions {%- endcomment -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'accordion' -%}
-              {% render 'accordion', title: block.settings.title, content: block.settings.content, id: block.id, open: block.settings.open_by_default %}
+            {%- else -%}
+              {%- comment -%} Generic option {%- endcomment -%}
+              <p class="pp-option-label">{{ option.name }}</p>
+              <div class="pp-sizes">
+                {%- for value in option.values -%}
+                  <button
+                    type="button"
+                    class="pp-size{% if option.selected_value == value %} is-active{% endif %}"
+                    data-option
+                    data-option-position="{{ forloop.parentloop.index }}"
+                    data-value="{{ value }}"
+                  >{{ value }}</button>
+                {%- endfor -%}
+              </div>
             {%- endif -%}
           {%- endfor -%}
 
-          {%- assign has_accordions = false -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'accordion' -%}{%- assign has_accordions = true -%}{%- endif -%}
-          {%- endfor -%}
-          {%- unless has_accordions -%}
-            {% render 'accordion', title: 'Composition & entretien', content: '<p>Informations du marchand.</p>', id: 'composition' %}
-            {% render 'accordion', title: 'Livraisons & retours', content: '<p>Livraison standard sous 3-5 jours ouvrés. Retour gratuit sous 14 jours.</p>', id: 'shipping' %}
-            {% render 'accordion', title: 'Moyens de paiement', content: '<p>Visa, Mastercard, American Express, PayPal, Scalapay (3x sans frais).</p>', id: 'payment' %}
-          {%- endunless -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+        </variant-selector>
 
+        {%- comment -%} Add to cart {%- endcomment -%}
+        <button
+          type="submit"
+          class="pp-add-btn"
+          data-add-to-cart
+          data-add-text="{{ 'product.add_to_cart' | t }}"
+          data-soldout-text="{{ 'product.sold_out' | t }}"
+          data-unavailable-text="{{ 'product.unavailable' | t }}"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          {%- if current_variant.available -%}
+            {{ 'product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'product.sold_out' | t }}
+          {%- endif -%}
+        </button>
+      {%- endform -%}
+
+      {%- comment -%} ── Tabs (Description + custom tabs) ── {%- endcomment -%}
+      {%- liquid
+        assign has_tabs = false
+        if product.description != blank
+          assign has_tabs = true
+        endif
+        for block in section.blocks
+          if block.type == 'tab'
+            assign has_tabs = true
+            break
+          endif
+        endfor
+      -%}
+
+      {%- if has_tabs -%}
+        <product-tabs class="pp-tabs">
+          <div class="pp-tabs__nav" role="tablist">
+            {%- if product.description != blank -%}
+              <button class="pp-tab-btn is-active" role="tab" data-tab="description" aria-selected="true">Description</button>
+            {%- endif -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tab' -%}
+                <button class="pp-tab-btn" role="tab" data-tab="{{ block.id }}" aria-selected="false" {{ block.shopify_attributes }}>{{ block.settings.title }}</button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="pp-tabs__content">
+            {%- if product.description != blank -%}
+              <div class="pp-tab-panel is-active" data-tab-panel="description">
+                {{ product.description }}
+              </div>
+            {%- endif -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tab' -%}
+                <div class="pp-tab-panel" data-tab-panel="{{ block.id }}">
+                  {{ block.settings.content }}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </product-tabs>
+      {%- endif -%}
+
+      {%- comment -%} ── Cross-sell: Complete the look ── {%- endcomment -%}
+      {%- liquid
+        assign has_cross_sell = false
+        for block in section.blocks
+          if block.type == 'cross_sell_product' and block.settings.product != blank
+            assign has_cross_sell = true
+            break
+          endif
+        endfor
+      -%}
+
+      {%- if has_cross_sell -%}
+        <div class="pp-cross-sell">
+          <h3 class="pp-cross-sell__heading">{{ section.settings.cross_sell_heading | default: 'Complete the look' }}</h3>
+          <div class="pp-cross-sell__list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'cross_sell_product' and block.settings.product != blank -%}
+                {%- assign cs = block.settings.product -%}
+                <div class="pp-cross-item" {{ block.shopify_attributes }}>
+                  <a href="{{ cs.url }}" class="pp-cross-item__image">
+                    {%- if cs.featured_media -%}
+                      <img
+                        src="{{ cs.featured_media | image_url: width: 200 }}"
+                        alt="{{ cs.featured_media.alt | escape | default: cs.title }}"
+                        width="90"
+                        height="117"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                  </a>
+                  <div class="pp-cross-item__details">
+                    <div class="pp-cross-item__header">
+                      <a href="{{ cs.url }}" class="pp-cross-item__name">{{ cs.title }}</a>
+                      <span class="pp-cross-item__price">{{ cs.price | money }}</span>
+                    </div>
+                    {%- for cs_option in cs.options_with_values -%}
+                      {%- if cs_option.name == 'Color' or cs_option.name == 'Couleur' -%}
+                        <span class="pp-cross-item__variant">{{ cs_option.selected_value }}</span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                    {%- for cs_option in cs.options_with_values -%}
+                      {%- if cs_option.name == 'Size' or cs_option.name == 'Taille' -%}
+                        <div class="pp-cross-item__sizes">
+                          {%- for value in cs_option.values -%}
+                            <span class="pp-cross-item__size-pill">{{ value }}</span>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
         </div>
-      </div>
+      {%- endif -%}
 
     </div>
   </div>
@@ -322,14 +287,10 @@
 
 <style>
 /* ============================================================
-   PRODUCT PAGE — Scoped styles (pp-*)
-   Matches reference: premium fashion product page.
-   Font: Avenir
+   PRODUCT PAGE — Merrachi-inspired minimal layout (pp-*)
    ============================================================ */
 
-/* ── Section wrapper ── */
 .pp-section {
-  padding: 0 0 20px;
   font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -337,339 +298,154 @@
   font-family: inherit;
 }
 
-.pp-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+/* ── 50/50 split layout ── */
 
-/* ── Breadcrumbs ── */
-.pp-breadcrumbs {
-  padding: 14px 0 20px;
-  font-size: 0.78rem;
-  color: #999;
-}
-
-.pp-breadcrumbs ol {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-wrap: wrap;
-  gap: 0;
-}
-
-.pp-breadcrumbs li {
-  display: flex;
-  align-items: center;
-}
-
-.pp-breadcrumbs li:not(:last-child)::after {
-  content: '-';
-  margin: 0 8px;
-  color: #ccc;
-}
-
-.pp-breadcrumbs a {
-  color: #999;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.pp-breadcrumbs a:hover {
-  color: var(--color-text);
-}
-
-.pp-breadcrumbs li[aria-current="page"] {
-  color: var(--color-text);
-}
-
-/* ── Two-column layout ── */
 .pp-layout {
   display: grid;
-  grid-template-columns: 56% 1fr;
-  gap: 40px;
-  align-items: start;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 80px);
 }
 
 /* ═══════════════════════════════════════════════
-   LEFT COLUMN: Gallery + Cross-sell
+   LEFT — Gallery
    ═══════════════════════════════════════════════ */
-.pp-left-col {
-  min-width: 0;
-}
-
-.pp-gallery-wrap {
-  display: block;
-  position: sticky;
-  top: 90px;
-}
 
 .pp-gallery {
-  display: flex;
-  gap: 12px;
+  position: relative;
+  display: block;
+  background: #f5f3ef;
 }
 
-/* Thumbnail rail */
-.pp-thumbs {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  flex-shrink: 0;
-  width: 110px;
-}
-
-.pp-thumbs__track {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-  max-height: 650px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.pp-thumbs__track::-webkit-scrollbar {
-  display: none;
-}
-
-.pp-thumb {
-  width: 100px;
-  height: 130px;
-  border: 1.5px solid transparent;
-  border-radius: 4px;
-  overflow: hidden;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  padding: 0;
-  background: none;
-}
-
-.pp-thumb.is-active,
-.pp-thumb:hover {
-  opacity: 1;
-  border-color: var(--color-text);
-}
-
-.pp-thumb img {
+.pp-gallery__main {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.pp-thumbs__arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #aaa;
-  transition: color 0.2s;
-  flex-shrink: 0;
-  padding: 0;
-  margin-top: 4px;
 }
 
-.pp-thumbs__arrow:hover {
-  color: var(--color-text);
-}
-
-/* Main media area */
-.pp-main-image {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #f5f3ef;
-  aspect-ratio: 3 / 4;
-}
-
-.pp-main-image img {
+.pp-gallery__main img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+  object-fit: cover;
 }
 
-.pp-main-image__placeholder {
+.pp-gallery__placeholder {
   width: 100%;
-  height: 100%;
+  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f0ede8;
 }
 
-.pp-main-image__placeholder svg {
-  width: 50%;
-  opacity: 0.35;
+.pp-gallery__placeholder-svg {
+  width: 40%;
+  opacity: 0.3;
 }
 
-/* Gallery prev/next arrows */
-.pp-nav {
+/* Dot navigation — vertically centered on left edge */
+
+.pp-gallery__dots {
   position: absolute;
+  left: 24px;
   top: 50%;
   transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.2s;
-  color: #333;
-  padding: 0;
+  gap: 14px;
   z-index: 2;
 }
 
-.pp-nav:hover {
-  opacity: 0.8;
+.pp-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c0bdb8;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-.pp-nav--prev { left: 12px; }
-.pp-nav--next { right: 12px; }
-
-/* ── Cross-sell: Complétez le look ── */
-.pp-cross-sell {
-  margin-top: 48px;
+.pp-dot.is-active {
+  width: 9px;
+  height: 9px;
+  background: #333;
 }
 
-.pp-cross-sell__title {
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 400;
-  font-style: italic;
-  letter-spacing: 0;
-  text-align: center;
-  margin: 0 0 22px;
-  color: var(--color-text);
-}
-
-.pp-cross-sell__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.pp-dot:hover:not(.is-active) {
+  background: #888;
 }
 
 /* ═══════════════════════════════════════════════
-   RIGHT COLUMN: Product Info
+   RIGHT — Product info
    ═══════════════════════════════════════════════ */
-.pp-info-col {
-  min-width: 0;
-}
 
 .pp-info {
-  max-width: 440px;
+  padding: 48px 48px 64px 56px;
+  border-left: 1px solid #eae8e4;
+  overflow-y: auto;
 }
 
-/* Title row */
-.pp-title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+/* Variant / color label */
+
+.pp-variant-label {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 6px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
+
+/* Title */
 
 .pp-title {
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.6rem;
+  font-family: inherit;
+  font-size: 1.5rem;
   font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.25;
-  margin: 0;
-  color: var(--color-text);
-}
-
-.pp-wishlist {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  color: #888;
-  flex-shrink: 0;
-  margin-top: 2px;
-  transition: color 0.2s;
-}
-
-.pp-wishlist:hover {
-  color: var(--color-text);
-}
-
-/* Subtitle */
-.pp-subtitle {
-  font-size: 0.95rem;
-  color: #555;
-  margin: 8px 0 0;
-  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0 0 10px;
+  color: #1a1a1a;
 }
 
 /* Price */
+
 .pp-price {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin: 28px 0 0;
+  margin: 0 0 28px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #1a1a1a;
 }
 
-.pp-price__current {
-  font-size: 1.3rem;
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.pp-price__compare {
-  font-size: 0.95rem;
+.pp-price--compare {
+  font-size: 0.9rem;
   color: #aaa;
 }
 
-.pp-price__compare s {
+.pp-price--compare s {
   text-decoration: line-through;
 }
 
-/* Dividers */
-.pp-divider {
-  border: none;
-  border-top: 1px solid #e5e2dd;
-  margin: 24px 0;
-}
+/* ── Color swatches (small circles) ── */
 
-/* Option label */
-.pp-option-label {
-  font-size: 0.92rem;
-  color: #777;
-  margin: 0 0 16px;
-}
-
-.pp-option-label span {
-  color: var(--color-text);
-}
-
-/* Color swatches */
 .pp-swatches {
   display: flex;
-  gap: 10px;
-  margin-bottom: 0;
-  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .pp-swatch {
-  width: 62px;
-  height: 80px;
-  border-radius: 4px;
-  border: 1.5px solid #e0ddd8;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #ddd;
   overflow: hidden;
   cursor: pointer;
   padding: 2px;
@@ -678,328 +454,413 @@
 }
 
 .pp-swatch.is-active {
-  border-color: var(--color-text);
+  border-color: #333;
+}
+
+.pp-swatch:hover:not(.is-active) {
+  border-color: #999;
 }
 
 .pp-swatch img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 50%;
   display: block;
 }
 
-.pp-swatch__dot {
+.pp-swatch__color {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 2px;
+  border-radius: 50%;
 }
 
-/* Size row */
+/* ── Model info ── */
+
+.pp-model-info {
+  font-size: 0.84rem;
+  color: #666;
+  margin: 0 0 24px;
+  line-height: 1.55;
+}
+
+/* ── Size row: sizes left, size chart right ── */
+
 .pp-size-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 28px;
 }
 
-.pp-size-label {
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.pp-size-guide {
-  font-size: 0.85rem;
-  color: #777;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s;
-}
-
-.pp-size-guide:hover {
-  color: var(--color-text);
-}
-
-/* Size pills */
 .pp-sizes {
   display: flex;
-  gap: 10px;
+  gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 0;
 }
 
 .pp-size {
-  min-width: 48px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #d4d1cc;
-  border-radius: 6px;
-  background: transparent;
-  font-size: 0.88rem;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-family: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
+  color: #555;
   transition: all 0.2s;
-  padding: 0 16px;
-  color: var(--color-text);
+  letter-spacing: 0.02em;
+  position: relative;
 }
 
-.pp-size:hover {
-  border-color: var(--color-text);
+.pp-size::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: #333;
+  transform: scaleX(0);
+  transition: transform 0.2s;
 }
 
 .pp-size.is-active {
-  background: #f0ede8;
-  border-color: #c8c5c0;
+  color: #1a1a1a;
   font-weight: 500;
 }
 
+.pp-size.is-active::after {
+  transform: scaleX(1);
+}
+
+.pp-size:hover:not(.is-active) {
+  color: #1a1a1a;
+}
+
 .pp-size:disabled {
-  opacity: 0.35;
+  opacity: 0.3;
   cursor: not-allowed;
   text-decoration: line-through;
 }
 
-/* Model info */
-.pp-model-info {
-  font-size: 0.88rem;
-  color: #777;
-  margin: 22px 0 0;
-  line-height: 1.6;
+.pp-size-guide {
+  font-size: 0.85rem;
+  color: #555;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s;
+  white-space: nowrap;
 }
 
-.pp-model-info a {
-  color: var(--color-text);
+.pp-size-guide:hover {
+  color: #1a1a1a;
+}
+
+/* ── Option label (generic) ── */
+
+.pp-option-label {
+  font-size: 0.88rem;
+  color: #666;
+  margin: 0 0 12px;
+}
+
+/* ── Add to cart ── */
+
+.pp-add-btn {
+  width: 100%;
+  height: 52px;
+  margin-top: 4px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pp-add-btn:hover {
+  background: #333;
+}
+
+.pp-add-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════════ */
+
+.pp-tabs {
+  display: block;
+  margin-top: 36px;
+}
+
+.pp-tabs__nav {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid #eae8e4;
+  padding-bottom: 0;
+}
+
+.pp-tab-btn {
+  background: none;
+  border: none;
+  padding: 0 0 14px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+  position: relative;
+  white-space: nowrap;
+}
+
+.pp-tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: #1a1a1a;
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+
+.pp-tab-btn.is-active {
+  color: #1a1a1a;
+  font-weight: 400;
+}
+
+.pp-tab-btn.is-active::after {
+  transform: scaleX(1);
+}
+
+.pp-tab-btn:hover:not(.is-active) {
+  color: #666;
+}
+
+.pp-tabs__content {
+  padding-top: 20px;
+}
+
+.pp-tab-panel {
+  display: none;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.pp-tab-panel.is-active {
+  display: block;
+}
+
+.pp-tab-panel p {
+  margin: 0 0 12px;
+}
+
+.pp-tab-panel p:last-child {
+  margin-bottom: 0;
+}
+
+.pp-tab-panel a {
+  color: #1a1a1a;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-/* Installments */
-.pp-installments {
-  font-size: 0.85rem;
-  color: #777;
-  margin: 20px 0 0;
-  line-height: 1.55;
+.pp-tab-panel ul, .pp-tab-panel ol {
+  padding-left: 18px;
+  margin: 0 0 12px;
 }
 
-.pp-installments p {
-  margin: 0;
+.pp-tab-panel li {
+  margin-bottom: 4px;
+  font-size: 0.86rem;
+  line-height: 1.6;
 }
 
-/* ATC button */
-.pp-add-btn {
-  width: 100%;
-  height: 52px;
-  margin-top: 24px;
-  background: #333;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: opacity 0.2s;
+/* ═══════════════════════════════════════════════
+   CROSS-SELL — Complete the look
+   ═══════════════════════════════════════════════ */
+
+.pp-cross-sell {
+  margin-top: 44px;
 }
 
-.pp-add-btn:hover {
-  opacity: 0.85;
+.pp-cross-sell__heading {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 20px;
 }
 
-.pp-add-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* Dynamic checkout */
-.pp-express-btn {
-  width: 100%;
-  margin-top: 8px;
-}
-
-.pp-express-btn .shopify-payment-button__button {
-  border-radius: 5px !important;
-  height: 50px !important;
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-}
-
-/* Trust box — 2 columns, icons centered above text */
-.pp-trust-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 22px;
-  border: 1px solid #e5e2dd;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.pp-trust-cell {
+.pp-cross-sell__list {
   display: flex;
   flex-direction: column;
+}
+
+.pp-cross-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #eae8e4;
+}
+
+.pp-cross-item:last-child {
+  border-bottom: 1px solid #eae8e4;
+}
+
+.pp-cross-item__image {
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.pp-cross-item__image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+  background: #f5f3ef;
+}
+
+.pp-cross-item__details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 2px;
+}
+
+.pp-cross-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pp-cross-item__name {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-decoration: none;
+  line-height: 1.3;
+}
+
+.pp-cross-item__name:hover {
+  text-decoration: underline;
+}
+
+.pp-cross-item__price {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.pp-cross-item__variant {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 2px;
+}
+
+.pp-cross-item__sizes {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.pp-cross-item__size-pill {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 22px 16px;
-  text-align: center;
-}
-
-.pp-trust-cell:first-child {
-  border-right: 1px solid #e5e2dd;
-}
-
-.pp-trust-cell svg {
-  flex-shrink: 0;
-  color: #555;
-}
-
-.pp-trust-cell span {
+  min-width: 34px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
   font-size: 0.78rem;
-  color: var(--color-text);
-  line-height: 1.3;
-  font-weight: 400;
-}
-
-/* Accordions area */
-.pp-info .accordion {
-  border-color: #e5e2dd;
-}
-
-.pp-info .accordion:first-of-type {
-  margin-top: 22px;
-}
-
-.pp-info .accordion__trigger {
-  padding: 16px 0;
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.92rem;
-  font-weight: 500;
-}
-
-.pp-info .accordion__content {
-  font-size: 0.84rem;
-  line-height: 1.65;
-  color: #555;
-}
-
-.pp-info .accordion__content ul,
-.pp-info .accordion__content ol {
-  list-style: disc;
-  padding-left: 18px;
-  margin: 0;
-}
-
-.pp-info .accordion__content li {
-  margin-bottom: 2px;
-  font-size: 0.84rem;
-  line-height: 1.5;
-}
-
-.pp-info .accordion__content li::marker {
-  color: #333;
-  font-size: 0.55em;
-}
-
-.pp-info .accordion__content p {
-  margin: 0 0 6px;
-}
-
-.pp-info .accordion__content p:last-child {
-  margin-bottom: 0;
+  color: #444;
+  background: transparent;
+  cursor: default;
+  letter-spacing: 0.02em;
 }
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════ */
 
-@media (max-width: 1200px) {
-  .pp-layout {
-    gap: 30px;
-  }
-
-  .pp-info {
-    max-width: none;
-  }
-}
-
-/* Tablet — keep 2-col as long as possible */
 @media (max-width: 1023px) {
   .pp-layout {
     grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .pp-gallery-wrap {
-    position: static;
+    min-height: auto;
   }
 
   .pp-gallery {
-    flex-direction: column;
-  }
-
-  .pp-thumbs {
-    flex-direction: row;
-    width: auto;
-    order: 2;
-  }
-
-  .pp-thumbs__track {
-    flex-direction: row;
-    max-height: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    max-width: 100%;
-  }
-
-  .pp-thumbs__arrow {
-    display: none;
-  }
-
-  .pp-thumb {
-    width: 60px;
-    height: 78px;
-  }
-
-  .pp-main-image {
     aspect-ratio: 3 / 4;
+    max-height: 75vh;
+    overflow: hidden;
   }
 
   .pp-info {
-    max-width: 100%;
+    padding: 32px 20px 48px;
+    border-left: none;
+    border-top: 1px solid #eae8e4;
   }
 
-  .pp-cross-sell__grid {
-    grid-template-columns: 1fr 1fr;
+  .pp-gallery__dots {
+    left: 16px;
   }
 }
 
 @media (max-width: 767px) {
-  .pp-container {
-    padding: 0 16px;
+  .pp-gallery {
+    max-height: 65vh;
+  }
+
+  .pp-info {
+    padding: 24px 16px 40px;
   }
 
   .pp-title {
     font-size: 1.3rem;
   }
 
-  .pp-trust-box {
-    grid-template-columns: 1fr;
+  .pp-tabs__nav {
+    gap: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .pp-trust-cell:first-child {
-    border-right: none;
-    border-bottom: 1px solid #eae8e4;
+  .pp-tabs__nav::-webkit-scrollbar {
+    display: none;
   }
 
-  .pp-cross-sell {
-    margin-top: 36px;
+  .pp-tab-btn {
+    font-size: 0.82rem;
   }
 
-  .pp-cross-sell__grid {
-    gap: 12px;
+  .pp-cross-item__sizes {
+    gap: 6px;
+  }
+
+  .pp-cross-item__size-pill {
+    min-width: 30px;
+    height: 28px;
+    font-size: 0.74rem;
   }
 }
 </style>
@@ -1016,36 +877,13 @@
     },
     {
       "type": "header",
-      "content": "Trust box"
-    },
-    {
-      "type": "text",
-      "id": "trust_return_text",
-      "label": "Return text",
-      "default": "Retour sous 14 jours"
-    },
-    {
-      "type": "text",
-      "id": "trust_shipping_text",
-      "label": "Shipping text",
-      "default": "Livraison Rapide"
-    },
-    {
-      "type": "header",
       "content": "Cross-sell"
     },
     {
       "type": "text",
       "id": "cross_sell_heading",
       "label": "Cross-sell heading",
-      "default": "Complétez le look"
-    },
-    {
-      "type": "checkbox",
-      "id": "cross_sell_metafield",
-      "label": "Use product metafield (custom.cross_sell_products)",
-      "default": false,
-      "info": "If enabled, uses the product metafield for cross-sell items."
+      "default": "Complete the look"
     }
   ],
   "blocks": [
@@ -1057,44 +895,25 @@
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "Le mannequin mesure 1m78 et porte la taille S"
+          "default": "This model is 173cm tall and wearing a size S"
         }
       ]
     },
     {
-      "type": "installments",
-      "name": "Installments info",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Payez en 3x sans frais avec Scalapay</p>"
-        }
-      ]
-    },
-    {
-      "type": "accordion",
-      "name": "Accordion",
+      "type": "tab",
+      "name": "Tab",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Composition & entretien"
+          "label": "Tab title",
+          "default": "Fabric"
         },
         {
           "type": "richtext",
           "id": "content",
-          "label": "Content",
-          "default": "<p>Informations du marchand.</p>"
-        },
-        {
-          "type": "checkbox",
-          "id": "open_by_default",
-          "label": "Open by default",
-          "default": false
+          "label": "Tab content",
+          "default": "<p>Fabric and care information.</p>"
         }
       ]
     },

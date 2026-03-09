@@ -15,57 +15,46 @@
         "model_1": {
           "type": "model_info",
           "settings": {
-            "text": "Le mannequin mesure 1m78 et porte la taille S"
+            "text": "This model is 173cm tall and wearing a size S - We recommend sizing down"
           }
         },
-        "installments_1": {
-          "type": "installments",
+        "tab_fabric": {
+          "type": "tab",
           "settings": {
-            "text": "<p>Payez en 3x sans frais avec Scalapay</p>"
+            "title": "Fabric",
+            "content": "<p>100% organic cotton. Machine wash at 30°C. Do not tumble dry.</p>"
           }
         },
-        "accordion_1": {
-          "type": "accordion",
+        "tab_sizing": {
+          "type": "tab",
           "settings": {
-            "title": "Composition & entretien",
-            "content": "<p>100% Coton bio. Lavage en machine à 30°C. Ne pas utiliser de sèche-linge.</p>",
-            "open_by_default": false
+            "title": "Sizing",
+            "content": "<p>This item runs true to size. We recommend ordering your usual size.</p>"
           }
         },
-        "accordion_2": {
-          "type": "accordion",
+        "tab_shipping": {
+          "type": "tab",
           "settings": {
-            "title": "Livraisons & retours",
-            "content": "<p>Livraison standard sous 3-5 jours ouvrés. Livraison express sous 24-48h. Retour gratuit sous 14 jours.</p>",
-            "open_by_default": false
-          }
-        },
-        "accordion_3": {
-          "type": "accordion",
-          "settings": {
-            "title": "Moyens de paiement",
-            "content": "<p>Visa, Mastercard, American Express, PayPal, Scalapay (3x sans frais).</p>",
-            "open_by_default": false
+            "title": "Shipping and returns",
+            "content": "<p>Standard delivery in 3-5 business days. Express delivery in 24-48h. Free returns within 14 days.</p>"
           }
         }
       },
       "block_order": [
         "model_1",
-        "installments_1",
-        "accordion_1",
-        "accordion_2",
-        "accordion_3"
+        "tab_fabric",
+        "tab_sizing",
+        "tab_shipping"
       ],
       "settings": {
         "size_guide_url": "",
-        "trust_return_text": "Retour sous 14 jours",
-        "trust_shipping_text": "Livraison Rapide"
+        "cross_sell_heading": "Complete the look"
       }
     },
     "recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "heading": "Vous aimerez aussi",
+        "heading": "You may also like",
         "limit": 8
       }
     }

@@ -1,12 +1,12 @@
 {%- comment -%}
-  "Vous aimerez aussi" — product recommendations
+  "You may also like" — product recommendations
   Horizontal scrollable row with navigation arrow.
   Scoped class prefix: prec-
 {%- endcomment -%}
 
 <section class="prec-section" data-product-id="{{ product.id }}">
   <div class="prec-container">
-    <h2 class="prec-title">{{ section.settings.heading | default: 'Vous aimerez aussi' }}</h2>
+    <h2 class="prec-title">{{ section.settings.heading | default: 'You may also like' }}</h2>
     <div class="prec-carousel-wrap">
       <div class="prec-carousel" id="product-recommendations" data-recs-track>
         {%- if recommendations.performed and recommendations.products_count > 0 -%}
@@ -17,8 +17,8 @@
           {%- endfor -%}
         {%- endif -%}
       </div>
-      <button class="prec-arrow" data-recs-next aria-label="Voir plus">
-        {% render 'icon', name: 'chevron-right', size: 20 %}
+      <button class="prec-arrow" data-recs-next aria-label="See more">
+        {% render 'icon', name: 'chevron-right', size: 18 %}
       </button>
     </div>
   </div>
@@ -65,24 +65,24 @@
 
 <style>
 .prec-section {
-  padding: 44px 0 52px;
-  border-top: 1px solid #e5e2dd;
+  padding: 48px 0 56px;
+  border-top: 1px solid #eae8e4;
   font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .prec-container {
-  max-width: 1280px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 .prec-title {
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.35rem;
+  font-family: inherit;
+  font-size: 1.2rem;
   font-weight: 400;
   letter-spacing: 0;
   margin: 0 0 28px;
-  color: var(--color-text);
+  color: #1a1a1a;
   text-align: center;
 }
 
@@ -115,8 +115,8 @@
   right: -8px;
   top: 38%;
   transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: #fff;
   border: 1px solid #eae8e4;
@@ -124,7 +124,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   z-index: 3;
   color: #333;
   padding: 0;
@@ -132,7 +132,7 @@
 }
 
 .prec-arrow:hover {
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 1200px) {
@@ -157,8 +157,8 @@
     gap: 12px;
   }
   .prec-title {
-    font-size: 1.2rem;
-    margin-bottom: 24px;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
   }
   .prec-arrow {
     display: none;
@@ -175,7 +175,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Vous aimerez aussi"
+      "default": "You may also like"
     },
     {
       "type": "range",
