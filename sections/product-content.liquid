@@ -150,7 +150,7 @@
                         {%- endfor -%}
                       </div>
                       {%- if section.settings.size_guide_url != blank -%}
-                        <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">{{ 'product.size_guide' | t | default: 'Size guide' }}</a>
+                        <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">{{ 'product.size_guide' | t | default: 'Guide des tailles' }}</a>
                       {%- endif -%}
                     </div>
                   </div>
@@ -286,7 +286,7 @@
             {%- if product.description != blank -%}
               <accordion-toggle class="pp-accordion">
                 <button class="pp-accordion__trigger" data-accordion-trigger aria-expanded="false">
-                  <span>{{ 'product.product_details' | t | default: 'Product details' }}</span>
+                  <span>{{ 'product.product_details' | t | default: 'Détails du produit' }}</span>
                   <span class="pp-accordion__chevron">{% render 'icon', name: 'chevron-right', size: 12 %}</span>
                 </button>
                 <div class="accordion__panel pp-accordion__panel" hidden>
@@ -1553,72 +1553,72 @@
 
 {% schema %}
 {
-  "name": "Product content",
+  "name": "Contenu produit",
   "class": "product-content-section",
   "settings": [
     {
       "type": "url",
       "id": "size_guide_url",
-      "label": "Size guide URL"
+      "label": "URL du guide des tailles"
     },
     {
       "type": "header",
-      "content": "Cross-sell"
+      "content": "Complétez le look"
     },
     {
       "type": "text",
       "id": "cross_sell_heading",
-      "label": "Cross-sell heading",
-      "default": "You may also like"
+      "label": "Titre de la section",
+      "default": "Complétez le look"
     }
   ],
   "blocks": [
     {
       "type": "model_info",
-      "name": "Model info line",
+      "name": "Info mannequin",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
-          "default": "This model is 173cm tall and wearing a size S"
+          "label": "Texte",
+          "default": "Ce mannequin mesure 173 cm et porte une taille S"
         }
       ]
     },
     {
       "type": "tab",
-      "name": "Accordion panel",
+      "name": "Panneau accordéon",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Delivery & Returns"
+          "label": "Titre",
+          "default": "Livraisons & retours"
         },
         {
           "type": "richtext",
           "id": "content",
-          "label": "Content",
-          "default": "<p>Complimentary shipping. Free returns within 30 days.</p>"
+          "label": "Contenu",
+          "default": "<p>Livraison offerte. Retours gratuits sous 30 jours.</p>"
         }
       ]
     },
     {
       "type": "trust_badge",
-      "name": "Trust badge",
+      "name": "Badge de confiance",
       "limit": 4,
       "settings": [
         {
           "type": "select",
           "id": "icon",
-          "label": "Icon",
+          "label": "Icône",
           "options": [
-            { "value": "return", "label": "Return" },
-            { "value": "truck", "label": "Shipping" },
-            { "value": "package", "label": "Package" },
-            { "value": "lock", "label": "Secure" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "gift", "label": "Gift" },
+            { "value": "return", "label": "Retour" },
+            { "value": "truck", "label": "Livraison" },
+            { "value": "package", "label": "Colis" },
+            { "value": "lock", "label": "Sécurisé" },
+            { "value": "shield", "label": "Bouclier" },
+            { "value": "gift", "label": "Cadeau" },
             { "value": "headset", "label": "Support" }
           ],
           "default": "return"
@@ -1626,24 +1626,24 @@
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
-          "default": "Free returns"
+          "label": "Texte",
+          "default": "Retours gratuits"
         }
       ]
     },
     {
       "type": "cross_sell_product",
-      "name": "Cross-sell product",
+      "name": "Produit recommandé",
       "limit": 4,
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Product"
+          "label": "Produit"
         }
       ]
     }
   ],
-  "presets": [{"name": "Product content"}]
+  "presets": [{"name": "Contenu produit"}]
 }
 {% endschema %}
