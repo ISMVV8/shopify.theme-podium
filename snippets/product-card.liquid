@@ -136,4 +136,20 @@
       {% render 'icon', name: 'heart', size: 18 %}
     </button>
   {%- endif -%}
+
+  {%- if product.available -%}
+    <button
+      class="product-card__quick-add btn--icon"
+      data-quick-sheet-trigger
+      data-product-url="{{ product.url }}.js"
+      data-product-title="{{ product.title | escape }}"
+      data-product-image="{{ product.featured_media | image_url: width: 200 }}"
+      data-product-price="{{ product.price | money }}"
+      data-product-link="{{ product.url }}"
+      aria-label="{{ 'product.add_to_cart' | t }}"
+    >
+      {% render 'icon', name: 'cart', size: 16 %}
+      <span class="product-card__quick-add-plus">+</span>
+    </button>
+  {%- endif -%}
 </article>

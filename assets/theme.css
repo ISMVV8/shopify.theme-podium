@@ -2477,6 +2477,240 @@ featured-products {
   }
 }
 
+/* --- Quick Add Icon (card) --- */
+
+.product-card__quick-add {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .product-card__quick-add {
+    display: flex;
+    position: absolute;
+    bottom: var(--space-sm);
+    right: var(--space-sm);
+    z-index: 1;
+    background: var(--color-bg);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+  .product-card__quick-add-plus {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Hide old quick-buy on mobile */
+  .quick-buy {
+    display: none !important;
+  }
+}
+
+/* --- Quick Add Bottom Sheet --- */
+
+.quick-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.quick-sheet[aria-hidden="false"] {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.quick-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.quick-sheet[aria-hidden="false"] .quick-sheet__backdrop {
+  opacity: 1;
+}
+
+.quick-sheet__panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--color-bg);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 24px 32px;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.quick-sheet[aria-hidden="false"] .quick-sheet__panel {
+  transform: translateY(0);
+}
+
+.quick-sheet__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quick-sheet__close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.quick-sheet__heading {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.quick-sheet__product {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: var(--color-card-bg, #f5f5f5);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.quick-sheet__img {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.quick-sheet__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.quick-sheet__title {
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.quick-sheet__variant-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.quick-sheet__price {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.quick-sheet__options {
+  margin-bottom: 24px;
+}
+
+.quick-sheet__option-group {
+  margin-bottom: 16px;
+}
+
+.quick-sheet__option-label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+.quick-sheet__option-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-sheet__option-btn {
+  min-width: 48px;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text);
+}
+
+.quick-sheet__option-btn:hover {
+  border-color: var(--color-text);
+}
+
+.quick-sheet__option-btn.is-selected {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+.quick-sheet__option-btn.is-unavailable {
+  opacity: 0.35;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.quick-sheet__atc {
+  margin-bottom: 12px;
+}
+
+.quick-sheet__atc:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quick-sheet__more {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.quick-sheet__more:hover {
+  border-color: var(--color-text);
+}
+
 /* --- Price --- */
 
 .price {

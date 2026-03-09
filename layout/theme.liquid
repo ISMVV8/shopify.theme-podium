@@ -116,6 +116,34 @@
   {% section 'footer' %}
   {% section 'cart-drawer' %}
 
+  <!-- Quick Add Bottom Sheet -->
+  <div class="quick-sheet" id="quick-sheet" aria-hidden="true">
+    <div class="quick-sheet__backdrop" data-quick-sheet-close></div>
+    <div class="quick-sheet__panel">
+      <div class="quick-sheet__header">
+        <button class="quick-sheet__close btn--icon" data-quick-sheet-close aria-label="{{ 'cart.close' | t | default: 'Fermer' }}">
+          {% render 'icon', name: 'close', size: 18 %}
+        </button>
+        <span class="quick-sheet__heading">{{ 'product.add_to_cart' | t | default: 'Ajouter ce produit' }}</span>
+      </div>
+      <div class="quick-sheet__product">
+        <img class="quick-sheet__img" src="" alt="" width="100" height="100" data-quick-sheet-img>
+        <div class="quick-sheet__details">
+          <h3 class="quick-sheet__title" data-quick-sheet-title></h3>
+          <p class="quick-sheet__variant-label" data-quick-sheet-variant-label></p>
+          <p class="quick-sheet__price" data-quick-sheet-price></p>
+        </div>
+      </div>
+      <div class="quick-sheet__options" data-quick-sheet-options></div>
+      <button class="quick-sheet__atc btn btn--primary btn--full btn--large" data-quick-sheet-atc disabled>
+        {{ 'product.add_to_cart' | t | default: 'AJOUTER AU PANIER' }}
+      </button>
+      <a class="quick-sheet__more" href="#" data-quick-sheet-link>
+        {{ 'product.view_details' | t | default: 'Plus de détails' }}
+      </a>
+    </div>
+  </div>
+
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </body>
 </html>

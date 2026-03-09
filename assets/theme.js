@@ -1123,10 +1123,212 @@ document.addEventListener('DOMContentLoaded', () => {
   initWishlistToggles();
   initSizePanelToggle();
   initQuickBuy();
+  initQuickSheet();
   initProductRecommendations();
   initStickyATC();
   initSortDropdown();
 });
+
+/* --- Quick Add Bottom Sheet --- */
+function initQuickSheet() {
+  var sheet = document.getElementById('quick-sheet');
+  if (!sheet) return;
+
+  var panel = sheet.querySelector('.quick-sheet__panel');
+  var imgEl = sheet.querySelector('[data-quick-sheet-img]');
+  var titleEl = sheet.querySelector('[data-quick-sheet-title]');
+  var variantLabelEl = sheet.querySelector('[data-quick-sheet-variant-label]');
+  var priceEl = sheet.querySelector('[data-quick-sheet-price]');
+  var optionsEl = sheet.querySelector('[data-quick-sheet-options]');
+  var atcBtn = sheet.querySelector('[data-quick-sheet-atc]');
+  var linkEl = sheet.querySelector('[data-quick-sheet-link]');
+  var productData = null;
+  var selectedOptions = {};
+
+  function openSheet() {
+    sheet.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    sheet.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    productData = null;
+    selectedOptions = {};
+  }
+
+  // Close triggers
+  sheet.querySelectorAll('[data-quick-sheet-close]').forEach(function(el) {
+    el.addEventListener('click', closeSheet);
+  });
+
+  // Open trigger — fetch product data and build options
+  document.addEventListener('click', function(e) {
+    var trigger = e.target.closest('[data-quick-sheet-trigger]');
+    if (!trigger) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var productUrl = trigger.dataset.productUrl;
+    imgEl.src = trigger.dataset.productImage || '';
+    titleEl.textContent = trigger.dataset.productTitle || '';
+    priceEl.textContent = trigger.dataset.productPrice || '';
+    linkEl.href = trigger.dataset.productLink || '#';
+    variantLabelEl.textContent = '';
+    optionsEl.innerHTML = '';
+    atcBtn.disabled = true;
+    selectedOptions = {};
+
+    openSheet();
+
+    // Fetch product JSON
+    fetch(productUrl)
+      .then(function(r) { return r.json(); })
+      .then(function(product) {
+        productData = product;
+        buildOptions(product);
+        // If only one variant, auto-select
+        if (product.variants.length === 1) {
+          atcBtn.disabled = false;
+          updateAtcLabel(product.variants[0]);
+        }
+      })
+      .catch(function() {
+        optionsEl.innerHTML = '<p style="color:var(--color-text-secondary);font-size:0.875rem;">Erreur de chargement</p>';
+      });
+  });
+
+  function buildOptions(product) {
+    if (!product.options || (product.options.length === 1 && product.options[0] === 'Title')) {
+      // Simple product — no options
+      atcBtn.disabled = false;
+      updateAtcLabel(product.variants[0]);
+      return;
+    }
+
+    product.options.forEach(function(optionName, idx) {
+      var group = document.createElement('div');
+      group.className = 'quick-sheet__option-group';
+
+      var label = document.createElement('span');
+      label.className = 'quick-sheet__option-label';
+      label.textContent = optionName;
+      group.appendChild(label);
+
+      var values = document.createElement('div');
+      values.className = 'quick-sheet__option-values';
+
+      // Collect unique values for this option
+      var seen = [];
+      product.variants.forEach(function(v) {
+        var val = v.options[idx];
+        if (seen.indexOf(val) === -1) seen.push(val);
+      });
+
+      seen.forEach(function(val) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'quick-sheet__option-btn';
+        btn.textContent = val;
+        btn.dataset.optionIndex = idx;
+        btn.dataset.optionValue = val;
+
+        btn.addEventListener('click', function() {
+          // Deselect siblings
+          values.querySelectorAll('.quick-sheet__option-btn').forEach(function(b) {
+            b.classList.remove('is-selected');
+          });
+          btn.classList.add('is-selected');
+          selectedOptions[idx] = val;
+          resolveVariant(product);
+        });
+
+        values.appendChild(btn);
+      });
+
+      group.appendChild(values);
+      optionsEl.appendChild(group);
+    });
+  }
+
+  function resolveVariant(product) {
+    // Check if all options selected
+    var allSelected = product.options.every(function(_, idx) {
+      return selectedOptions[idx] !== undefined;
+    });
+
+    if (!allSelected) {
+      atcBtn.disabled = true;
+      return;
+    }
+
+    // Find matching variant
+    var match = product.variants.find(function(v) {
+      return product.options.every(function(_, idx) {
+        return v.options[idx] === selectedOptions[idx];
+      });
+    });
+
+    if (match && match.available) {
+      atcBtn.disabled = false;
+      atcBtn.dataset.variantId = match.id;
+      updateAtcLabel(match);
+      // Update variant label
+      variantLabelEl.textContent = match.options.join(' · ');
+    } else {
+      atcBtn.disabled = true;
+      if (match) {
+        variantLabelEl.textContent = 'Rupture de stock';
+      }
+    }
+  }
+
+  function updateAtcLabel(variant) {
+    var price = (variant.price / 100).toFixed(2).replace('.', ',').replace(/,00$/, '€');
+    if (variant.price % 100 === 0) {
+      price = (variant.price / 100) + '€';
+    } else {
+      price = (variant.price / 100).toFixed(2).replace('.', ',') + '€';
+    }
+    atcBtn.textContent = 'AJOUTER AU PANIER | ' + price;
+    atcBtn.dataset.variantId = variant.id;
+  }
+
+  // Add to cart
+  atcBtn.addEventListener('click', function() {
+    var variantId = parseInt(atcBtn.dataset.variantId, 10);
+    if (!variantId || atcBtn.disabled) return;
+
+    atcBtn.disabled = true;
+    var originalText = atcBtn.textContent;
+    atcBtn.textContent = '...';
+
+    var cartDrawer = document.querySelector('cart-drawer');
+    var addPromise;
+
+    if (cartDrawer) {
+      addPromise = cartDrawer.addToCart({ items: [{ id: variantId, quantity: 1 }] });
+    } else {
+      addPromise = fetch((window.Shopify && window.Shopify.routes && window.Shopify.routes.cart_add_url || '/cart/add') + '.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+      });
+    }
+
+    addPromise.then(function() {
+      atcBtn.textContent = '✓ AJOUTÉ';
+      setTimeout(function() {
+        closeSheet();
+        atcBtn.textContent = originalText;
+        atcBtn.disabled = false;
+      }, 800);
+    }).catch(function() {
+      atcBtn.textContent = originalText;
+      atcBtn.disabled = false;
+    });
+  });
+}
 
 /* --- Sort Dropdown --- */
 function initSortDropdown() {
