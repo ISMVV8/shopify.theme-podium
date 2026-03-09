@@ -167,6 +167,17 @@ class MobileMenuDrawer extends HTMLElement {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.classList.contains('is-open')) this.close();
     });
+
+    // Submenu toggles
+    this.querySelectorAll('[data-submenu-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        var submenu = btn.closest('.mobile-menu__group').querySelector('[data-submenu]');
+        if (!submenu) return;
+        var isOpen = submenu.classList.contains('is-open');
+        submenu.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
   }
   open() {
     this.classList.add('is-open');

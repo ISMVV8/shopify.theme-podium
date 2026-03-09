@@ -23,12 +23,59 @@
         </a>
       </div>
 
-      {%- comment -%} Desktop navigation {%- endcomment -%}
+      {%- comment -%} Desktop navigation with mega menu {%- endcomment -%}
       <nav class="header__nav mobile-hidden" role="navigation" aria-label="{{ 'header.menu' | t }}">
         {%- for link in section.settings.menu.links -%}
-          <a href="{{ link.url }}" class="header__nav-link{% if link.active %} is-active{% endif %}">
-            {{ link.title }}
-          </a>
+          {%- if link.links.size > 0 -%}
+            <div class="header__nav-item has-mega-menu">
+              <a href="{{ link.url }}" class="header__nav-link{% if link.active %} is-active{% endif %}">
+                {{ link.title }}
+              </a>
+              <div class="mega-menu">
+                <div class="mega-menu__inner container">
+                  <div class="mega-menu__columns">
+                    {%- for child in link.links -%}
+                      <div class="mega-menu__column">
+                        <span class="mega-menu__heading">{{ child.title }}</span>
+                        {%- if child.links.size > 0 -%}
+                          {%- for grandchild in child.links -%}
+                            <a href="{{ grandchild.url }}" class="mega-menu__link">{{ grandchild.title }}</a>
+                          {%- endfor -%}
+                          <a href="{{ child.url }}" class="mega-menu__view-all">{{ 'header.view_all_category' | t }}</a>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+
+                  {%- comment -%} Featured image from section blocks {%- endcomment -%}
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'mega_menu_image' and block.settings.menu_title == link.title -%}
+                      <div class="mega-menu__feature" {{ block.shopify_attributes }}>
+                        <a href="{{ block.settings.link }}" class="mega-menu__feature-link">
+                          {%- if block.settings.image != blank -%}
+                            <img
+                              src="{{ block.settings.image | image_url: width: 400 }}"
+                              alt="{{ block.settings.heading | escape }}"
+                              width="400"
+                              height="{{ 400 | divided_by: block.settings.image.aspect_ratio | round }}"
+                              loading="lazy"
+                              class="mega-menu__feature-img"
+                            >
+                          {%- endif -%}
+                          <span class="mega-menu__feature-title">{{ block.settings.heading }}</span>
+                          <span class="mega-menu__feature-cta">{{ 'header.discover_collection' | t }}</span>
+                        </a>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- else -%}
+            <a href="{{ link.url }}" class="header__nav-link{% if link.active %} is-active{% endif %}">
+              {{ link.title }}
+            </a>
+          {%- endif -%}
         {%- endfor -%}
       </nav>
 
@@ -66,9 +113,35 @@
   </div>
   <nav class="mobile-menu__nav" role="navigation">
     {%- for link in section.settings.menu.links -%}
-      <a href="{{ link.url }}" class="mobile-menu__link{% if link.active %} is-active{% endif %}">
-        {{ link.title }}
-      </a>
+      {%- if link.links.size > 0 -%}
+        <div class="mobile-menu__group">
+          <div class="mobile-menu__link-row">
+            <a href="{{ link.url }}" class="mobile-menu__link{% if link.active %} is-active{% endif %}">
+              {{ link.title }}
+            </a>
+            <button class="mobile-menu__toggle btn--icon" data-submenu-toggle aria-expanded="false" aria-label="{{ link.title }}">
+              {% render 'icon', name: 'chevron', size: 14 %}
+            </button>
+          </div>
+          <div class="mobile-menu__submenu" data-submenu>
+            {%- for child in link.links -%}
+              {%- if child.links.size > 0 -%}
+                <span class="mobile-menu__sub-heading">{{ child.title }}</span>
+                {%- for grandchild in child.links -%}
+                  <a href="{{ grandchild.url }}" class="mobile-menu__sub-link">{{ grandchild.title }}</a>
+                {%- endfor -%}
+                <a href="{{ child.url }}" class="mobile-menu__sub-link mobile-menu__sub-link--viewall">{{ 'header.view_all_category' | t }}</a>
+              {%- else -%}
+                <a href="{{ child.url }}" class="mobile-menu__sub-link mobile-menu__sub-link--standalone">{{ child.title }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- else -%}
+        <a href="{{ link.url }}" class="mobile-menu__link{% if link.active %} is-active{% endif %}">
+          {{ link.title }}
+        </a>
+      {%- endif -%}
     {%- endfor -%}
   </nav>
   <div class="mobile-menu__footer">
@@ -129,7 +202,36 @@
       ],
       "default": "light"
     }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu_image",
+      "name": "Mega menu image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu item title",
+          "info": "Must match the nav link title exactly (e.g. VÊTEMENTS FEMME)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Featured image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Nouveautés"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
   ]
 }
 {% endschema %}
-

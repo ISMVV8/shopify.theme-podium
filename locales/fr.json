@@ -18,7 +18,9 @@
     "account": "Compte",
     "cart": "Panier",
     "wishlist": "Favoris",
-    "language": "Langue"
+    "language": "Langue",
+    "view_all_category": "Voir toute la catégorie",
+    "discover_collection": "Découvrir toute la collection"
   },
   "announcement": {
     "default_message": "Livraison offerte dès 75€ d'achat"
