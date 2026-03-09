@@ -49,19 +49,9 @@
       <div class="pp-info-sticky">
         <div class="pp-info">
 
-          {%- comment -%} Title + wishlist (mobile: side by side) {%- endcomment -%}
+          {%- comment -%} Title {%- endcomment -%}
           <div class="pp-title-row">
             <h1 class="pp-title">{{ product.title }}</h1>
-            <button
-              type="button"
-              class="pp-wishlist-btn pp-wishlist-btn--title"
-              data-wishlist-toggle
-              data-product-handle="{{ product.handle }}"
-              aria-label="{{ 'header.wishlist' | t }}"
-            >
-              <span class="pp-wishlist-btn__icon">{% render 'icon', name: 'heart', size: 20 %}</span>
-              <span class="pp-wishlist-btn__icon--filled">{% render 'icon', name: 'heart-filled', size: 20 %}</span>
-            </button>
           </div>
 
           {%- comment -%} SKU / reference {%- endcomment -%}
