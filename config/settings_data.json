@@ -84,10 +84,20 @@
               "heading": "Bnaaty",
               "link": "shopify://collections/collection-bnaaty"
             }
+          },
+          "mega_menu_image_CfM47D": {
+            "type": "mega_menu_image",
+            "settings": {
+              "menu_title": "",
+              "image": "shopify://shop_images/IMG_1778.png",
+              "heading": "Bnaaty",
+              "link": ""
+            }
           }
         },
         "block_order": [
-          "mega_menu_image_Phm7VV"
+          "mega_menu_image_Phm7VV",
+          "mega_menu_image_CfM47D"
         ],
         "settings": {
           "logo_width": 150,

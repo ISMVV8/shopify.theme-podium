@@ -53,38 +53,25 @@
 
                   {%- comment -%} Featured image from section blocks {%- endcomment -%}
                   {%- for block in section.blocks -%}
-                    {%- if block.type == 'mega_menu_image' -%}
-                      {%- liquid
-                        assign show_block = false
-                        assign block_title = block.settings.menu_title | strip
-                        if block_title == blank
-                          assign show_block = true
-                        elsif block_title | handleize == link.title | handleize
-                          assign show_block = true
-                        elsif link.title contains block_title
-                          assign show_block = true
-                        elsif block_title contains link.title
-                          assign show_block = true
-                        endif
-                      -%}
-                      {%- if show_block -%}
-                        <div class="mega-menu__feature" {{ block.shopify_attributes }}>
-                          <a href="{{ block.settings.link }}" class="mega-menu__feature-link">
-                            {%- if block.settings.image != blank -%}
-                              <img
-                                src="{{ block.settings.image | image_url: width: 400 }}"
-                                alt="{{ block.settings.heading | escape }}"
-                                width="400"
-                                height="{{ 400 | divided_by: block.settings.image.aspect_ratio | round }}"
-                                loading="lazy"
-                                class="mega-menu__feature-img"
-                              >
-                            {%- endif -%}
-                            <span class="mega-menu__feature-title">{{ block.settings.heading }}</span>
-                            <span class="mega-menu__feature-cta">{{ 'header.discover_collection' | t }}</span>
-                          </a>
-                        </div>
-                      {%- endif -%}
+                    {%- assign block_menu_handle = block.settings.menu_title | handleize -%}
+                    {%- assign link_title_handle = link.title | handleize -%}
+                    {%- if block.type == 'mega_menu_image' and block_menu_handle == link_title_handle -%}
+                      <div class="mega-menu__feature" {{ block.shopify_attributes }}>
+                        <a href="{{ block.settings.link }}" class="mega-menu__feature-link">
+                          {%- if block.settings.image != blank -%}
+                            <img
+                              src="{{ block.settings.image | image_url: width: 400 }}"
+                              alt="{{ block.settings.heading | escape }}"
+                              width="400"
+                              height="{{ 400 | divided_by: block.settings.image.aspect_ratio | round }}"
+                              loading="lazy"
+                              class="mega-menu__feature-img"
+                            >
+                          {%- endif -%}
+                          <span class="mega-menu__feature-title">{{ block.settings.heading }}</span>
+                          <span class="mega-menu__feature-cta">{{ 'header.discover_collection' | t }}</span>
+                        </a>
+                      </div>
                     {%- endif -%}
                   {%- endfor -%}
                 </div>
