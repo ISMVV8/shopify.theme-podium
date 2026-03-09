@@ -53,7 +53,9 @@
 
                   {%- comment -%} Featured image from section blocks {%- endcomment -%}
                   {%- for block in section.blocks -%}
-                    {%- if block.type == 'mega_menu_image' and block.settings.menu_title == link.title -%}
+                    {%- assign block_menu_title = block.settings.menu_title | downcase | strip -%}
+                    {%- assign link_title_lower = link.title | downcase | strip -%}
+                    {%- if block.type == 'mega_menu_image' and block_menu_title == link_title_lower -%}
                       <div class="mega-menu__feature" {{ block.shopify_attributes }}>
                         <a href="{{ block.settings.link }}" class="mega-menu__feature-link">
                           {%- if block.settings.image != blank -%}
