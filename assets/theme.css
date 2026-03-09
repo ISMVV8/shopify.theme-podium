@@ -723,40 +723,46 @@ announcement-bar {
 
 .mega-menu__inner {
   display: flex;
-  gap: var(--space-2xl, 56px);
-  padding: var(--space-xl, 40px) 0;
+  gap: 48px;
+  padding: 32px 0 36px;
   align-items: flex-start;
 }
 
 .mega-menu__columns {
   display: flex;
-  gap: var(--space-2xl, 56px);
-  flex: 1;
+  gap: 48px;
+  flex-wrap: wrap;
 }
 
 .mega-menu__column {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  min-width: 140px;
+  min-width: 0;
 }
 
 .mega-menu__heading {
   font-family: var(--font-heading);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: var(--color-text);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+a.mega-menu__heading:hover {
+  opacity: 0.6;
+  text-decoration: none;
 }
 
 .mega-menu__link {
   font-size: 0.8125rem;
-  color: #888;
+  color: #999;
   text-decoration: none;
-  padding: 5px 0;
+  padding: 4px 0;
   transition: color 0.15s ease;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .mega-menu__link:hover {
@@ -769,8 +775,8 @@ announcement-bar {
   font-style: italic;
   color: #c9a0a0;
   text-decoration: none;
-  margin-top: 8px;
-  padding: 5px 0;
+  margin-top: 6px;
+  padding: 4px 0;
   transition: color 0.15s ease;
 }
 

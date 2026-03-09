@@ -35,15 +35,19 @@
                 <div class="mega-menu__inner container">
                   <div class="mega-menu__columns">
                     {%- for child in link.links -%}
-                      <div class="mega-menu__column">
-                        <span class="mega-menu__heading">{{ child.title }}</span>
-                        {%- if child.links.size > 0 -%}
+                      {%- if child.links.size > 0 -%}
+                        <div class="mega-menu__column">
+                          <a href="{{ child.url }}" class="mega-menu__heading">{{ child.title }}</a>
                           {%- for grandchild in child.links -%}
                             <a href="{{ grandchild.url }}" class="mega-menu__link">{{ grandchild.title }}</a>
                           {%- endfor -%}
                           <a href="{{ child.url }}" class="mega-menu__view-all">{{ 'header.view_all_category' | t }}</a>
-                        {%- endif -%}
-                      </div>
+                        </div>
+                      {%- else -%}
+                        <div class="mega-menu__column mega-menu__column--standalone">
+                          <a href="{{ child.url }}" class="mega-menu__heading">{{ child.title }}</a>
+                        </div>
+                      {%- endif -%}
                     {%- endfor -%}
                   </div>
 
