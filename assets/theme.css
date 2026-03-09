@@ -806,6 +806,7 @@ a.mega-menu__heading:hover {
   position: relative;
   text-decoration: none;
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .mega-menu__feature-link:hover { text-decoration: none; }
@@ -830,12 +831,13 @@ a.mega-menu__heading:hover {
   transform: translateY(-50%);
   text-align: center;
   font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-style: italic;
-  font-weight: 300;
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 600;
   color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
-  letter-spacing: 0.02em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .mega-menu__feature-cta {
