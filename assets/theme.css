@@ -1310,7 +1310,7 @@ featured-products {
 }
 
 /* Scoped product card overrides inside fp-grid */
-.fp-grid .product-card__image-wrap {
+.fp-grid .product-card__image-overflow {
   border-radius: 8px;
 }
 
@@ -1871,11 +1871,15 @@ featured-products {
 
 .product-card__image-wrap {
   position: relative;
+  margin-bottom: var(--space-sm);
+}
+
+.product-card__image-overflow {
+  position: relative;
   aspect-ratio: 3/4;
   overflow: hidden;
   border-radius: var(--radius);
   background: #f5f5f5;
-  margin-bottom: var(--space-sm);
 }
 
 .product-card__image {
@@ -1993,28 +1997,27 @@ featured-products {
   font-size: 0.875rem;
 }
 
-/* --- Quick Buy Overlay --- */
+/* --- Quick Buy Floating Card --- */
 
 .quick-buy {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 10px;
+  right: 10px;
+  transform: translateY(calc(100% + 8px));
   background: #fff;
-  border-radius: 12px 12px 0 0;
-  padding: 14px 16px 16px;
-  transform: translateY(100%);
+  border-radius: 10px;
+  padding: 12px 14px 14px;
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s ease;
-  z-index: 2;
   pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 10;
   text-align: center;
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
 .product-card:hover .quick-buy,
 .product-card .quick-buy.is-active {
-  transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
@@ -2110,13 +2113,16 @@ featured-products {
   flex-shrink: 0;
 }
 
-/* Touch devices: show quick buy inline, not hover */
+/* Touch devices: show quick buy inline below image */
 @media (hover: none) {
   .quick-buy {
-    transform: translateY(0);
+    position: relative;
+    transform: none;
     opacity: 1;
     pointer-events: auto;
-    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
     background: transparent;
     border-radius: 0;
     box-shadow: none;
