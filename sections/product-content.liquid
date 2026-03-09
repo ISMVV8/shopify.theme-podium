@@ -140,9 +140,7 @@
                           </div>
                         {%- endfor -%}
                       </div>
-                      {%- if section.settings.size_guide_url != blank -%}
-                        <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">{{ 'product.size_guide' | t | default: 'Guide des tailles' }}</a>
-                      {%- endif -%}
+                      <button type="button" class="pp-size-guide" data-size-guide-open>{{ 'product.size_guide' | t | default: 'Trouver ma taille' }}</button>
                     </div>
                   </div>
 
@@ -171,9 +169,7 @@
                             </div>
                           {%- endfor -%}
                         </div>
-                        {%- if section.settings.size_guide_url != blank -%}
-                          <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">{{ 'product.size_guide' | t | default: 'Correspondances de taille' }}</a>
-                        {%- endif -%}
+                        <button type="button" class="pp-size-guide" data-size-guide-open>{{ 'product.size_guide' | t | default: 'Trouver ma taille' }}</button>
                       </div>
                     </div>
                   </div>
@@ -771,6 +767,11 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .pp-size-guide:hover {

@@ -1555,8 +1555,240 @@ function initRecommendations() {
   });
 }
 
-// Initialize recommendations on DOMContentLoaded
+/* --- Interactive Size Guide --- */
+
+function initSizeGuide() {
+  var modal = document.getElementById('size-guide-modal');
+  if (!modal) return;
+
+  var backdrop = modal.querySelector('[data-sg-close]');
+  var closeBtns = modal.querySelectorAll('[data-sg-close]');
+  var morphoBtns = modal.querySelectorAll('[data-sg-morpho]');
+  var fitBtns = modal.querySelectorAll('[data-sg-fit]');
+  var calculateBtn = modal.querySelector('[data-sg-calculate]');
+  var resultEl = modal.querySelector('[data-sg-result]');
+  var resultSizeEl = modal.querySelector('[data-sg-result-size]');
+  var resultNoteEl = modal.querySelector('[data-sg-result-note]');
+
+  var heightInput = modal.querySelector('[data-sg-height]');
+  var weightInput = modal.querySelector('[data-sg-weight]');
+  var chestInput = modal.querySelector('[data-sg-chest]');
+  var waistInput = modal.querySelector('[data-sg-waist]');
+  var hipsInput = modal.querySelector('[data-sg-hips]');
+
+  var state = {
+    morpho: null,
+    fit: 'regular',
+    height: 0,
+    weight: 0,
+    chest: 0,
+    waist: 0,
+    hips: 0
+  };
+
+  // Size chart data (cm ranges)
+  var sizeChart = [
+    { name: 'XS', chest: [80, 84], waist: [60, 64], hips: [86, 90], bmi: [0, 18.5] },
+    { name: 'S',  chest: [84, 88], waist: [64, 68], hips: [90, 94], bmi: [18.5, 20.5] },
+    { name: 'M',  chest: [88, 92], waist: [68, 72], hips: [94, 98], bmi: [20.5, 23] },
+    { name: 'L',  chest: [92, 96], waist: [72, 78], hips: [98, 104], bmi: [23, 26] },
+    { name: 'XL', chest: [96, 102], waist: [78, 84], hips: [104, 110], bmi: [26, 40] }
+  ];
+
+  // Open modal
+  function openModal() {
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Close modal
+  function closeModal() {
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Open triggers
+  document.addEventListener('click', function(e) {
+    var trigger = e.target.closest('[data-size-guide-open]');
+    if (trigger) {
+      e.preventDefault();
+      openModal();
+    }
+  });
+
+  // Close handlers
+  closeBtns.forEach(function(btn) {
+    btn.addEventListener('click', closeModal);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      closeModal();
+    }
+  });
+
+  // Morphology selection
+  morphoBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      morphoBtns.forEach(function(b) { b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+      state.morpho = btn.dataset.sgMorpho;
+    });
+  });
+
+  // Fit selection
+  fitBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      fitBtns.forEach(function(b) { b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+      state.fit = btn.dataset.sgFit;
+    });
+  });
+
+  // Calculate size
+  calculateBtn.addEventListener('click', function() {
+    state.height = parseFloat(heightInput.value) || 0;
+    state.weight = parseFloat(weightInput.value) || 0;
+    state.chest = parseFloat(chestInput.value) || 0;
+    state.waist = parseFloat(waistInput.value) || 0;
+    state.hips = parseFloat(hipsInput.value) || 0;
+
+    var recommendedSize = computeSize(state);
+    if (recommendedSize) {
+      resultSizeEl.textContent = recommendedSize.name;
+      resultNoteEl.textContent = buildNote(recommendedSize, state);
+      resultEl.style.display = '';
+
+      // Highlight row in table
+      highlightTableRow(recommendedSize.name);
+
+      // Scroll to result
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Update CTA
+      calculateBtn.textContent = 'Recalculer';
+    }
+  });
+
+  function computeSize(s) {
+    var scores = [];
+
+    sizeChart.forEach(function(size) {
+      var score = 0;
+      var factors = 0;
+
+      // If measurements are provided, use them
+      if (s.chest > 0) {
+        var mid = (size.chest[0] + size.chest[1]) / 2;
+        score += 1 - Math.min(Math.abs(s.chest - mid) / 20, 1);
+        factors += 1.5; // Chest is more important
+      }
+      if (s.waist > 0) {
+        var mid = (size.waist[0] + size.waist[1]) / 2;
+        score += 1 - Math.min(Math.abs(s.waist - mid) / 20, 1);
+        factors += 1.2;
+      }
+      if (s.hips > 0) {
+        var mid = (size.hips[0] + size.hips[1]) / 2;
+        score += 1 - Math.min(Math.abs(s.hips - mid) / 20, 1);
+        factors += 1.2;
+      }
+
+      // BMI-based estimation if height + weight given
+      if (s.height > 0 && s.weight > 0) {
+        var bmi = s.weight / ((s.height / 100) * (s.height / 100));
+        var bmiMid = (size.bmi[0] + size.bmi[1]) / 2;
+        score += 1 - Math.min(Math.abs(bmi - bmiMid) / 10, 1);
+        factors += 1;
+      }
+
+      if (factors > 0) {
+        scores.push({ size: size, score: score / factors });
+      }
+    });
+
+    if (scores.length === 0) return null;
+
+    // Sort by score descending
+    scores.sort(function(a, b) { return b.score - a.score; });
+
+    var best = scores[0].size;
+    var bestIdx = sizeChart.indexOf(best);
+
+    // Morphology adjustment
+    if (s.morpho === 'slim' && bestIdx > 0) {
+      // Slim people might prefer one size down
+      // Only adjust if score difference is small
+      if (scores.length > 1 && bestIdx > 0) {
+        best = sizeChart[bestIdx]; // Keep same, but note
+      }
+    } else if (s.morpho === 'athletic' || s.morpho === 'curvy') {
+      // Athletic/curvy might want one size up for comfort
+      if (bestIdx < sizeChart.length - 1) {
+        // Check fit preference first
+      }
+    }
+
+    // Fit adjustment
+    if (s.fit === 'tight' && bestIdx > 0) {
+      best = sizeChart[bestIdx - 1];
+    } else if (s.fit === 'loose' && bestIdx < sizeChart.length - 1) {
+      best = sizeChart[bestIdx + 1];
+    }
+
+    return best;
+  }
+
+  function buildNote(size, s) {
+    var notes = [];
+
+    if (s.morpho) {
+      var morphoLabels = {
+        slim: 'mince',
+        regular: 'standard',
+        athletic: 'athlétique',
+        curvy: 'généreux(se)'
+      };
+      notes.push('Morphologie ' + (morphoLabels[s.morpho] || s.morpho));
+    }
+
+    if (s.fit === 'tight') {
+      notes.push('coupe ajustée');
+    } else if (s.fit === 'loose') {
+      notes.push('coupe ample');
+    }
+
+    if (s.height > 0 && s.weight > 0) {
+      var bmi = s.weight / ((s.height / 100) * (s.height / 100));
+      notes.push('IMC ' + bmi.toFixed(1));
+    }
+
+    var text = 'Basé sur vos mensurations';
+    if (notes.length > 0) {
+      text += ' (' + notes.join(', ') + ')';
+    }
+    text += '. En cas de doute entre deux tailles, nous vous conseillons de prendre la taille au-dessus.';
+
+    return text;
+  }
+
+  function highlightTableRow(sizeName) {
+    var table = modal.querySelector('.sg-chart__table');
+    if (!table) return;
+    var rows = table.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      row.classList.remove('is-highlighted');
+      var td = row.querySelector('td');
+      if (td && td.textContent.trim() === sizeName) {
+        row.classList.add('is-highlighted');
+      }
+    });
+  }
+}
+
+// Initialize all on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
   initRecommendations();
+  initSizeGuide();
 });
 

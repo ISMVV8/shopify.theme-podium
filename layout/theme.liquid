@@ -154,6 +154,136 @@
     </div>
   </div>
 
+  <!-- Size Guide Modal -->
+  <div class="sg-modal" id="size-guide-modal" aria-hidden="true">
+    <div class="sg-modal__backdrop" data-sg-close></div>
+    <div class="sg-modal__panel">
+      <div class="sg-modal__header">
+        <button class="sg-modal__close btn--icon" data-sg-close aria-label="Fermer">
+          {% render 'icon', name: 'close', size: 18 %}
+        </button>
+        <span class="sg-modal__heading">Trouver ma taille</span>
+      </div>
+
+      <div class="sg-modal__body">
+        {%- comment -%} Step 1: Morphology {%- endcomment -%}
+        <div class="sg-step" data-sg-step="1">
+          <p class="sg-step__label">Quelle est votre morphologie ?</p>
+          <div class="sg-morpho-grid">
+            <button type="button" class="sg-morpho-card" data-sg-morpho="slim">
+              <div class="sg-morpho-card__icon">
+                <svg width="32" height="64" viewBox="0 0 32 64" fill="none"><ellipse cx="16" cy="8" rx="6" ry="7" stroke="currentColor" stroke-width="1.5"/><path d="M12 18c-3 2-5 8-5 16s1 12 2 16h14c1-4 2-8 2-16s-2-14-5-16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              </div>
+              <span class="sg-morpho-card__label">Mince</span>
+            </button>
+            <button type="button" class="sg-morpho-card" data-sg-morpho="regular">
+              <div class="sg-morpho-card__icon">
+                <svg width="36" height="64" viewBox="0 0 36 64" fill="none"><ellipse cx="18" cy="8" rx="7" ry="7" stroke="currentColor" stroke-width="1.5"/><path d="M12 18c-4 3-6 9-6 16s2 12 3 16h18c1-4 3-8 3-16s-2-13-6-16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              </div>
+              <span class="sg-morpho-card__label">Standard</span>
+            </button>
+            <button type="button" class="sg-morpho-card" data-sg-morpho="athletic">
+              <div class="sg-morpho-card__icon">
+                <svg width="40" height="64" viewBox="0 0 40 64" fill="none"><ellipse cx="20" cy="8" rx="7" ry="7" stroke="currentColor" stroke-width="1.5"/><path d="M11 18c-4 3-6 8-5 14s2 14 3 18h22c1-4 2-12 3-18s-1-11-5-14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              </div>
+              <span class="sg-morpho-card__label">Athlétique</span>
+            </button>
+            <button type="button" class="sg-morpho-card" data-sg-morpho="curvy">
+              <div class="sg-morpho-card__icon">
+                <svg width="44" height="64" viewBox="0 0 44 64" fill="none"><ellipse cx="22" cy="8" rx="7" ry="7" stroke="currentColor" stroke-width="1.5"/><path d="M12 18c-5 4-8 10-7 16s3 12 4 16h26c1-4 3-8 4-16s-2-12-7-16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              </div>
+              <span class="sg-morpho-card__label">Généreux</span>
+            </button>
+          </div>
+        </div>
+
+        {%- comment -%} Step 2: Measurements {%- endcomment -%}
+        <div class="sg-step" data-sg-step="2">
+          <p class="sg-step__label">Vos mensurations</p>
+          <div class="sg-fields">
+            <div class="sg-field">
+              <label class="sg-field__label" for="sg-height">Taille (cm)</label>
+              <input type="number" id="sg-height" class="sg-field__input" data-sg-height placeholder="170" min="140" max="210">
+            </div>
+            <div class="sg-field">
+              <label class="sg-field__label" for="sg-weight">Poids (kg)</label>
+              <input type="number" id="sg-weight" class="sg-field__input" data-sg-weight placeholder="65" min="35" max="180">
+            </div>
+            <div class="sg-field">
+              <label class="sg-field__label" for="sg-chest">Tour de poitrine (cm)</label>
+              <input type="number" id="sg-chest" class="sg-field__input" data-sg-chest placeholder="90" min="60" max="150">
+            </div>
+            <div class="sg-field">
+              <label class="sg-field__label" for="sg-waist">Tour de taille (cm)</label>
+              <input type="number" id="sg-waist" class="sg-field__input" data-sg-waist placeholder="72" min="50" max="140">
+            </div>
+            <div class="sg-field">
+              <label class="sg-field__label" for="sg-hips">Tour de hanches (cm)</label>
+              <input type="number" id="sg-hips" class="sg-field__input" data-sg-hips placeholder="96" min="60" max="160">
+            </div>
+          </div>
+          <p class="sg-step__hint">Renseignez au moins votre taille et votre poids pour une recommandation.</p>
+        </div>
+
+        {%- comment -%} Step 3: Fit preference {%- endcomment -%}
+        <div class="sg-step" data-sg-step="3">
+          <p class="sg-step__label">Votre préférence de coupe</p>
+          <div class="sg-fit-options">
+            <button type="button" class="sg-fit-btn" data-sg-fit="tight">
+              <span class="sg-fit-btn__name">Ajusté</span>
+              <span class="sg-fit-btn__desc">Près du corps</span>
+            </button>
+            <button type="button" class="sg-fit-btn is-selected" data-sg-fit="regular">
+              <span class="sg-fit-btn__name">Classique</span>
+              <span class="sg-fit-btn__desc">Coupe normale</span>
+            </button>
+            <button type="button" class="sg-fit-btn" data-sg-fit="loose">
+              <span class="sg-fit-btn__name">Ample</span>
+              <span class="sg-fit-btn__desc">Coupe décontractée</span>
+            </button>
+          </div>
+        </div>
+
+        {%- comment -%} Result {%- endcomment -%}
+        <div class="sg-result" data-sg-result style="display:none;">
+          <div class="sg-result__box">
+            <span class="sg-result__label">Votre taille recommandée</span>
+            <span class="sg-result__size" data-sg-result-size>M</span>
+          </div>
+          <p class="sg-result__note" data-sg-result-note></p>
+        </div>
+
+        <button type="button" class="sg-modal__cta btn btn--primary btn--full" data-sg-calculate>
+          Trouver ma taille
+        </button>
+
+        {%- comment -%} Size chart table {%- endcomment -%}
+        <div class="sg-chart">
+          <p class="sg-chart__title">Correspondances des tailles</p>
+          <div class="sg-chart__scroll">
+            <table class="sg-chart__table">
+              <thead>
+                <tr>
+                  <th>Taille</th>
+                  <th>Poitrine</th>
+                  <th>Taille</th>
+                  <th>Hanches</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>XS</td><td>80-84</td><td>60-64</td><td>86-90</td></tr>
+                <tr><td>S</td><td>84-88</td><td>64-68</td><td>90-94</td></tr>
+                <tr><td>M</td><td>88-92</td><td>68-72</td><td>94-98</td></tr>
+                <tr><td>L</td><td>92-96</td><td>72-78</td><td>98-104</td></tr>
+                <tr><td>XL</td><td>96-102</td><td>78-84</td><td>104-110</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </body>
 </html>
