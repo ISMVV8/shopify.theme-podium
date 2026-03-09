@@ -3099,7 +3099,8 @@ filter-drawer.is-open .filter-drawer {
   border-color: var(--color-text);
 }
 
-.filter-drawer__pill.is-active .filter-drawer__pill-label {
+.filter-drawer__pill.is-active .filter-drawer__pill-label,
+.filter-drawer__pill input:checked + .filter-drawer__pill-label {
   background: var(--color-text);
   border-color: var(--color-text);
   color: var(--color-bg);
