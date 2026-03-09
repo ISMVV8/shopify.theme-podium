@@ -96,12 +96,13 @@ class StickyHeader extends HTMLElement {
     const updatePosition = () => {
       this._abHeight = this._announcementBar ? this._announcementBar.offsetHeight : 0;
       this._onScroll();
-      this.style.height = this.header.offsetHeight + 'px';
+      // Reserve exact header height (round up to avoid sub-pixel gaps)
+      this.style.height = Math.ceil(this.header.getBoundingClientRect().height) + 'px';
     };
 
     this._onScroll = () => {
       var scrollY = window.scrollY || window.pageYOffset;
-      var offset = Math.max(this._abHeight - scrollY, 0);
+      var offset = Math.max(Math.round(this._abHeight - scrollY), 0);
       this.header.style.top = offset + 'px';
     };
 
