@@ -36,12 +36,12 @@
         "cta_label": "VOIR PLUS",
         "show_featured_label": true,
         "max_products_right": 4,
-        "pill_1_label": "Nos Cardigans",
-        "pill_1_collection": "cardigans",
-        "pill_2_label": "Nos chemises",
-        "pill_2_collection": "chemisiers",
-        "pill_3_label": "BNAATY Collection",
-        "pill_3_collection": "collection-bnaaty"
+        "pill_1_label": "Ensembles",
+        "pill_1_collection": "ensembles",
+        "pill_2_label": "Robes & Combinaisons",
+        "pill_2_collection": "robes-combinaisons",
+        "pill_3_label": "Hauts",
+        "pill_3_collection": "hauts"
       }
     },
     "collections_masonry": {
