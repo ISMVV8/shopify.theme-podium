@@ -580,12 +580,16 @@ announcement-bar {
 
 /* --- Transparent Header (homepage hero overlay) --- */
 
-/* Transparent when over the hero: driven entirely by static data-attributes
-   on the wrapper + the is-sticky class. NO body-class toggling at scroll,
-   so no style-recalc oscillation can occur. */
+/* Smooth transition between transparent and opaque states */
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header {
+  transition: background 0.35s ease, border-bottom-color 0.35s ease, box-shadow 0.35s ease, color 0.3s ease;
+}
+
+/* Transparent when over the hero (no is-sticky class = user at top) */
 .header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky) {
   background: transparent;
   border-bottom-color: transparent;
+  box-shadow: none;
 }
 
 /* Light style: white text/icons on hero */

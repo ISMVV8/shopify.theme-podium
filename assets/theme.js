@@ -89,10 +89,8 @@ class StickyHeader extends HTMLElement {
     if (!this.header) return;
     if (this.dataset.sticky !== 'true') return;
 
-    // Header is always position:fixed via CSS.
-    // Offset it below the announcement bar and reserve wrapper height.
+    // Offset header below the announcement bar and reserve wrapper height.
     this._announcementBar = document.querySelector('announcement-bar');
-
     this._abHeight = 0;
 
     const updatePosition = () => {
@@ -102,8 +100,8 @@ class StickyHeader extends HTMLElement {
     };
 
     this._onScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const offset = Math.max(this._abHeight - scrollY, 0);
+      var scrollY = window.scrollY || window.pageYOffset;
+      var offset = Math.max(this._abHeight - scrollY, 0);
       this.header.style.top = offset + 'px';
     };
 
@@ -113,23 +111,38 @@ class StickyHeader extends HTMLElement {
     this._resizeObserver.observe(this.header);
     if (this._announcementBar) this._resizeObserver.observe(this._announcementBar);
 
-    // Layout class for hero overlap (negative margin)
-    const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
-      ? document.getElementById('home-hero')
-      : null;
+    // Detect hero on homepage for transparent overlay
+    var isTransparent = this.dataset.transparentHeader === 'true' && this.dataset.template === 'index';
+    var hero = isTransparent ? document.getElementById('home-hero') : null;
 
     if (hero) {
       document.body.classList.add('header--has-hero');
-    }
 
-    // Header is always opaque with shadow — no observers, no toggling,
-    // nothing dynamic at any scroll position.
-    this.header.classList.add('is-sticky');
+      // Start transparent (no is-sticky), become opaque on scroll
+      var headerEl = this.header;
+      var scrollThreshold = hero.offsetHeight * 0.15;
+
+      var onHeroScroll = function() {
+        if (window.scrollY > scrollThreshold) {
+          headerEl.classList.add('is-sticky');
+        } else {
+          headerEl.classList.remove('is-sticky');
+        }
+      };
+
+      onHeroScroll();
+      window.addEventListener('scroll', onHeroScroll, { passive: true });
+      this._heroScrollHandler = onHeroScroll;
+    } else {
+      // No hero — always opaque sticky
+      this.header.classList.add('is-sticky');
+    }
   }
 
   disconnectedCallback() {
     if (this._resizeObserver) this._resizeObserver.disconnect();
     if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._heroScrollHandler) window.removeEventListener('scroll', this._heroScrollHandler);
   }
 }
 
