@@ -3361,11 +3361,11 @@ filter-drawer.is-open .filter-drawer {
   padding-bottom: 8px;
 }
 
-/* Category pills */
+/* Category pills — LV style */
 .filter-drawer__pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .filter-drawer__pill {
@@ -3373,20 +3373,26 @@ filter-drawer.is-open .filter-drawer {
 }
 
 .filter-drawer__pill-label {
-  display: inline-block;
-  padding: 9px 18px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 28px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 100px;
+  font-family: var(--font-heading);
   font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-weight: 300;
+  letter-spacing: 0.08em;
   color: var(--color-text);
-  background: var(--color-bg);
-  transition: all 0.2s;
+  background: transparent;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .filter-drawer__pill:hover .filter-drawer__pill-label {
   border-color: var(--color-text);
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .filter-drawer__pill.is-active .filter-drawer__pill-label,
@@ -3394,6 +3400,7 @@ filter-drawer.is-open .filter-drawer {
   background: var(--color-text);
   border-color: var(--color-text);
   color: var(--color-bg);
+  font-weight: 400;
 }
 
 /* Toggle switch (availability) */
