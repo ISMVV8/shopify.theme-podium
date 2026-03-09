@@ -85,6 +85,7 @@
     "apply_filters": "Appliquer",
     "availability": "Disponibilité",
     "in_stock": "En stock",
+    "in_stock_only": "Produits en stock",
     "price": "Prix",
     "price_range": "{{ min }} – {{ max }}",
     "all_collections": "Collections",
