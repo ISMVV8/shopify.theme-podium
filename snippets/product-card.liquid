@@ -72,6 +72,7 @@
         {%- endfor -%}
 
         <div class="quick-buy" data-quick-buy>
+          <span class="quick-buy__label">{{ 'product.quick_buy' | t }}</span>
           {%- if has_size_option -%}
             <div class="quick-buy__sizes">
               {%- for size_value in size_option.values -%}
@@ -112,15 +113,18 @@
 
     <div class="product-card__info">
       <h3 class="product-card__title">{{ product.title }}</h3>
-      {%- if product.variants.size > 1 -%}
-        <p class="product-card__subtitle">
-          {%- for option in product.options_with_values -%}
-            {%- if option.name == 'Color' or option.name == 'Couleur' -%}
-              {{ option.values | join: ' / ' }}
-            {%- endif -%}
-          {%- endfor -%}
-        </p>
-      {%- endif -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign opt_lower = option.name | downcase -%}
+        {%- if opt_lower == 'color' or opt_lower == 'couleur' or opt_lower == 'colour' -%}
+          {%- if option.values.size > 1 -%}
+            <div class="product-card__colors">
+              {%- for color_value in option.values -%}
+                <span class="product-card__color-dot" style="background-color: {{ color_value | handleize }};" title="{{ color_value }}"></span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
       <div class="product-card__price">
         {% render 'price', product: product %}
       </div>

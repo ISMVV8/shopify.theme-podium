@@ -2000,14 +2000,16 @@ featured-products {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(4px);
-  padding: 12px 10px;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+  padding: 14px 16px 16px;
   transform: translateY(100%);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s ease;
   z-index: 2;
   pointer-events: none;
+  text-align: center;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .product-card:hover .quick-buy,
@@ -2017,38 +2019,47 @@ featured-products {
   pointer-events: auto;
 }
 
+.quick-buy__label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
 .quick-buy__sizes {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
+  gap: 2px;
 }
 
 .quick-buy__size {
-  min-width: 36px;
-  height: 30px;
+  min-width: 32px;
+  height: 32px;
   padding: 0 8px;
-  font-size: 0.6875rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  border: 1px solid var(--color-text);
+  border: none;
   background: transparent;
   color: var(--color-text);
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 4px;
 }
 
 .quick-buy__size:hover {
   background: var(--color-text);
-  color: var(--color-bg);
+  color: #fff;
 }
 
 .quick-buy__size--disabled {
-  opacity: 0.3;
+  opacity: 0.35;
   cursor: not-allowed;
   text-decoration: line-through;
 }
@@ -2075,13 +2086,31 @@ featured-products {
   border: none;
   cursor: pointer;
   transition: opacity 0.2s ease;
+  border-radius: 4px;
 }
 
 .quick-buy__atc:hover {
   opacity: 0.85;
 }
 
-/* Touch devices: show quick buy on tap, not hover */
+/* Color dots under product card title */
+.product-card__colors {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.product-card__color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Touch devices: show quick buy inline, not hover */
 @media (hover: none) {
   .quick-buy {
     transform: translateY(0);
@@ -2089,18 +2118,21 @@ featured-products {
     pointer-events: auto;
     position: relative;
     background: transparent;
-    backdrop-filter: none;
-    padding: 8px 0 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 6px 0 0;
+  }
+  .quick-buy__label {
+    display: none;
   }
   .quick-buy__sizes {
     justify-content: flex-start;
-    gap: 4px;
+    gap: 2px;
   }
   .quick-buy__size {
-    min-width: 32px;
+    min-width: 28px;
     height: 26px;
-    font-size: 0.625rem;
-    border-color: var(--color-border);
+    font-size: 0.75rem;
   }
 }
 
