@@ -49,27 +49,23 @@
           -%}
 
           {%- if is_availability_filter -%}
-            {%- comment -%} Availability — toggle switch {%- endcomment -%}
-            {%- for value in filter.values -%}
-              {%- assign val_lower = value.label | downcase -%}
-              {%- if val_lower contains 'stock' or val_lower contains 'in stock' or value.value == '1' -%}
-                <div class="filter-drawer__group filter-drawer__group--toggle">
-                  <label class="filter-drawer__toggle">
-                    <input
-                      type="checkbox"
-                      name="{{ value.param_name }}"
-                      value="{{ value.value }}"
-                      {% if value.active %}checked{% endif %}
-                      class="filter-drawer__toggle-input"
-                    >
-                    <span class="filter-drawer__toggle-track">
-                      <span class="filter-drawer__toggle-knob"></span>
-                    </span>
-                    <span class="filter-drawer__toggle-label">{{ 'collection.in_stock_only' | t | default: 'Produits en stock' }}</span>
-                  </label>
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
+            {%- comment -%} Availability — single toggle for "in stock" {%- endcomment -%}
+            {%- assign stock_value = filter.values | first -%}
+            <div class="filter-drawer__group filter-drawer__group--toggle">
+              <label class="filter-drawer__toggle">
+                <input
+                  type="checkbox"
+                  name="{{ stock_value.param_name }}"
+                  value="{{ stock_value.value }}"
+                  {% if stock_value.active %}checked{% endif %}
+                  class="filter-drawer__toggle-input"
+                >
+                <span class="filter-drawer__toggle-track">
+                  <span class="filter-drawer__toggle-knob"></span>
+                </span>
+                <span class="filter-drawer__toggle-label">{{ 'collection.in_stock_only' | t | default: 'Produits en stock' }}</span>
+              </label>
+            </div>
           {%- else -%}
 
           <div class="filter-drawer__group">
