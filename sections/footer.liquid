@@ -67,7 +67,7 @@
     <div class="footer__bottom">
       <div class="footer__copyright">
         {%- assign current_year = 'now' | date: '%Y' -%}
-        {{ 'footer.copyright' | t: year: current_year, shop_name: shop.name }}
+        {{ 'footer.copyright' | t: year: current_year, shop_name: shop.name | escape }}
       </div>
       <div class="footer__legal">
         <a href="{{ section.settings.privacy_url | default: '/policies/privacy-policy' }}">{{ 'footer.privacy_policy' | t }}</a>

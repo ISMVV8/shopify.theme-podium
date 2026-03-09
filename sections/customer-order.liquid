@@ -1,8 +1,8 @@
 <section class="account-page section">
   <div class="container">
-    <h1>{{ 'customer.order.title' | t: name: order.name }}</h1>
+    <h1>{{ 'customer.order.title' | t: name: order.name | escape }}</h1>
     <p style="color: var(--color-text-secondary); margin-bottom: var(--space-xl);">
-      {{ 'customer.order.date' | t: date: order.created_at | date: '%d/%m/%Y' }}
+      {{ 'customer.order.date' | t: date: order.created_at | date: '%d/%m/%Y' | escape }}
     </p>
 
     <table class="account-page__orders">
