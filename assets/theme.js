@@ -97,7 +97,11 @@ class StickyHeader extends HTMLElement {
       this._abHeight = this._announcementBar ? this._announcementBar.offsetHeight : 0;
       this._onScroll();
       // Reserve exact header height (round up to avoid sub-pixel gaps)
-      this.style.height = Math.ceil(this.header.getBoundingClientRect().height) + 'px';
+      var h = Math.ceil(this.header.getBoundingClientRect().height);
+      this.style.height = h + 'px';
+      // Publish CSS variable for other components to use
+      document.documentElement.style.setProperty('--header-height', h + 'px');
+      document.documentElement.style.setProperty('--header-offset', (h + this._abHeight) + 'px');
     };
 
     this._onScroll = () => {
@@ -106,7 +110,12 @@ class StickyHeader extends HTMLElement {
       this.header.style.top = offset + 'px';
     };
 
-    updatePosition();
+    // Run after first paint to get accurate measurements
+    requestAnimationFrame(() => {
+      updatePosition();
+      // Double-check after fonts/images settle
+      setTimeout(updatePosition, 200);
+    });
     window.addEventListener('scroll', this._onScroll, { passive: true });
     this._resizeObserver = new ResizeObserver(updatePosition);
     this._resizeObserver.observe(this.header);
