@@ -672,6 +672,13 @@ class FilterDrawerElement extends HTMLElement {
       if (e.key === 'Escape' && this.classList.contains('is-open')) this.close();
     });
 
+    // Category pills — toggle is-active class on click for instant feedback
+    this.querySelectorAll('.filter-drawer__pill input').forEach(input => {
+      input.addEventListener('change', () => {
+        input.closest('.filter-drawer__pill').classList.toggle('is-active', input.checked);
+      });
+    });
+
     // Collapsible filter groups
     this.querySelectorAll('[data-filter-group-toggle]').forEach(toggle => {
       toggle.addEventListener('click', () => {
