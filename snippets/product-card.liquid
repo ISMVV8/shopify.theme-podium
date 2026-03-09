@@ -121,7 +121,7 @@
           {%- if option.values.size > 1 -%}
             <div class="product-card__colors">
               {%- for color_value in option.values -%}
-                <span class="product-card__color-dot" style="background-color: {{ color_value | handleize }};" title="{{ color_value }}"></span>
+                {% render 'color-swatch', color: color_value %}
               {%- endfor -%}
             </div>
           {%- endif -%}

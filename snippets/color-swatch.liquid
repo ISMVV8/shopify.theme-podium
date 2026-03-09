@@ -1,0 +1,111 @@
+{% comment %}
+  Color swatch snippet — maps color names to hex codes.
+  Usage: {% render 'color-swatch', color: color_value %}
+  Returns a small dot with the correct background color.
+{% endcomment %}
+
+{%- liquid
+  assign c = color | downcase | strip
+  assign hex = ''
+
+  case c
+    when 'noir', 'black'
+      assign hex = '#1a1a1a'
+    when 'blanc', 'white', 'blanc cassé', 'off-white', 'off white', 'écru', 'ecru', 'ivoire', 'ivory'
+      assign hex = '#f5f0eb'
+    when 'beige', 'sable', 'sand'
+      assign hex = '#d4c5a9'
+    when 'crème', 'creme', 'cream'
+      assign hex = '#f5f0e1'
+    when 'gris', 'grey', 'gray'
+      assign hex = '#8c8c8c'
+    when 'gris clair', 'light grey', 'light gray'
+      assign hex = '#c0c0c0'
+    when 'gris foncé', 'gris fonce', 'dark grey', 'dark gray', 'anthracite', 'charcoal'
+      assign hex = '#3d3d3d'
+    when 'bleu', 'blue'
+      assign hex = '#2e5fa1'
+    when 'bleu marine', 'navy', 'marine'
+      assign hex = '#1b2a4a'
+    when 'bleu ciel', 'sky blue', 'ciel'
+      assign hex = '#87ceeb'
+    when 'bleu roi', 'royal blue'
+      assign hex = '#2a52be'
+    when 'rouge', 'red'
+      assign hex = '#c62828'
+    when 'bordeaux', 'burgundy', 'wine', 'bourgogne'
+      assign hex = '#6b1d2a'
+    when 'rose', 'pink'
+      assign hex = '#e8a0b4'
+    when 'rose poudré', 'rose poudre', 'blush', 'dusty pink'
+      assign hex = '#d4a0a0'
+    when 'fuchsia', 'magenta', 'hot pink'
+      assign hex = '#c4457b'
+    when 'violet', 'purple'
+      assign hex = '#6a3d8f'
+    when 'lavande', 'lavender', 'lilas', 'lilac'
+      assign hex = '#b09cc5'
+    when 'vert', 'green'
+      assign hex = '#3a7d44'
+    when 'vert foncé', 'vert fonce', 'dark green', 'sapin', 'forest'
+      assign hex = '#1e4d2b'
+    when 'kaki', 'khaki', 'olive'
+      assign hex = '#6b6b3d'
+    when 'vert sauge', 'sage', 'sage green'
+      assign hex = '#9caf88'
+    when 'menthe', 'mint'
+      assign hex = '#98d4bb'
+    when 'jaune', 'yellow'
+      assign hex = '#e8c840'
+    when 'moutarde', 'mustard'
+      assign hex = '#c49a1a'
+    when 'or', 'gold', 'doré', 'dore'
+      assign hex = '#b8953e'
+    when 'orange'
+      assign hex = '#d4722a'
+    when 'corail', 'coral'
+      assign hex = '#e07060'
+    when 'terracotta', 'terre cuite', 'brique', 'brick'
+      assign hex = '#b04a2a'
+    when 'marron', 'brown', 'brun'
+      assign hex = '#6b3a2a'
+    when 'camel', 'caramel', 'tan', 'cognac'
+      assign hex = '#a67b50'
+    when 'taupe'
+      assign hex = '#8b7d6b'
+    when 'chocolat', 'chocolate'
+      assign hex = '#4a2c1a'
+    when 'nude'
+      assign hex = '#d4b8a0'
+    when 'argent', 'silver', 'argenté', 'argente'
+      assign hex = '#c0c0c0'
+    when 'cuivre', 'copper'
+      assign hex = '#b87333'
+    when 'multicolore', 'multicolor', 'multi'
+      assign hex = 'conic-gradient(#c62828, #e8c840, #3a7d44, #2e5fa1, #6a3d8f, #c62828)'
+  endcase
+
+  if hex == ''
+    assign hex = color
+  endif
+
+  assign is_gradient = false
+  if hex contains 'gradient'
+    assign is_gradient = true
+  endif
+
+  assign is_light = false
+  if c == 'blanc' or c == 'white' or c == 'blanc cassé' or c == 'off-white' or c == 'écru' or c == 'ivoire' or c == 'crème' or c == 'cream' or c == 'nude' or c == 'beige' or c == 'jaune' or c == 'yellow' or c == 'ivoire'
+    assign is_light = true
+  endif
+-%}
+
+<span
+  class="product-card__color-dot{% if is_light %} product-card__color-dot--light{% endif %}"
+  {% if is_gradient %}
+    style="background: {{ hex }};"
+  {% else %}
+    style="background-color: {{ hex }};"
+  {% endif %}
+  title="{{ color }}"
+></span>
