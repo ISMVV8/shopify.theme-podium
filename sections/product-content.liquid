@@ -89,6 +89,7 @@
               {%- for option in product.options_with_values -%}
                 {%- if option.name == 'Color' or option.name == 'Couleur' -%}
                   {%- comment -%} Color swatches {%- endcomment -%}
+                  {%- assign color_option_index = forloop.index0 -%}
                   <div class="pp-option-group">
                     <div class="pp-option-header">
                       <span class="pp-option-name">{{ option.name }}</span>
@@ -98,21 +99,12 @@
                       {%- for value in option.values -%}
                         {%- liquid
                           assign variant_for_color = nil
-                          assign variant_any_for_color = nil
                           for variant in product.variants
-                            if variant.options[forloop.parentloop.index0] == value
-                              if variant_any_for_color == nil
-                                assign variant_any_for_color = variant
-                              endif
-                              if variant.featured_image
-                                assign variant_for_color = variant
-                                break
-                              endif
+                            if variant.options[color_option_index] == value and variant.featured_image
+                              assign variant_for_color = variant
+                              break
                             endif
                           endfor
-                          unless variant_for_color
-                            assign variant_for_color = variant_any_for_color
-                          endunless
                         -%}
                         <button
                           type="button"
