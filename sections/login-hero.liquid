@@ -1,5 +1,12 @@
 <section class="login-hero">
-  <div class="login-hero__image" style="background-image: url('{{ section.settings.image | image_url: width: 1200 }}');"></div>
+  <div class="login-hero__image" style="background-image: url('{{ section.settings.image | image_url: width: 1920 }}');"></div>
+  <nav class="login-hero__breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumb_home' | t | default: 'Accueil' }}</a>
+    <span>–</span>
+    <a href="{{ routes.account_url }}">{{ 'header.account' | t }}</a>
+    <span>–</span>
+    {{ 'customer.login.title' | t }}
+  </nav>
   <div class="login-hero__content">
     <div class="login-hero__card">
       <h1 class="login-hero__title">{{ 'customer.login.title' | t }}</h1>

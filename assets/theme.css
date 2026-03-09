@@ -2679,44 +2679,81 @@ accordion-toggle {
 /* --- Login Page --- */
 
 .login-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  position: relative;
   min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: stretch;
 }
 
 .login-hero__image {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
+  z-index: 0;
 }
 
+.login-hero__breadcrumb {
+  position: absolute;
+  top: var(--space-lg);
+  left: var(--space-lg);
+  z-index: 2;
+  font-size: 0.8125rem;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.login-hero__breadcrumb a {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.login-hero__breadcrumb a:hover { opacity: 1; }
+
+.login-hero__breadcrumb span { opacity: 0.65; margin: 0 6px; }
+
 .login-hero__content {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-2xl);
+  width: 100%;
+  max-width: 520px;
 }
 
 .login-hero__card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: var(--space-2xl) var(--space-xl);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
 }
 
 .login-hero__title {
-  font-size: calc(2rem * var(--font-heading-scale));
+  font-size: calc(1.75rem * var(--font-heading-scale));
   margin-bottom: var(--space-xl);
+  text-align: center;
 }
 
 .login-hero__forgot {
-  display: inline-block;
+  display: block;
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
   text-decoration: underline;
   margin-bottom: var(--space-lg);
+  text-align: right;
 }
 
 .login-hero__divider {
   text-align: center;
-  margin: var(--space-xl) 0;
+  margin: var(--space-xl) 0 0;
   color: var(--color-text-secondary);
   font-size: 0.875rem;
 }
@@ -2729,13 +2766,27 @@ accordion-toggle {
 
 @media (max-width: 767px) {
   .login-hero {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    min-height: auto;
   }
   .login-hero__image {
-    height: 200px;
+    position: relative;
+    height: 250px;
   }
   .login-hero__content {
+    max-width: 100%;
+    margin-left: 0;
     padding: var(--space-xl) var(--space-md);
+  }
+  .login-hero__card {
+    background: var(--color-bg);
+    backdrop-filter: none;
+    box-shadow: none;
+    padding: var(--space-lg) 0;
+  }
+  .login-hero__breadcrumb {
+    top: var(--space-md);
+    left: var(--space-md);
   }
 }
 
