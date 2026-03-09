@@ -97,6 +97,22 @@
             {%- comment -%} Products loaded via JS {%- endcomment -%}
           </div>
         </div>
+
+        {%- comment -%} Trust badges {%- endcomment -%}
+        <div class="cd-trust">
+          <div class="cd-trust__item">
+            <span class="cd-trust__icon">{% render 'icon', name: 'truck', size: 18 %}</span>
+            <span class="cd-trust__text">Livraison rapide en Europe</span>
+          </div>
+          <div class="cd-trust__item">
+            <span class="cd-trust__icon">{% render 'icon', name: 'return', size: 18 %}</span>
+            <span class="cd-trust__text">Retours sous 14 jours</span>
+          </div>
+          <div class="cd-trust__item">
+            <span class="cd-trust__icon">{% render 'icon', name: 'headset', size: 18 %}</span>
+            <span class="cd-trust__text">Service client disponible & réactif</span>
+          </div>
+        </div>
       {%- endif -%}
     </div>
 
@@ -134,22 +150,6 @@
         <a href="{{ routes.cart_url }}/checkout" class="btn btn--primary btn--full btn--large">
           {{ 'cart.checkout' | t }}
         </a>
-
-        {%- comment -%} Trust badges {%- endcomment -%}
-        <div class="cd-trust">
-          <div class="cd-trust__item">
-            <span class="cd-trust__icon">{% render 'icon', name: 'truck', size: 18 %}</span>
-            <span class="cd-trust__text">Livraison rapide en Europe</span>
-          </div>
-          <div class="cd-trust__item">
-            <span class="cd-trust__icon">{% render 'icon', name: 'return', size: 18 %}</span>
-            <span class="cd-trust__text">Retours sous 14 jours</span>
-          </div>
-          <div class="cd-trust__item">
-            <span class="cd-trust__icon">{% render 'icon', name: 'headset', size: 18 %}</span>
-            <span class="cd-trust__text">Service client disponible & réactif</span>
-          </div>
-        </div>
       </div>
     {%- endif -%}
   </div>
