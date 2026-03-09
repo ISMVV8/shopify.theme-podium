@@ -40,7 +40,7 @@
         {%- endpaginate -%}
       {%- else -%}
         <div class="search-results__empty">
-          <h2>{{ 'search.no_results' | t: query: search.terms }}</h2>
+          <h2>{{ 'search.no_results' | t: query: search.terms | escape }}</h2>
           <p>{{ 'search.no_results_suggestion' | t }}</p>
         </div>
       {%- endif -%}

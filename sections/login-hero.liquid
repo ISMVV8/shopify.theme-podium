@@ -35,7 +35,7 @@
       {%- endform -%}
 
       <div class="login-hero__divider">
-        <p class="login-hero__register-text">{{ 'customer.login.new_customer' | t: shop_name: shop.name }}</p>
+        <p class="login-hero__register-text">{{ 'customer.login.new_customer' | t: shop_name: shop.name | escape }}</p>
         <a href="{{ routes.account_register_url }}" class="btn btn--secondary btn--full">
           {{ 'customer.login.create_account' | t }}
         </a>

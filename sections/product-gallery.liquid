@@ -8,7 +8,7 @@
           data-thumb="{{ forloop.index0 }}"
           data-full-src="{{ media | image_url: width: 1200 }}"
           role="listitem"
-          aria-label="{{ 'accessibility.slide_number' | t: number: forloop.index, total: product.media.size }}"
+          aria-label="{{ 'accessibility.slide_number' | t: number: forloop.index, total: product.media.size | escape }}"
         >
           <img
             src="{{ media | image_url: width: 120 }}"

@@ -5,7 +5,7 @@
 {% endcomment %}
 
 {%- if paginate.pages > 1 -%}
-  <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.page' | t: number: paginate.current_page }}">
+  <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.page' | t: number: paginate.current_page | escape }}">
     {%- if paginate.previous -%}
       <a href="{{ paginate.previous.url }}" class="pagination__item pagination__item--prev" aria-label="{{ 'general.pagination.previous' | t }}">
         {% render 'icon', name: 'chevron-left', size: 16 %}
@@ -18,7 +18,7 @@
 
     {%- for part in paginate.parts -%}
       {%- if part.is_link -%}
-        <a href="{{ part.url }}" class="pagination__item" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+        <a href="{{ part.url }}" class="pagination__item" aria-label="{{ 'general.pagination.page' | t: number: part.title | escape }}">
           {{ part.title }}
         </a>
       {%- else -%}

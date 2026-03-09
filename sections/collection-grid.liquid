@@ -19,7 +19,7 @@
           {% render 'product-card', product: product %}
         {%- else -%}
           <p class="text-center" style="grid-column: 1 / -1;">
-            {{ 'search.no_results' | t: query: collection.title }}
+            {{ 'search.no_results' | t: query: collection.title | escape }}
           </p>
         {%- endfor -%}
       </div>
