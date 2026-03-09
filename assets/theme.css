@@ -3071,6 +3071,40 @@ filter-drawer.is-open .filter-drawer {
   padding-bottom: 8px;
 }
 
+/* Category pills */
+.filter-drawer__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-drawer__pill {
+  cursor: pointer;
+}
+
+.filter-drawer__pill-label {
+  display: inline-block;
+  padding: 9px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: all 0.2s;
+}
+
+.filter-drawer__pill:hover .filter-drawer__pill-label {
+  border-color: var(--color-text);
+}
+
+.filter-drawer__pill.is-active .filter-drawer__pill-label {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-bg);
+}
+
 /* Toggle switch (availability) */
 .filter-drawer__group--toggle {
   border-bottom: 1px solid var(--color-border);

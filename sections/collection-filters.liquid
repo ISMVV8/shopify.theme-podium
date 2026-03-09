@@ -39,12 +39,16 @@
           {%- liquid
             assign is_color_filter = false
             assign is_availability_filter = false
+            assign is_category_filter = false
             assign filter_label_lower = filter.label | downcase
             if filter_label_lower == 'color' or filter_label_lower == 'couleur' or filter_label_lower == 'colour'
               assign is_color_filter = true
             endif
             if filter_label_lower == 'availability' or filter_label_lower == 'disponibilité' or filter_label_lower == 'disponibilite'
               assign is_availability_filter = true
+            endif
+            if filter_label_lower == 'catégorie' or filter_label_lower == 'categorie' or filter_label_lower == 'category' or filter_label_lower == 'product type' or filter_label_lower == 'type de produit'
+              assign is_category_filter = true
             endif
           -%}
 
@@ -100,6 +104,24 @@
                           </span>
                           <span class="filter-drawer__color-label">{{ value.label }}</span>
                         </label>
+                      {%- endfor -%}
+                    </div>
+                  {%- elsif is_category_filter -%}
+                    {%- comment -%} Category pills {%- endcomment -%}
+                    <div class="filter-drawer__pills">
+                      {%- for value in filter.values -%}
+                        {%- if value.count > 0 -%}
+                          <label class="filter-drawer__pill{% if value.active %} is-active{% endif %}">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              {% if value.active %}checked{% endif %}
+                              class="visually-hidden"
+                            >
+                            <span class="filter-drawer__pill-label">{{ value.label }}</span>
+                          </label>
+                        {%- endif -%}
                       {%- endfor -%}
                     </div>
                   {%- else -%}
