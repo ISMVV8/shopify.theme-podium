@@ -990,9 +990,20 @@ function initStickyATC() {
 /* --- Size Panel Toggle --- */
 
 function initSizePanelToggle() {
+  var sheet = document.querySelector('[data-size-sheet]');
+
   document.addEventListener('click', function(e) {
     var toggle = e.target.closest('[data-size-toggle]');
     if (!toggle) return;
+
+    // Mobile: open bottom sheet
+    if (window.innerWidth <= 767 && sheet) {
+      sheet.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+
+    // Desktop: inline panel
     var panel = toggle.parentElement.querySelector('[data-size-panel]');
     if (!panel) return;
     var isOpen = !panel.hidden;
@@ -1000,6 +1011,26 @@ function initSizePanelToggle() {
     toggle.setAttribute('aria-expanded', String(!isOpen));
     toggle.classList.toggle('is-open', !isOpen);
   });
+
+  // Close bottom sheet
+  if (sheet) {
+    sheet.querySelectorAll('[data-size-sheet-close]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        sheet.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Close on size selection (after a brief delay for visual feedback)
+    sheet.querySelectorAll('[data-sheet-size]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        setTimeout(function() {
+          sheet.classList.remove('is-open');
+          document.body.style.overflow = '';
+        }, 200);
+      });
+    });
+  }
 }
 
 /* --- Register Custom Elements --- */

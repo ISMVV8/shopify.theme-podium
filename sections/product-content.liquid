@@ -125,7 +125,7 @@
                   </div>
 
                 {%- elsif option.name == 'Size' or option.name == 'Taille' -%}
-                  {%- comment -%} Size selector — expandable panel {%- endcomment -%}
+                  {%- comment -%} Size selector — expandable panel (desktop) / bottom sheet (mobile) {%- endcomment -%}
                   <div class="pp-option-group">
                     <button type="button" class="pp-size-selector" data-size-toggle aria-expanded="false">
                       <span class="pp-size-selector__label">{{ option.name }}</span>
@@ -134,7 +134,8 @@
                         <span class="pp-size-selector__chevron">{% render 'icon', name: 'chevron-right', size: 12 %}</span>
                       </span>
                     </button>
-                    <div class="pp-size-panel" data-size-panel hidden>
+                    {%- comment -%} Desktop: inline panel {%- endcomment -%}
+                    <div class="pp-size-panel pp-size-panel--inline" data-size-panel hidden>
                       <div class="pp-size-dots">
                         {%- for value in option.values -%}
                           <div class="pp-size-dot-wrap">
@@ -149,8 +150,40 @@
                         {%- endfor -%}
                       </div>
                       {%- if section.settings.size_guide_url != blank -%}
-                        <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">Size guide</a>
+                        <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">{{ 'product.size_guide' | t | default: 'Size guide' }}</a>
                       {%- endif -%}
+                    </div>
+                  </div>
+
+                  {%- comment -%} Mobile: bottom sheet drawer {%- endcomment -%}
+                  <div class="pp-size-sheet" data-size-sheet>
+                    <div class="pp-size-sheet__overlay" data-size-sheet-close></div>
+                    <div class="pp-size-sheet__drawer">
+                      <div class="pp-size-sheet__header">
+                        <span class="pp-size-sheet__title">{{ option.name }}</span>
+                        <button type="button" class="pp-size-sheet__close" data-size-sheet-close aria-label="Close">
+                          {% render 'icon', name: 'close', size: 20 %}
+                        </button>
+                      </div>
+                      <div class="pp-size-sheet__body">
+                        <div class="pp-size-dots">
+                          {%- for value in option.values -%}
+                            <div class="pp-size-dot-wrap">
+                              <button
+                                type="button"
+                                class="pp-size-dot{% if option.selected_value == value %} is-active{% endif %}"
+                                data-option
+                                data-option-position="{{ forloop.parentloop.index }}"
+                                data-value="{{ value }}"
+                                data-sheet-size
+                              >{{ value }}</button>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                        {%- if section.settings.size_guide_url != blank -%}
+                          <a href="{{ section.settings.size_guide_url }}" class="pp-size-guide">{{ 'product.size_guide' | t | default: 'Correspondances de taille' }}</a>
+                        {%- endif -%}
+                      </div>
                     </div>
                   </div>
 
@@ -751,6 +784,12 @@
 
 .pp-size-guide:hover {
   color: #767676;
+}
+
+/* ── Size bottom sheet — hidden on desktop ── */
+
+.pp-size-sheet {
+  display: none;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1376,6 +1415,123 @@
   .pp-sticky-bar__btn:hover {
     background: #fff;
     color: #000;
+  }
+
+  /* ── Size selector: hide inline panel, use bottom sheet ── */
+  .pp-size-panel--inline {
+    display: none !important;
+  }
+
+  .pp-size-selector {
+    cursor: pointer;
+  }
+
+  /* ── Size bottom sheet ── */
+  .pp-size-sheet {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .pp-size-sheet.is-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .pp-size-sheet__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+  }
+
+  .pp-size-sheet.is-open .pp-size-sheet__overlay {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .pp-size-sheet__drawer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 0 20px 32px;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .pp-size-sheet.is-open .pp-size-sheet__drawer {
+    transform: translateY(0);
+  }
+
+  .pp-size-sheet__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0 24px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+  }
+
+  .pp-size-sheet__title {
+    font-size: 1.125rem;
+    font-weight: 400;
+    letter-spacing: 0.025rem;
+    line-height: 1.5rem;
+    color: #000;
+  }
+
+  .pp-size-sheet__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .pp-size-sheet__body {
+    padding-bottom: 8px;
+  }
+
+  .pp-size-sheet__body .pp-size-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .pp-size-sheet__body .pp-size-dot {
+    min-width: 3.5rem;
+    height: 2.75rem;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    background: #f6f6f6;
+    border: 2px solid transparent;
+  }
+
+  .pp-size-sheet__body .pp-size-dot.is-active {
+    border-color: #000;
+    background: #fff;
+  }
+
+  .pp-size-sheet__body .pp-size-dot:not(.is-active):not(:disabled) {
+    border-color: transparent;
+  }
+
+  .pp-size-sheet__body .pp-size-guide {
+    margin-top: 1.25rem;
   }
 }
 
