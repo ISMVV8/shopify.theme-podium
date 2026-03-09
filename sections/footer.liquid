@@ -16,8 +16,9 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Center column: Social {%- endcomment -%}
+      {%- comment -%} Center column: Brand + Social {%- endcomment -%}
       <div class="footer__col footer__col--center">
+        <div class="footer__logo-text">{{ shop.name }}</div>
         <div class="footer__social">
           {%- if settings.social_instagram != blank -%}
             <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
