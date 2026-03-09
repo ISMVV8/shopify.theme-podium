@@ -15,7 +15,13 @@
       <h2 class="brand-banner__text">{{ section.settings.heading }}</h2>
     {%- endif -%}
     {%- if section.settings.cta_text != blank -%}
-      <a href="{{ section.settings.cta_link }}" class="btn btn--primary btn--large">
+      <a
+        href="{{ section.settings.cta_link }}"
+        class="btn btn--primary btn--large"
+        {% if section.settings.cta_bg_color != blank and section.settings.cta_bg_color != 'rgba(0,0,0,0)' %}
+          style="background:{{ section.settings.cta_bg_color }};color:{{ section.settings.cta_text_color }};border-color:{{ section.settings.cta_bg_color }};"
+        {% endif %}
+      >
         {{ section.settings.cta_text }}
       </a>
     {%- endif -%}
@@ -48,6 +54,18 @@
       "type": "url",
       "id": "cta_link",
       "label": "CTA link"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA text color",
+      "default": "#000000"
     }
   ],
   "presets": [

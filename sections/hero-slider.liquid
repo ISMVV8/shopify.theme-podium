@@ -17,7 +17,13 @@
           {%- endif -%}
           <div class="hero-slider__overlay"></div>
           {%- if block.settings.cta_text != blank -%}
-            <a href="{{ block.settings.cta_link | default: '#' }}" class="hero-slider__cta btn btn--primary btn--large">
+            <a
+              href="{{ block.settings.cta_link | default: '#' }}"
+              class="hero-slider__cta btn btn--primary btn--large"
+              {% if block.settings.cta_bg_color != blank and block.settings.cta_bg_color != 'rgba(0,0,0,0)' %}
+                style="--cta-bg:{{ block.settings.cta_bg_color }};--cta-text:{{ block.settings.cta_text_color }};background:var(--cta-bg);color:var(--cta-text);border-color:var(--cta-bg);"
+              {% endif %}
+            >
               {{ block.settings.cta_text }}
             </a>
           {%- endif -%}
@@ -90,6 +96,18 @@
           "type": "url",
           "id": "cta_link",
           "label": "CTA link"
+        },
+        {
+          "type": "color",
+          "id": "cta_bg_color",
+          "label": "CTA background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "cta_text_color",
+          "label": "CTA text color",
+          "default": "#000000"
         }
       ]
     }
