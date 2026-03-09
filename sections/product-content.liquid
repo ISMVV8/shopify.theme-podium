@@ -11,19 +11,32 @@
 <section class="pp-section">
   <div class="pp-layout">
 
-    {%- comment -%} ═══ LEFT — Vertical scrollable gallery ═══ {%- endcomment -%}
+    {%- comment -%} ═══ LEFT — Vertical scrollable gallery (desktop) / Swipe carousel (mobile) ═══ {%- endcomment -%}
     <product-gallery class="pp-gallery">
-      {%- for media in product.media -%}
-        <div class="pp-gallery__item" data-gallery-item data-media-id="{{ media.id }}">
-          <img
-            src="{{ media | image_url: width: 1400 }}"
-            alt="{{ media.alt | escape | default: product.title }}"
-            width="1400"
-            height="{{ 1400 | divided_by: media.aspect_ratio | round }}"
-            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-          >
+      <div class="pp-gallery__track">
+        {%- for media in product.media -%}
+          <div class="pp-gallery__item" data-gallery-item data-media-id="{{ media.id }}">
+            <img
+              src="{{ media | image_url: width: 1400 }}"
+              alt="{{ media.alt | escape | default: product.title }}"
+              width="1400"
+              height="{{ 1400 | divided_by: media.aspect_ratio | round }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            >
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="pp-gallery__dots">
+          {%- for media in product.media -%}
+            <button
+              class="pp-gallery__dot{% if forloop.first %} is-active{% endif %}"
+              data-gallery-dot="{{ forloop.index0 }}"
+              aria-label="Image {{ forloop.index }}"
+            ></button>
+          {%- endfor -%}
         </div>
-      {%- endfor -%}
+      {%- endif -%}
       {%- if product.media.size == 0 -%}
         <div class="pp-gallery__placeholder">
           {{ 'product-1' | placeholder_svg_tag: 'pp-gallery__placeholder-svg' }}
@@ -36,8 +49,20 @@
       <div class="pp-info-sticky">
         <div class="pp-info">
 
-          {%- comment -%} Title {%- endcomment -%}
-          <h1 class="pp-title">{{ product.title }}</h1>
+          {%- comment -%} Title + wishlist (mobile: side by side) {%- endcomment -%}
+          <div class="pp-title-row">
+            <h1 class="pp-title">{{ product.title }}</h1>
+            <button
+              type="button"
+              class="pp-wishlist-btn pp-wishlist-btn--title"
+              data-wishlist-toggle
+              data-product-handle="{{ product.handle }}"
+              aria-label="{{ 'header.wishlist' | t }}"
+            >
+              <span class="pp-wishlist-btn__icon">{% render 'icon', name: 'heart', size: 20 %}</span>
+              <span class="pp-wishlist-btn__icon--filled">{% render 'icon', name: 'heart-filled', size: 20 %}</span>
+            </button>
+          </div>
 
           {%- comment -%} SKU / reference {%- endcomment -%}
           {%- if current_variant.sku != blank -%}
@@ -323,6 +348,21 @@
   </div>
 </section>
 
+{%- comment -%} Sticky bottom bar — mobile only (like LV) {%- endcomment -%}
+<div class="pp-sticky-bar">
+  <div class="pp-sticky-bar__info">
+    <span class="pp-sticky-bar__name">{{ product.title }}</span>
+    <span class="pp-sticky-bar__price" data-product-price>{{ current_variant.price | money }}</span>
+  </div>
+  <button
+    type="button"
+    class="pp-sticky-bar__btn"
+    data-sticky-atc
+  >
+    {{ 'product.add_to_cart' | t }}
+  </button>
+</div>
+
 <style>
 /* ============================================================
    PRODUCT PAGE — Louis Vuitton-exact layout (pp-*)
@@ -358,6 +398,11 @@
   width: 50%;
   background: #f8f8f8;
   display: block;
+  position: relative;
+}
+
+.pp-gallery__track {
+  display: block;
 }
 
 .pp-gallery__item {
@@ -373,6 +418,26 @@
   object-fit: cover;
 }
 
+/* Dots indicator — hidden on desktop */
+.pp-gallery__dots {
+  display: none;
+}
+
+.pp-gallery__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: #b4b4b4;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pp-gallery__dot.is-active {
+  background: #000;
+}
+
 .pp-gallery__placeholder {
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -385,6 +450,30 @@
 .pp-gallery__placeholder-svg {
   width: 40%;
   opacity: 0.2;
+}
+
+/* ── Title row (title + wishlist side by side) ── */
+
+.pp-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.pp-title-row .pp-title {
+  flex: 1;
+}
+
+/* Mobile-only wishlist button next to title — hidden on desktop */
+.pp-wishlist-btn--title {
+  display: none;
+}
+
+/* ── Sticky bottom bar — mobile only ── */
+
+.pp-sticky-bar {
+  display: none;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1051,38 +1140,239 @@
   }
 }
 
-/* Mobile */
+/* ═══════════════════════════════════════════════
+   MOBILE — LV-style product page
+   ═══════════════════════════════════════════════ */
 @media (max-width: 767px) {
+
+  /* ── Gallery: horizontal swipe carousel ── */
+  .pp-gallery {
+    background: #f6f6f6;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .pp-gallery__track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pp-gallery__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pp-gallery__item {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+  }
+
+  .pp-gallery__item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* Dots indicator */
+  .pp-gallery__dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 0 16px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  /* ── Info section ── */
   .pp-info {
-    padding: 1.5rem 6.4vw;
+    padding: 20px 16px 100px; /* bottom padding for sticky bar */
+  }
+
+  /* Title + wishlist row */
+  .pp-title-row {
+    align-items: center;
   }
 
   .pp-title {
-    font-size: 1rem;
-    line-height: 1.25rem;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    font-weight: 400;
+    margin: 0;
   }
 
+  /* Show wishlist button next to title on mobile */
+  .pp-wishlist-btn--title {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background: none;
+    color: #000;
+  }
+
+  .pp-wishlist-btn--title:hover {
+    background: none;
+    color: #000;
+  }
+
+  /* Hide wishlist button next to ATC on mobile */
+  .pp-purchase__row .pp-wishlist-btn {
+    display: none;
+  }
+
+  .pp-purchase__row {
+    gap: 0;
+  }
+
+  /* Full-width ATC on mobile */
+  .pp-add-btn {
+    width: 100%;
+    flex: none;
+    padding: 14px 24px;
+    font-size: 0.9375rem;
+  }
+
+  /* SKU */
+  .pp-sku {
+    margin-top: 2px;
+  }
+
+  /* Price */
+  .pp-price {
+    margin: 12px 0 0;
+    font-size: 0.875rem;
+  }
+
+  /* Size selector */
   .pp-size-selector {
     height: 3.25rem;
   }
 
   .pp-size-dots {
-    gap: 1.5rem 1rem;
+    gap: 1rem 0.625rem;
   }
 
   .pp-size-dot {
-    min-width: 2.25rem;
-    height: 2.25rem;
+    min-width: 2.5rem;
+    height: 2.5rem;
     font-size: 0.8125rem;
   }
 
-  .pp-add-btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
+  /* Trust badges — horizontal scroll on mobile */
+  .pp-trust-badges {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0;
+  }
+
+  .pp-trust-badges::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pp-trust-badge {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* Accordions tighter spacing */
+  .pp-accordion__trigger {
+    padding: 16px 0;
+  }
+
+  .pp-accordion__content {
+    font-size: 0.8125rem;
+    line-height: 1.375rem;
+  }
+
+  /* Complete the Look cards smaller */
+  .pp-look {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
   }
 
   .pp-look__card {
     flex: 0 0 8.5rem;
+  }
+
+  .pp-look__card-image {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* ── Sticky bottom bar ── */
+  .pp-sticky-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #fff;
+    border-top: 1px solid #e1e1e1;
+    padding: 10px 16px;
+    gap: 12px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .pp-sticky-bar.is-visible {
+    transform: translateY(0);
+  }
+
+  .pp-sticky-bar__info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pp-sticky-bar__name {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.02rem;
+    line-height: 1rem;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pp-sticky-bar__price {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.02rem;
+    line-height: 1rem;
+    color: #000;
+  }
+
+  .pp-sticky-bar__btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 100vmax;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0.025rem;
+    line-height: 1.25rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .pp-sticky-bar__btn:hover {
+    background: #fff;
+    color: #000;
   }
 }
 

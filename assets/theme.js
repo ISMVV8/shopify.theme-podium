@@ -452,6 +452,8 @@ class FeaturedProductsSection extends HTMLElement {
 class ProductGalleryElement extends HTMLElement {
   connectedCallback() {
     this.items = this.querySelectorAll('[data-gallery-item]');
+    this.track = this.querySelector('.pp-gallery__track');
+    this.dots = this.querySelectorAll('[data-gallery-dot]');
 
     // Listen for variant image changes — scroll to matching image
     document.addEventListener('variant:imageChanged', function(e) {
@@ -459,11 +461,47 @@ class ProductGalleryElement extends HTMLElement {
       for (var i = 0; i < this.items.length; i++) {
         var img = this.items[i].querySelector('img');
         if (img && img.src && img.src.indexOf(src) !== -1) {
-          this.items[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (window.innerWidth <= 767 && this.track) {
+            this.track.scrollTo({ left: this.items[i].offsetLeft, behavior: 'smooth' });
+          } else {
+            this.items[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          this.updateDots(i);
           break;
         }
       }
     }.bind(this));
+
+    // Mobile: dots click navigation
+    this.dots.forEach(function(dot) {
+      dot.addEventListener('click', function() {
+        var index = parseInt(dot.dataset.galleryDot, 10);
+        if (this.track && this.items[index]) {
+          this.track.scrollTo({ left: this.items[index].offsetLeft, behavior: 'smooth' });
+        }
+        this.updateDots(index);
+      }.bind(this));
+    }.bind(this));
+
+    // Mobile: scroll → update dots
+    if (this.track) {
+      var scrollTimeout;
+      this.track.addEventListener('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+          var scrollLeft = this.track.scrollLeft;
+          var trackWidth = this.track.offsetWidth;
+          var index = Math.round(scrollLeft / trackWidth);
+          this.updateDots(index);
+        }.bind(this), 50);
+      }.bind(this), { passive: true });
+    }
+  }
+
+  updateDots(activeIndex) {
+    this.dots.forEach(function(dot, i) {
+      dot.classList.toggle('is-active', i === activeIndex);
+    });
   }
 }
 
@@ -911,6 +949,44 @@ function formatMoney(cents) {
   return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: window.Shopify?.currency?.active || 'EUR' });
 }
 
+/* --- Sticky ATC bar (mobile) --- */
+
+function initStickyATC() {
+  var stickyBtn = document.querySelector('[data-sticky-atc]');
+  if (!stickyBtn) return;
+
+  stickyBtn.addEventListener('click', function() {
+    var form = document.getElementById('product-form');
+    if (!form) return;
+    var addBtn = form.querySelector('[data-add-to-cart]');
+    if (addBtn && !addBtn.disabled) {
+      addBtn.click();
+    }
+  });
+
+  // Show/hide sticky bar based on scroll past the main ATC button
+  var mainATC = document.querySelector('[data-add-to-cart]');
+  var stickyBar = document.querySelector('.pp-sticky-bar');
+  if (!mainATC || !stickyBar) return;
+
+  function checkStickyVisibility() {
+    if (window.innerWidth > 767) {
+      stickyBar.style.display = 'none';
+      return;
+    }
+    var rect = mainATC.getBoundingClientRect();
+    if (rect.bottom < 0) {
+      stickyBar.classList.add('is-visible');
+    } else {
+      stickyBar.classList.remove('is-visible');
+    }
+  }
+
+  window.addEventListener('scroll', checkStickyVisibility, { passive: true });
+  window.addEventListener('resize', checkStickyVisibility, { passive: true });
+  checkStickyVisibility();
+}
+
 /* --- Size Panel Toggle --- */
 
 function initSizePanelToggle() {
@@ -949,5 +1025,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initWishlistToggles();
   initSizePanelToggle();
   initProductRecommendations();
+  initStickyATC();
 });
 
