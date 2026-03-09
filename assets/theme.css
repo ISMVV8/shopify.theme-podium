@@ -842,19 +842,29 @@ a.mega-menu__heading:hover {
   position: relative;
 }
 
-/* Fix transparent header mega menu: force opaque bg when open */
-.header__nav-item:hover .mega-menu {
+/* Fix transparent header: force entire header opaque when mega menu is open */
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) {
   background: var(--color-bg);
+  border-bottom-color: var(--color-border);
   color: var(--color-text);
 }
 
-.header__nav-item:hover .mega-menu .mega-menu__heading,
-.header__nav-item:hover .mega-menu .mega-menu__link,
-.header__nav-item:hover .mega-menu .mega-menu__view-all {
-  color: var(--color-text-secondary, #666);
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) .header__nav-link,
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) .header__logo-text,
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) .header__icon,
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) .header__menu-btn {
+  color: var(--color-text);
 }
 
-.header__nav-item:hover .mega-menu .mega-menu__heading {
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) .header__cart-count,
+.header-wrapper[data-transparent-header="true"][data-template="index"] .header:not(.is-sticky):has(.header__nav-item:hover > .mega-menu) .header__wishlist-count {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* Mega menu panel always opaque */
+.header__nav-item:hover > .mega-menu {
+  background: var(--color-bg);
   color: var(--color-text);
 }
 
