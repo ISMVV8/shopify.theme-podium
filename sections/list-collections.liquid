@@ -1,24 +1,43 @@
-<section class="section">
+{%- comment -%}
+  List Collections — LV luxury style
+  Clean grid with large images, centered titles, elegant hover
+{%- endcomment -%}
+
+<section class="coll-list-section">
   <div class="container">
-    <h1 class="text-center" style="margin-bottom: var(--space-xl);">{{ 'collection.title' | t }}</h1>
-    <div class="collections-grid">
+    <div class="coll-list-header">
+      <h1 class="coll-list-header__title">{{ 'collection.all_collections' | t | default: 'Collections' }}</h1>
+    </div>
+
+    <div class="coll-list-grid">
       {%- for collection in collections -%}
         {%- unless collection.handle == 'all' -%}
-          <a href="{{ collection.url }}" class="collection-card">
-            {%- if collection.image -%}
-              <img
-                src="{{ collection.image | image_url: width: 600 }}"
-                alt="{{ collection.title | escape }}"
-                class="collection-card__image"
-                width="600"
-                height="{{ 600 | divided_by: collection.image.aspect_ratio | round }}"
-                loading="lazy"
-              >
-            {%- else -%}
-              {{ 'collection-1' | placeholder_svg_tag: 'collection-card__image' }}
-            {%- endif -%}
-            <div class="collection-card__overlay">
-              <h3 class="collection-card__title">{{ collection.title }}</h3>
+          <a href="{{ collection.url }}" class="coll-list-card">
+            <div class="coll-list-card__media">
+              {%- if collection.image -%}
+                <img
+                  src="{{ collection.image | image_url: width: 800 }}"
+                  alt="{{ collection.title | escape }}"
+                  class="coll-list-card__img"
+                  width="800"
+                  height="{{ 800 | divided_by: collection.image.aspect_ratio | round }}"
+                  loading="lazy"
+                  srcset="
+                    {{ collection.image | image_url: width: 400 }} 400w,
+                    {{ collection.image | image_url: width: 600 }} 600w,
+                    {{ collection.image | image_url: width: 800 }} 800w
+                  "
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                >
+              {%- else -%}
+                <div class="coll-list-card__placeholder">
+                  {{ 'collection-1' | placeholder_svg_tag }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="coll-list-card__info">
+              <h3 class="coll-list-card__title">{{ collection.title }}</h3>
+              <span class="coll-list-card__cta">{{ 'collection.discover' | t | default: 'Découvrir' }}</span>
             </div>
           </a>
         {%- endunless -%}
@@ -35,4 +54,3 @@
   "presets": [{"name": "List collections"}]
 }
 {% endschema %}
-

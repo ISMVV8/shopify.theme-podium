@@ -15,6 +15,7 @@
     "search": "Rechercher",
     "menu": "Menu",
     "loading": "Chargement...",
+    "home": "Home",
     "pagination": {
       "previous": "Précédent",
       "next": "Suivant",
@@ -85,7 +86,10 @@
     "availability": "Disponibilité",
     "in_stock": "En stock",
     "price": "Prix",
-    "price_range": "{{ min }} – {{ max }}"
+    "price_range": "{{ min }} – {{ max }}",
+    "all_collections": "Collections",
+    "discover": "Discover",
+    "no_products": "No products found."
   },
   "customer": {
     "login": {

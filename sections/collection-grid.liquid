@@ -1,27 +1,35 @@
-<section class="section">
+{%- comment -%}
+  Collection Grid — LV luxury style
+  Clean toolbar with inline sort/filter, elegant product grid
+{%- endcomment -%}
+
+<section class="coll-section">
   <div class="container">
-    {%- comment -%} Toolbar: sort + filter buttons {%- endcomment -%}
-    <div class="collection-toolbar">
-      <div class="collection-toolbar__left">
-        <button class="collection-toolbar__btn" data-filter-open>
-          {% render 'icon', name: 'filter', size: 16 %}
-          {{ 'collection.filter' | t }}
+
+    {%- comment -%} Toolbar {%- endcomment -%}
+    <div class="coll-toolbar">
+      <div class="coll-toolbar__left">
+        <p class="coll-toolbar__count">
+          {{ 'collection.results_count' | t: count: collection.products_count }}
+        </p>
+      </div>
+      <div class="coll-toolbar__right">
+        <button class="coll-toolbar__btn" data-filter-open>
+          {% render 'icon', name: 'filter', size: 14 %}
+          <span>{{ 'collection.filter' | t }}</span>
           {%- assign active_count = 0 -%}
           {%- for filter in collection.filters -%}
             {%- assign active_count = active_count | plus: filter.active_values.size -%}
           {%- endfor -%}
           {%- if active_count > 0 -%}
-            <span class="collection-toolbar__badge">{{ active_count }}</span>
+            <span class="coll-toolbar__badge">{{ active_count }}</span>
           {%- endif -%}
         </button>
-        <button class="collection-toolbar__btn" data-filter-open>
-          {% render 'icon', name: 'sort', size: 16 %}
-          {{ 'collection.sort' | t }}
+        <button class="coll-toolbar__btn" data-filter-open>
+          {% render 'icon', name: 'sort', size: 14 %}
+          <span>{{ 'collection.sort' | t }}</span>
         </button>
       </div>
-      <p class="collection-toolbar__count">
-        {{ 'collection.results_count' | t: count: collection.products_count }}
-      </p>
     </div>
 
     {%- comment -%} Active filter pills {%- endcomment -%}
@@ -34,16 +42,16 @@
     {%- endfor -%}
 
     {%- if has_active_filters -%}
-      <div class="collection-active-filters">
+      <div class="coll-filters-active">
         {%- for filter in collection.filters -%}
           {%- for value in filter.active_values -%}
-            <a href="{{ value.url_to_remove }}" class="collection-active-filters__pill">
+            <a href="{{ value.url_to_remove }}" class="coll-filters-active__pill">
               {{ value.label }}
               {% render 'icon', name: 'close', size: 10 %}
             </a>
           {%- endfor -%}
         {%- endfor -%}
-        <a href="{{ collection.url }}" class="collection-active-filters__clear">
+        <a href="{{ collection.url }}" class="coll-filters-active__clear">
           {{ 'collection.clear_filters' | t }}
         </a>
       </div>
@@ -51,13 +59,18 @@
 
     {%- comment -%} Product grid {%- endcomment -%}
     {%- paginate collection.products by section.settings.products_per_page -%}
-      <div class="collection-products">
+      <div class="coll-grid" style="--coll-columns: {{ section.settings.columns }};">
         {%- for product in collection.products -%}
           {% render 'product-card', product: product %}
         {%- else -%}
-          <p class="text-center" style="grid-column: 1 / -1;">
-            {{ 'search.no_results' | t: query: collection.title | escape }}
-          </p>
+          <div class="coll-grid__empty">
+            <p>{{ 'collection.no_products' | t | default: 'Aucun produit trouvé.' }}</p>
+            {%- if has_active_filters -%}
+              <a href="{{ collection.url }}" class="btn btn--secondary">
+                {{ 'collection.clear_filters' | t }}
+              </a>
+            {%- endif -%}
+          </div>
         {%- endfor -%}
       </div>
 
@@ -65,8 +78,6 @@
     {%- endpaginate -%}
   </div>
 </section>
-
-{%- comment -%} Filter drawer is included via the collection template JSON {%- endcomment -%}
 
 {% schema %}
 {
@@ -87,9 +98,9 @@
       "id": "columns",
       "label": "Columns (desktop)",
       "min": 2,
-      "max": 4,
+      "max": 5,
       "step": 1,
-      "default": 3
+      "default": 4
     }
   ],
   "presets": [{"name": "Collection grid"}]
