@@ -850,47 +850,60 @@ function initProductRecommendations() {
   if (!el) return;
 
   const productId = el.dataset.productId;
-  const limit = el.dataset.limit || 8;
+  const productHandle = el.dataset.productHandle;
+  const collectionUrl = el.dataset.collectionUrl;
+  const limit = parseInt(el.dataset.limit || '8', 10);
+  const track = el.querySelector('.pp-look__track');
 
-  // Check if collection-based recs already have products
-  const existingLook = document.querySelector('.pp-look:not(.pp-look--recs)');
-  const existingCards = existingLook ? existingLook.querySelectorAll('.pp-look__card') : [];
-  if (existingCards.length >= 2) return; // Already have enough recommendations
-
-  // Hide the collection-based section if it has 0–1 products
-  if (existingLook && existingCards.length < 2) {
-    existingLook.style.display = 'none';
+  function renderCards(products) {
+    if (!products || products.length === 0) return false;
+    track.innerHTML = '';
+    products.forEach(p => {
+      const imgSrc = p.featured_image || (p.images && p.images[0]) || '';
+      const img = imgSrc ? `<img src="${imgSrc}" alt="${p.title}" loading="lazy">` : '';
+      const price = typeof p.price === 'number' ? formatMoney(p.price) : p.price;
+      track.insertAdjacentHTML('beforeend', `
+        <a href="${p.url}" class="pp-look__card">
+          <div class="pp-look__card-image">${img}</div>
+          <div class="pp-look__card-info">
+            <span class="pp-look__card-name">${p.title}</span>
+            <span class="pp-look__card-price">${price}</span>
+          </div>
+        </a>
+      `);
+    });
+    el.style.display = '';
+    return true;
   }
 
-  fetch(`/recommendations/products.json?product_id=${productId}&limit=${limit}`)
+  function tryCollectionFallback() {
+    if (!collectionUrl) return;
+    fetch(collectionUrl + '/products.json?limit=' + (limit + 1))
+      .then(r => r.json())
+      .then(colData => {
+        const filtered = (colData.products || []).filter(p => p.handle !== productHandle);
+        renderCards(filtered.slice(0, limit));
+      })
+      .catch(() => {});
+  }
+
+  // 1. Try Shopify Product Recommendations API (complementary)
+  fetch('/recommendations/products.json?product_id=' + productId + '&limit=' + limit + '&intent=complementary')
     .then(r => r.json())
     .then(data => {
-      const products = data.products;
-      if (!products || products.length === 0) {
-        // Show the collection-based one back if no recs
-        if (existingLook) existingLook.style.display = '';
-        return;
-      }
+      if (renderCards(data.products)) return;
 
-      const track = el.querySelector('[data-recs-track]');
-      products.forEach(p => {
-        const img = p.featured_image ? `<img src="${p.featured_image}" alt="${p.title}" loading="lazy">` : '';
-        track.insertAdjacentHTML('beforeend', `
-          <a href="${p.url}" class="pp-look__card">
-            <div class="pp-look__card-image">${img}</div>
-            <div class="pp-look__card-info">
-              <span class="pp-look__card-name">${p.title}</span>
-              <span class="pp-look__card-price">${formatMoney(p.price)}</span>
-            </div>
-          </a>
-        `);
-      });
-
-      el.style.display = '';
+      // 2. Try related intent
+      return fetch('/recommendations/products.json?product_id=' + productId + '&limit=' + limit + '&intent=related')
+        .then(r => r.json())
+        .then(data2 => {
+          if (renderCards(data2.products)) return;
+          // 3. Fallback: collection products
+          tryCollectionFallback();
+        });
     })
     .catch(() => {
-      // On error, show the collection-based section back
-      if (existingLook) existingLook.style.display = '';
+      tryCollectionFallback();
     });
 }
 

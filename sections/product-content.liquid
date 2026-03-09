@@ -267,20 +267,10 @@
                 break
               endif
             endfor
-
-            comment
-              Auto-recommendations: pull from the same collection if no manual picks
-            endcomment
-            assign auto_recs = ''
-            unless has_manual_cross_sell
-              assign current_col = product.collections | first
-              if current_col != blank
-                assign auto_recs_arr = current_col.products | where: 'available' | slice: 0, 20
-              endif
-            endunless
           -%}
 
           {%- if has_manual_cross_sell -%}
+            {%- comment -%} Manual picks from theme editor {%- endcomment -%}
             <div class="pp-look">
               <div class="pp-look__header">
                 <h3 class="pp-look__title">{{ section.settings.cross_sell_heading | default: 'Complétez le look' }}</h3>
@@ -308,44 +298,24 @@
                 {%- endfor -%}
               </div>
             </div>
-          {%- elsif current_col != blank -%}
-            {%- assign look_count = 0 -%}
-            <div class="pp-look">
+          {%- else -%}
+            {%- comment -%} Auto recommendations via Shopify API + collection fallback {%- endcomment -%}
+            <div
+              class="pp-look"
+              data-product-recommendations
+              data-product-id="{{ product.id }}"
+              data-product-handle="{{ product.handle }}"
+              data-collection-url="{{ product.collections.first.url }}"
+              data-limit="8"
+              data-heading="{{ section.settings.cross_sell_heading | default: 'Complétez le look' }}"
+              style="display:none;"
+            >
               <div class="pp-look__header">
                 <h3 class="pp-look__title">{{ section.settings.cross_sell_heading | default: 'Complétez le look' }}</h3>
               </div>
-              <div class="pp-look__track">
-                {%- for cs in current_col.products limit: 10 -%}
-                  {%- if cs.handle != product.handle and cs.available -%}
-                    {%- assign look_count = look_count | plus: 1 -%}
-                    <a href="{{ cs.url }}" class="pp-look__card">
-                      <div class="pp-look__card-image">
-                        {%- if cs.featured_media -%}
-                          <img
-                            src="{{ cs.featured_media | image_url: width: 500 }}"
-                            alt="{{ cs.featured_media.alt | escape | default: cs.title }}"
-                            loading="lazy"
-                          >
-                        {%- endif -%}
-                      </div>
-                      <div class="pp-look__card-info">
-                        <span class="pp-look__card-name">{{ cs.title }}</span>
-                        <span class="pp-look__card-price">{{ cs.price | money }}</span>
-                      </div>
-                    </a>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
+              <div class="pp-look__track"></div>
             </div>
           {%- endif -%}
-
-          {%- comment -%} Shopify product recommendations fallback {%- endcomment -%}
-          <div class="pp-look pp-look--recs" data-product-recommendations data-product-id="{{ product.id }}" data-limit="8" style="display:none;">
-            <div class="pp-look__header">
-              <h3 class="pp-look__title">{{ section.settings.cross_sell_heading | default: 'Complétez le look' }}</h3>
-            </div>
-            <div class="pp-look__track" data-recs-track></div>
-          </div>
 
         </div>
       </div>
