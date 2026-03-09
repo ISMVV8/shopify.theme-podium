@@ -156,23 +156,35 @@
               <input type="hidden" name="quantity" value="1">
             </variant-selector>
 
-            {%- comment -%} Purchase buttons {%- endcomment -%}
+            {%- comment -%} Purchase buttons + wishlist {%- endcomment -%}
             <div class="pp-purchase">
-              <button
-                type="submit"
-                class="pp-add-btn"
-                data-add-to-cart
-                data-add-text="{{ 'product.add_to_cart' | t }}"
-                data-soldout-text="{{ 'product.sold_out' | t }}"
-                data-unavailable-text="{{ 'product.unavailable' | t }}"
-                {% unless current_variant.available %}disabled{% endunless %}
-              >
-                {%- if current_variant.available -%}
-                  {{ 'product.add_to_cart' | t }}
-                {%- else -%}
-                  {{ 'product.sold_out' | t }}
-                {%- endif -%}
-              </button>
+              <div class="pp-purchase__row">
+                <button
+                  type="submit"
+                  class="pp-add-btn"
+                  data-add-to-cart
+                  data-add-text="{{ 'product.add_to_cart' | t }}"
+                  data-soldout-text="{{ 'product.sold_out' | t }}"
+                  data-unavailable-text="{{ 'product.unavailable' | t }}"
+                  {% unless current_variant.available %}disabled{% endunless %}
+                >
+                  {%- if current_variant.available -%}
+                    {{ 'product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'product.sold_out' | t }}
+                  {%- endif -%}
+                </button>
+                <button
+                  type="button"
+                  class="pp-wishlist-btn"
+                  data-wishlist-toggle
+                  data-product-handle="{{ product.handle }}"
+                  aria-label="{{ 'header.wishlist' | t }}"
+                >
+                  <span class="pp-wishlist-btn__icon">{% render 'icon', name: 'heart', size: 20 %}</span>
+                  <span class="pp-wishlist-btn__icon--filled">{% render 'icon', name: 'heart-filled', size: 20 %}</span>
+                </button>
+              </div>
             </div>
           {%- endform -%}
 
@@ -258,24 +270,28 @@
           -%}
 
           {%- if has_cross_sell -%}
-            <div class="pp-cross-sell">
-              <h3 class="pp-cross-sell__heading">{{ section.settings.cross_sell_heading | default: 'You may also like' }}</h3>
-              <div class="pp-cross-sell__grid">
+            <div class="pp-look">
+              <div class="pp-look__header">
+                <h3 class="pp-look__title">{{ section.settings.cross_sell_heading | default: 'Complete the look' }}</h3>
+              </div>
+              <div class="pp-look__track">
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'cross_sell_product' and block.settings.product != blank -%}
                     {%- assign cs = block.settings.product -%}
-                    <a href="{{ cs.url }}" class="pp-cross-item" {{ block.shopify_attributes }}>
-                      {%- if cs.featured_media -%}
-                        <div class="pp-cross-item__image">
+                    <a href="{{ cs.url }}" class="pp-look__card" {{ block.shopify_attributes }}>
+                      <div class="pp-look__card-image">
+                        {%- if cs.featured_media -%}
                           <img
-                            src="{{ cs.featured_media | image_url: width: 400 }}"
+                            src="{{ cs.featured_media | image_url: width: 500 }}"
                             alt="{{ cs.featured_media.alt | escape | default: cs.title }}"
                             loading="lazy"
                           >
-                        </div>
-                      {%- endif -%}
-                      <span class="pp-cross-item__name">{{ cs.title }}</span>
-                      <span class="pp-cross-item__price">{{ cs.price | money }}</span>
+                        {%- endif -%}
+                      </div>
+                      <div class="pp-look__card-info">
+                        <span class="pp-look__card-name">{{ cs.title }}</span>
+                        <span class="pp-look__card-price">{{ cs.price | money }}</span>
+                      </div>
                     </a>
                   {%- endif -%}
                 {%- endfor -%}
@@ -642,13 +658,19 @@
   margin: 1.5rem 0;
 }
 
+.pp-purchase__row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 /* Primary button — pill shape, black bg */
 
 .pp-add-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  flex: 1;
   padding: 0.8125rem 2rem;
   background-color: #000;
   color: #fff;
@@ -675,6 +697,54 @@
   background-color: #e1e1e1;
   border-color: #e1e1e1;
   cursor: not-allowed;
+}
+
+/* Wishlist button — circle outline */
+
+.pp-wishlist-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid #000;
+  background: none;
+  cursor: pointer;
+  color: #000;
+  padding: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.pp-wishlist-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.pp-wishlist-btn__icon,
+.pp-wishlist-btn__icon--filled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pp-wishlist-btn__icon--filled {
+  display: none;
+}
+
+.pp-wishlist-btn.is-wishlisted .pp-wishlist-btn__icon {
+  display: none;
+}
+
+.pp-wishlist-btn.is-wishlisted .pp-wishlist-btn__icon--filled {
+  display: flex;
+}
+
+.pp-wishlist-btn__icon svg,
+.pp-wishlist-btn__icon--filled svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* ── Model info ── */
@@ -834,71 +904,102 @@
 }
 
 /* ═══════════════════════════════════════════════
-   CROSS-SELL — Product cards grid
+   COMPLETE THE LOOK — LV-style horizontal scroll
    ═══════════════════════════════════════════════ */
 
-.pp-cross-sell {
+.pp-look {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid #e1e1e1;
 }
 
-.pp-cross-sell__heading {
+.pp-look__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.pp-look__title {
   font-family: inherit;
   font-size: 1.125rem;
   font-weight: 400;
   letter-spacing: 0.025rem;
   line-height: 1.5rem;
   color: #000;
-  margin: 0 0 1.25rem;
+  margin: 0;
 }
 
-.pp-cross-sell__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
+.pp-look__track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.5rem;
 }
 
-.pp-cross-item {
+.pp-look__track::-webkit-scrollbar {
+  display: none;
+}
+
+.pp-look__card {
+  flex: 0 0 10rem;
+  scroll-snap-align: start;
   text-decoration: none;
   color: #000;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.625rem;
 }
 
-.pp-cross-item:hover .pp-cross-item__name {
+.pp-look__card:hover .pp-look__card-name {
   text-decoration: underline;
 }
 
-.pp-cross-item__image {
+.pp-look__card-image {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: #f8f8f8;
-  border-radius: 0;
 }
 
-.pp-cross-item__image img {
+.pp-look__card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
 }
 
-.pp-cross-item__name {
-  font-size: 0.875rem;
+.pp-look__card:hover .pp-look__card-image img {
+  transform: scale(1.03);
+}
+
+.pp-look__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.pp-look__card-name {
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.025rem;
-  line-height: 1.25rem;
+  line-height: 1rem;
   color: #000;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.pp-cross-item__price {
-  font-size: 0.875rem;
+.pp-look__card-price {
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.025rem;
-  line-height: 1.25rem;
+  line-height: 1rem;
   color: #000;
 }
 
@@ -962,9 +1063,8 @@
     font-size: 0.875rem;
   }
 
-  .pp-cross-sell__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+  .pp-look__card {
+    flex: 0 0 8.5rem;
   }
 }
 
