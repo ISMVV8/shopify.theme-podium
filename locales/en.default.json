@@ -52,6 +52,7 @@
     "color": "Color",
     "size": "Size",
     "quantity": "Quantity",
+    "product_details": "Product details",
     "description": "Description",
     "composition": "Composition & care",
     "shipping": "Shipping & returns",
