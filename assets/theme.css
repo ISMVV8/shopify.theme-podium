@@ -1628,15 +1628,29 @@ featured-products {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    margin-bottom: 12px;
   }
   .fp-row {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
-  .fp-featured__img-wrap {
-    aspect-ratio: 4 / 3;
+  .fp-featured {
+    display: none;
   }
   .fp-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .fp-grid .product-card__image-overflow {
+    aspect-ratio: 3 / 4;
+  }
+  .fp-grid .product-card__image-overflow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fp-grid .quick-buy {
+    display: none;
   }
 }
 
