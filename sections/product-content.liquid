@@ -288,6 +288,7 @@
 <style>
 /* ============================================================
    PRODUCT PAGE — Merrachi-inspired minimal layout (pp-*)
+   Pixel-perfect dimensions matched to reference screenshot
    ============================================================ */
 
 .pp-section {
@@ -296,31 +297,33 @@
 
 .pp-section *, .pp-section *::before, .pp-section *::after {
   font-family: inherit;
+  box-sizing: border-box;
 }
 
-/* ── 50/50 split layout ── */
+/* ── Layout: image 52% / info 48% ── */
 
 .pp-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 52% 1fr;
   min-height: calc(100vh - 80px);
 }
 
 /* ═══════════════════════════════════════════════
-   LEFT — Gallery
+   LEFT — Gallery (edge-to-edge, no padding)
    ═══════════════════════════════════════════════ */
 
 .pp-gallery {
   position: relative;
   display: block;
   background: #f5f3ef;
+  overflow: hidden;
 }
 
 .pp-gallery__main {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -329,11 +332,12 @@
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: top center;
 }
 
 .pp-gallery__placeholder {
   width: 100%;
-  height: 500px;
+  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,23 +349,23 @@
   opacity: 0.3;
 }
 
-/* Dot navigation — vertically centered on left edge */
+/* Dot navigation — vertically centered, 28px from left */
 
 .pp-gallery__dots {
   position: absolute;
-  left: 24px;
+  left: 28px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   z-index: 2;
 }
 
 .pp-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #c0bdb8;
   border: none;
@@ -371,9 +375,9 @@
 }
 
 .pp-dot.is-active {
-  width: 9px;
-  height: 9px;
-  background: #333;
+  width: 8px;
+  height: 8px;
+  background: #222;
 }
 
 .pp-dot:hover:not(.is-active) {
@@ -382,50 +386,51 @@
 
 /* ═══════════════════════════════════════════════
    RIGHT — Product info
+   Padding: 50px top, 48px right, 64px bottom, 64px left
    ═══════════════════════════════════════════════ */
 
 .pp-info {
-  padding: 48px 48px 64px 56px;
-  border-left: 1px solid #eae8e4;
+  padding: 50px 48px 64px 64px;
+  border-left: 1px solid #e8e6e2;
   overflow-y: auto;
 }
 
-/* Variant / color label */
+/* ── Variant / color label ── */
 
 .pp-variant-label {
-  font-size: 0.85rem;
+  font-size: 13px;
   color: #888;
   margin: 0 0 6px;
   font-weight: 400;
   letter-spacing: 0.01em;
 }
 
-/* Title */
+/* ── Title ── */
 
 .pp-title {
   font-family: inherit;
-  font-size: 1.5rem;
+  font-size: 22px;
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.3;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   color: #1a1a1a;
 }
 
-/* Price */
+/* ── Price ── */
 
 .pp-price {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin: 0 0 28px;
-  font-size: 1rem;
+  margin: 0 0 32px;
+  font-size: 16px;
   font-weight: 400;
   color: #1a1a1a;
 }
 
 .pp-price--compare {
-  font-size: 0.9rem;
+  font-size: 14px;
   color: #aaa;
 }
 
@@ -433,19 +438,19 @@
   text-decoration: line-through;
 }
 
-/* ── Color swatches (small circles) ── */
+/* ── Color swatches (small circles, 26px) ── */
 
 .pp-swatches {
   display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 24px;
 }
 
 .pp-swatch {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  border: 1.5px solid #ddd;
+  border: 1.5px solid #d5d3d0;
   overflow: hidden;
   cursor: pointer;
   padding: 2px;
@@ -479,9 +484,9 @@
 /* ── Model info ── */
 
 .pp-model-info {
-  font-size: 0.84rem;
+  font-size: 13px;
   color: #666;
-  margin: 0 0 24px;
+  margin: 0 0 28px;
   line-height: 1.55;
 }
 
@@ -496,20 +501,21 @@
 
 .pp-sizes {
   display: flex;
-  gap: 16px;
+  gap: 22px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .pp-size {
   background: none;
   border: none;
-  padding: 4px 0;
+  padding: 6px 0;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 14px;
   cursor: pointer;
   color: #555;
   transition: all 0.2s;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   position: relative;
 }
 
@@ -520,7 +526,7 @@
   left: 0;
   right: 0;
   height: 1.5px;
-  background: #333;
+  background: #1a1a1a;
   transform: scaleX(0);
   transition: transform 0.2s;
 }
@@ -545,7 +551,7 @@
 }
 
 .pp-size-guide {
-  font-size: 0.85rem;
+  font-size: 13px;
   color: #555;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -561,23 +567,23 @@
 /* ── Option label (generic) ── */
 
 .pp-option-label {
-  font-size: 0.88rem;
+  font-size: 14px;
   color: #666;
   margin: 0 0 12px;
 }
 
-/* ── Add to cart ── */
+/* ── Add to cart — 50px height, full width, dark ── */
 
 .pp-add-btn {
   width: 100%;
-  height: 52px;
-  margin-top: 4px;
+  height: 50px;
+  margin-top: 0;
   background: #1a1a1a;
   color: #fff;
   border: none;
   border-radius: 4px;
   font-family: inherit;
-  font-size: 0.88rem;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -594,27 +600,27 @@
 }
 
 /* ═══════════════════════════════════════════════
-   TABS
+   TABS — 40px below button
    ═══════════════════════════════════════════════ */
 
 .pp-tabs {
   display: block;
-  margin-top: 36px;
+  margin-top: 40px;
 }
 
 .pp-tabs__nav {
   display: flex;
-  gap: 24px;
-  border-bottom: 1px solid #eae8e4;
+  gap: 28px;
+  border-bottom: 1px solid #e8e6e2;
   padding-bottom: 0;
 }
 
 .pp-tab-btn {
   background: none;
   border: none;
-  padding: 0 0 14px;
+  padding: 0 0 16px;
   font-family: inherit;
-  font-size: 0.88rem;
+  font-size: 14px;
   font-weight: 400;
   color: #aaa;
   cursor: pointer;
@@ -648,13 +654,15 @@
   color: #666;
 }
 
+/* Tab content — 24px below border */
+
 .pp-tabs__content {
-  padding-top: 20px;
+  padding-top: 24px;
 }
 
 .pp-tab-panel {
   display: none;
-  font-size: 0.88rem;
+  font-size: 14px;
   line-height: 1.7;
   color: #444;
 }
@@ -684,24 +692,24 @@
 
 .pp-tab-panel li {
   margin-bottom: 4px;
-  font-size: 0.86rem;
+  font-size: 13px;
   line-height: 1.6;
 }
 
 /* ═══════════════════════════════════════════════
-   CROSS-SELL — Complete the look
+   CROSS-SELL — 48px below tab content
    ═══════════════════════════════════════════════ */
 
 .pp-cross-sell {
-  margin-top: 44px;
+  margin-top: 48px;
 }
 
 .pp-cross-sell__heading {
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 400;
   color: #1a1a1a;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
 }
 
 .pp-cross-sell__list {
@@ -712,17 +720,19 @@
 .pp-cross-item {
   display: flex;
   gap: 16px;
-  padding: 16px 0;
-  border-top: 1px solid #eae8e4;
+  padding: 18px 0;
+  border-top: 1px solid #e8e6e2;
 }
 
 .pp-cross-item:last-child {
-  border-bottom: 1px solid #eae8e4;
+  border-bottom: 1px solid #e8e6e2;
 }
+
+/* Cross-sell image — 82px wide, 3:4 ratio */
 
 .pp-cross-item__image {
   flex-shrink: 0;
-  width: 80px;
+  width: 82px;
 }
 
 .pp-cross-item__image img {
@@ -733,12 +743,14 @@
   background: #f5f3ef;
 }
 
+/* Cross-sell details */
+
 .pp-cross-item__details {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   padding-top: 2px;
 }
 
@@ -750,7 +762,7 @@
 }
 
 .pp-cross-item__name {
-  font-size: 0.88rem;
+  font-size: 14px;
   font-weight: 400;
   color: #1a1a1a;
   text-decoration: none;
@@ -762,14 +774,14 @@
 }
 
 .pp-cross-item__price {
-  font-size: 0.88rem;
+  font-size: 14px;
   font-weight: 400;
   color: #1a1a1a;
   white-space: nowrap;
 }
 
 .pp-cross-item__variant {
-  font-size: 0.8rem;
+  font-size: 12px;
   color: #999;
   margin-top: 2px;
 }
@@ -777,7 +789,7 @@
 .pp-cross-item__sizes {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 10px;
   flex-wrap: wrap;
 }
 
@@ -785,12 +797,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 34px;
-  height: 30px;
-  padding: 0 8px;
+  min-width: 36px;
+  height: 32px;
+  padding: 0 10px;
   border: 1px solid #ddd;
   border-radius: 3px;
-  font-size: 0.78rem;
+  font-size: 12px;
   color: #444;
   background: transparent;
   cursor: default;
@@ -801,6 +813,12 @@
    RESPONSIVE
    ═══════════════════════════════════════════════ */
 
+@media (max-width: 1279px) {
+  .pp-info {
+    padding: 44px 36px 56px 48px;
+  }
+}
+
 @media (max-width: 1023px) {
   .pp-layout {
     grid-template-columns: 1fr;
@@ -810,13 +828,12 @@
   .pp-gallery {
     aspect-ratio: 3 / 4;
     max-height: 75vh;
-    overflow: hidden;
   }
 
   .pp-info {
-    padding: 32px 20px 48px;
+    padding: 32px 24px 48px;
     border-left: none;
-    border-top: 1px solid #eae8e4;
+    border-top: 1px solid #e8e6e2;
   }
 
   .pp-gallery__dots {
@@ -834,11 +851,27 @@
   }
 
   .pp-title {
-    font-size: 1.3rem;
+    font-size: 20px;
+  }
+
+  .pp-price {
+    margin-bottom: 24px;
+  }
+
+  .pp-model-info {
+    margin-bottom: 22px;
+  }
+
+  .pp-size-row {
+    margin-bottom: 22px;
+  }
+
+  .pp-tabs {
+    margin-top: 32px;
   }
 
   .pp-tabs__nav {
-    gap: 16px;
+    gap: 18px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -850,7 +883,11 @@
   }
 
   .pp-tab-btn {
-    font-size: 0.82rem;
+    font-size: 13px;
+  }
+
+  .pp-cross-sell {
+    margin-top: 36px;
   }
 
   .pp-cross-item__sizes {
@@ -858,9 +895,9 @@
   }
 
   .pp-cross-item__size-pill {
-    min-width: 30px;
-    height: 28px;
-    font-size: 0.74rem;
+    min-width: 32px;
+    height: 30px;
+    font-size: 11px;
   }
 }
 </style>
