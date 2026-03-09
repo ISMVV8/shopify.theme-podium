@@ -1660,7 +1660,7 @@ featured-products {
     display: none;
   }
   .fp-grid .product-card {
-    flex: 0 0 42vw;
+    flex: 0 0 58vw;
     min-width: 0;
     scroll-snap-align: start;
   }
