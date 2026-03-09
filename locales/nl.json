@@ -213,7 +213,82 @@
       "create_account": "REGISTER"
     },
     "register": {
-      "title": "Een account aanmaken"
+      "title": "Een account aanmaken",
+      "first_name": "Voornaam",
+      "last_name": "Naam",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "submit": "EEN ACCOUNT AANMAKEN",
+      "have_account": "Heb je al een account?",
+      "sign_in": "Inloggen"
+    },
+    "account": {
+      "title": "Mijn account",
+      "orders": "Bestelgeschiedenis",
+      "no_orders": "Nog geen bestellingen",
+      "logout": "Uitloggen",
+      "order_number": "Volgorde",
+      "date": "Datum",
+      "payment_status": "Betaling",
+      "fulfillment_status": "Levering",
+      "total": "Totaal"
+    },
+    "order": {
+      "title": "Commando {{ name }}",
+      "date": "Afgelopen {{ date }}",
+      "product": "Product",
+      "price": "Prijs",
+      "quantity": "Hoeveelheid",
+      "total": "Totaal",
+      "subtotal": "Subtotaal",
+      "shipping": "Levering",
+      "tax": "Belastingen",
+      "billing_address": "Factuuradres",
+      "shipping_address": "Bezorgadres"
+    },
+    "reset_password": {
+      "title": "Wachtwoord opnieuw instellen",
+      "email": "E-mail",
+      "submit": "Versturen",
+      "success": "We hebben u een e-mail gestuurd met een link om uw wachtwoord opnieuw in te stellen."
     }
+  },
+  "newsletter": {
+    "title": "Laten we contact houden.",
+    "description": "Meld je aan voor onze nieuwsbrief om op de hoogte te blijven van het laatste nieuws en exclusieve aanbiedingen.",
+    "email_placeholder": "Uw e-mailadres",
+    "submit": "Register",
+    "consent": "Door u te registreren, gaat u akkoord met ons privacybeleid.",
+    "success": "Bedankt voor uw aanmelding!"
+  },
+  "trust": {
+    "fast_shipping": "Snelle levering",
+    "returns": "Retourneren binnen 14 dagen",
+    "secure_payment": "Veilige betaling",
+    "customer_service": "Beschikbare en responsieve klantenservice"
+  },
+  "footer": {
+    "services": "Diensten",
+    "about": "Over",
+    "copyright": "© {{ year }} {{ shop_name }} . Alle rechten voorbehouden.",
+    "privacy_policy": "Privacybeleid",
+    "terms": "Algemene verkoopvoorwaarden",
+    "legal_notice": "Juridische kennisgeving"
+  },
+  "wishlist": {
+    "title": "Mijn favorieten",
+    "empty": "Je favorietenlijst is leeg.",
+    "empty_subtitle": "Bewaar je favoriete items door op het hartje te klikken.",
+    "remove": "Verwijderen uit favorieten"
+  },
+  "accessibility": {
+    "skip_to_content": "Ga direct naar de inhoud",
+    "close_menu": "Sluit het menu",
+    "open_menu": "Open het menu",
+    "close_cart": "Sluit de winkelwagen",
+    "close_search": "Zoeken sluiten",
+    "previous_slide": "Vorige dia",
+    "next_slide": "Volgende dia",
+    "slide_number": "Dia {{ number }} van {{ total }}"
   }
 }
