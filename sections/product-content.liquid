@@ -176,6 +176,32 @@
             </div>
           {%- endform -%}
 
+          {%- comment -%} ── Trust badges ── {%- endcomment -%}
+          {%- liquid
+            assign has_badges = false
+            for block in section.blocks
+              if block.type == 'trust_badge'
+                assign has_badges = true
+                break
+              endif
+            endfor
+          -%}
+
+          {%- if has_badges -%}
+            <div class="pp-trust-badges">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'trust_badge' -%}
+                  <div class="pp-trust-badge" {{ block.shopify_attributes }}>
+                    <span class="pp-trust-badge__icon">
+                      {% render 'icon', name: block.settings.icon, size: 20 %}
+                    </span>
+                    <span class="pp-trust-badge__text">{{ block.settings.text }}</span>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
           {%- comment -%} Model info (subtle) {%- endcomment -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'model_info' -%}
@@ -663,6 +689,60 @@
 }
 
 /* ═══════════════════════════════════════════════
+   TRUST BADGES — below ATC button
+   ═══════════════════════════════════════════════ */
+
+.pp-trust-badges {
+  display: flex;
+  border: 1px solid #e1e1e1;
+  border-radius: 100vmax;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.pp-trust-badge {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  text-align: center;
+  position: relative;
+}
+
+.pp-trust-badge + .pp-trust-badge::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: #e1e1e1;
+}
+
+.pp-trust-badge__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+}
+
+.pp-trust-badge__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pp-trust-badge__text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.025rem;
+  line-height: 1rem;
+  color: #000;
+}
+
+/* ═══════════════════════════════════════════════
    ACCORDIONS — LV product panels
    border-top: 1px solid #e1e1e1
    ═══════════════════════════════════════════════ */
@@ -951,6 +1031,34 @@
           "id": "content",
           "label": "Content",
           "default": "<p>Complimentary shipping. Free returns within 30 days.</p>"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Trust badge",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "return", "label": "Return" },
+            { "value": "truck", "label": "Shipping" },
+            { "value": "package", "label": "Package" },
+            { "value": "lock", "label": "Secure" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "headset", "label": "Support" }
+          ],
+          "default": "return"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free returns"
         }
       ]
     },

@@ -38,10 +38,26 @@
             "title": "Shipping and returns",
             "content": "<p>Standard delivery in 3-5 business days. Express delivery in 24-48h. Free returns within 14 days.</p>"
           }
+        },
+        "badge_return": {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "return",
+            "text": "Retour sous 14 jours"
+          }
+        },
+        "badge_shipping": {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "package",
+            "text": "Livraison Rapide"
+          }
         }
       },
       "block_order": [
         "model_1",
+        "badge_return",
+        "badge_shipping",
         "tab_fabric",
         "tab_sizing",
         "tab_shipping"
