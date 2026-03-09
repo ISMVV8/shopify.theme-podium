@@ -1993,6 +1993,117 @@ featured-products {
   font-size: 0.875rem;
 }
 
+/* --- Quick Buy Overlay --- */
+
+.quick-buy {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  padding: 12px 10px;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.product-card:hover .quick-buy,
+.product-card .quick-buy.is-active {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.quick-buy__sizes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.quick-buy__size {
+  min-width: 36px;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-text);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-buy__size:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.quick-buy__size--disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.quick-buy__size--disabled:hover {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.quick-buy__size.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.quick-buy__atc {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.quick-buy__atc:hover {
+  opacity: 0.85;
+}
+
+/* Touch devices: show quick buy on tap, not hover */
+@media (hover: none) {
+  .quick-buy {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    background: transparent;
+    backdrop-filter: none;
+    padding: 8px 0 0;
+  }
+  .quick-buy__sizes {
+    justify-content: flex-start;
+    gap: 4px;
+  }
+  .quick-buy__size {
+    min-width: 32px;
+    height: 26px;
+    font-size: 0.625rem;
+    border-color: var(--color-border);
+  }
+}
+
 /* --- Price --- */
 
 .price {

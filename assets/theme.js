@@ -1043,6 +1043,47 @@ function initSizePanelToggle() {
   }
 }
 
+/* --- Quick Buy (product card) --- */
+
+function initQuickBuy() {
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-quick-add-variant]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var variantId = parseInt(btn.dataset.quickAddVariant, 10);
+    if (!variantId || btn.disabled) return;
+
+    btn.classList.add('is-loading');
+    var originalText = btn.textContent;
+    btn.textContent = '...';
+
+    var cartDrawer = document.querySelector('cart-drawer');
+    if (cartDrawer) {
+      cartDrawer.addToCart({ items: [{ id: variantId, quantity: 1 }] }).then(function() {
+        btn.classList.remove('is-loading');
+        btn.textContent = originalText;
+      }).catch(function() {
+        btn.classList.remove('is-loading');
+        btn.textContent = originalText;
+      });
+    } else {
+      fetch((window.Shopify.routes.cart_add_url || '/cart/add') + '.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+      }).then(function() {
+        btn.classList.remove('is-loading');
+        btn.textContent = originalText;
+      }).catch(function() {
+        btn.classList.remove('is-loading');
+        btn.textContent = originalText;
+      });
+    }
+  });
+}
+
 /* --- Register Custom Elements --- */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1065,6 +1106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNewsletterForms();
   initWishlistToggles();
   initSizePanelToggle();
+  initQuickBuy();
   initProductRecommendations();
   initStickyATC();
 });

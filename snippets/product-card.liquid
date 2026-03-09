@@ -56,6 +56,58 @@
           {{ 'product.sold_out' | t }}
         </span>
       {%- endif -%}
+
+      {%- comment -%} Quick Buy Overlay {%- endcomment -%}
+      {%- if product.available -%}
+        {%- assign has_size_option = false -%}
+        {%- assign size_option_index = nil -%}
+        {%- for option in product.options_with_values -%}
+          {%- assign option_name_lower = option.name | downcase -%}
+          {%- if option_name_lower == 'size' or option_name_lower == 'taille' -%}
+            {%- assign has_size_option = true -%}
+            {%- assign size_option = option -%}
+            {%- assign size_option_index = forloop.index0 -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="quick-buy" data-quick-buy>
+          {%- if has_size_option -%}
+            <div class="quick-buy__sizes">
+              {%- for size_value in size_option.values -%}
+                {%- liquid
+                  assign size_available = false
+                  assign size_variant_id = nil
+                  for variant in product.variants
+                    if variant.options[size_option_index] == size_value and variant.available
+                      assign size_available = true
+                      assign size_variant_id = variant.id
+                      break
+                    endif
+                  endfor
+                -%}
+                <button
+                  type="button"
+                  class="quick-buy__size{% unless size_available %} quick-buy__size--disabled{% endunless %}"
+                  data-quick-add-variant="{{ size_variant_id }}"
+                  {% unless size_available %}disabled{% endunless %}
+                  aria-label="{{ size_value }}"
+                >
+                  {{ size_value }}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <button
+              type="button"
+              class="quick-buy__atc"
+              data-quick-add-variant="{{ product.first_available_variant.id }}"
+            >
+              {{ 'product.add_to_cart' | t }}
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="product-card__info">
@@ -81,4 +133,3 @@
     </button>
   {%- endif -%}
 </article>
-
