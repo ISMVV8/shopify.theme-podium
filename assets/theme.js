@@ -815,6 +815,7 @@ function initWishlistToggles() {
   }
 
   syncButtons();
+  syncWishlistCount();
 
   // Toggle on click
   document.addEventListener('click', (e) => {
@@ -829,7 +830,72 @@ function initWishlistToggles() {
   });
 
   // Re-sync when wishlist changes (e.g. removal from wishlist page)
-  document.addEventListener('wishlist:updated', syncButtons);
+  document.addEventListener('wishlist:updated', () => {
+    syncButtons();
+    syncWishlistCount();
+  });
+}
+
+function syncWishlistCount() {
+  const count = PodiumWishlist.getAll().length;
+  document.querySelectorAll('[data-wishlist-count]').forEach(el => {
+    el.textContent = count > 0 ? count : '';
+  });
+}
+
+/* --- Product Recommendations (Complete the Look) --- */
+
+function initProductRecommendations() {
+  const el = document.querySelector('[data-product-recommendations]');
+  if (!el) return;
+
+  const productId = el.dataset.productId;
+  const limit = el.dataset.limit || 8;
+
+  // Check if collection-based recs already have products
+  const existingLook = document.querySelector('.pp-look:not(.pp-look--recs)');
+  const existingCards = existingLook ? existingLook.querySelectorAll('.pp-look__card') : [];
+  if (existingCards.length >= 2) return; // Already have enough recommendations
+
+  // Hide the collection-based section if it has 0–1 products
+  if (existingLook && existingCards.length < 2) {
+    existingLook.style.display = 'none';
+  }
+
+  fetch(`/recommendations/products.json?product_id=${productId}&limit=${limit}`)
+    .then(r => r.json())
+    .then(data => {
+      const products = data.products;
+      if (!products || products.length === 0) {
+        // Show the collection-based one back if no recs
+        if (existingLook) existingLook.style.display = '';
+        return;
+      }
+
+      const track = el.querySelector('[data-recs-track]');
+      products.forEach(p => {
+        const img = p.featured_image ? `<img src="${p.featured_image}" alt="${p.title}" loading="lazy">` : '';
+        track.insertAdjacentHTML('beforeend', `
+          <a href="${p.url}" class="pp-look__card">
+            <div class="pp-look__card-image">${img}</div>
+            <div class="pp-look__card-info">
+              <span class="pp-look__card-name">${p.title}</span>
+              <span class="pp-look__card-price">${formatMoney(p.price)}</span>
+            </div>
+          </a>
+        `);
+      });
+
+      el.style.display = '';
+    })
+    .catch(() => {
+      // On error, show the collection-based section back
+      if (existingLook) existingLook.style.display = '';
+    });
+}
+
+function formatMoney(cents) {
+  return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: window.Shopify?.currency?.active || 'EUR' });
 }
 
 /* --- Size Panel Toggle --- */
@@ -869,5 +935,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNewsletterForms();
   initWishlistToggles();
   initSizePanelToggle();
+  initProductRecommendations();
 });
 

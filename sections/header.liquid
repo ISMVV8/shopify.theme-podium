@@ -38,8 +38,9 @@
           {% render 'icon', name: 'search', size: 20 %}
         </button>
 
-        <a href="/pages/wishlist" class="header__icon btn--icon mobile-hidden" aria-label="{{ 'header.wishlist' | t }}">
+        <a href="/pages/wishlist" class="header__icon btn--icon mobile-hidden" aria-label="{{ 'header.wishlist' | t }}" data-wishlist-link>
           {% render 'icon', name: 'heart', size: 20 %}
+          <span class="header__wishlist-count" data-wishlist-count></span>
         </a>
 
         <a href="{{ routes.account_url }}" class="header__icon btn--icon mobile-hidden" aria-label="{{ 'header.account' | t }}">
