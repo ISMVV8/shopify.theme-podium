@@ -98,12 +98,21 @@
                       {%- for value in option.values -%}
                         {%- liquid
                           assign variant_for_color = nil
+                          assign variant_any_for_color = nil
                           for variant in product.variants
-                            if variant.options[forloop.parentloop.index0] == value and variant.featured_image
-                              assign variant_for_color = variant
-                              break
+                            if variant.options[forloop.parentloop.index0] == value
+                              if variant_any_for_color == nil
+                                assign variant_any_for_color = variant
+                              endif
+                              if variant.featured_image
+                                assign variant_for_color = variant
+                                break
+                              endif
                             endif
                           endfor
+                          unless variant_for_color
+                            assign variant_for_color = variant_any_for_color
+                          endunless
                         -%}
                         <button
                           type="button"
@@ -115,7 +124,9 @@
                           title="{{ value }}"
                         >
                           {%- if variant_for_color and variant_for_color.featured_image -%}
-                            <img src="{{ variant_for_color.featured_image | image_url: width: 100 }}" alt="{{ value }}">
+                            <img src="{{ variant_for_color.featured_image | image_url: width: 200 }}" alt="{{ value }}">
+                          {%- elsif product.featured_media -%}
+                            <img src="{{ product.featured_media | image_url: width: 200 }}" alt="{{ value }}">
                           {%- else -%}
                             <span class="pp-swatch__color" style="background-color: {{ value | handleize }};"></span>
                           {%- endif -%}
@@ -632,21 +643,19 @@
 }
 
 .pp-swatch {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid #b4b4b4;
+  width: 64px;
+  height: 80px;
+  border-radius: 10px;
+  border: 2px solid #e1e1e1;
   overflow: hidden;
   cursor: pointer;
-  padding: 1px;
-  transition: border-color 0.3s, border-width 0.3s;
-  background: none;
+  padding: 4px;
+  transition: border-color 0.3s;
+  background: #f6f6f6;
 }
 
 .pp-swatch.is-active {
   border-color: #000;
-  border-width: 2px;
-  padding: 0;
 }
 
 .pp-swatch:hover:not(.is-active) {
@@ -657,7 +666,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 6px;
   display: block;
 }
 
@@ -665,7 +674,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: 6px;
 }
 
 /* ── Size selector — expandable row ── */
