@@ -143,7 +143,8 @@
     "brand_banner": {
       "type": "brand-banner",
       "settings": {
-        "heading": "BECAUSE IT'S SHOP O'CLOCK SOMEWHERE",
+        "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
+        "heading": "L’élégance commence ici",
         "cta_text": "NOS BOUTIQUES",
         "cta_link": ""
       }
