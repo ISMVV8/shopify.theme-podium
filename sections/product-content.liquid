@@ -125,8 +125,6 @@
                         >
                           {%- if variant_for_color and variant_for_color.featured_image -%}
                             <img src="{{ variant_for_color.featured_image | image_url: width: 200 }}" alt="{{ value }}">
-                          {%- elsif product.featured_media -%}
-                            <img src="{{ product.featured_media | image_url: width: 200 }}" alt="{{ value }}">
                           {%- else -%}
                             <span class="pp-swatch__color" style="background-color: {{ value | handleize }};"></span>
                           {%- endif -%}
