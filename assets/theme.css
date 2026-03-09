@@ -1327,6 +1327,91 @@ cart-drawer.is-open .cart-drawer {
   margin-top: var(--space-sm);
 }
 
+/* --- Cart Drawer: Shipping Progress Bar --- */
+
+.cd-shipping-bar {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cd-shipping-bar__text {
+  font-size: 0.75rem;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.cd-shipping-bar__text strong {
+  font-weight: 600;
+}
+
+.cd-shipping-bar__text--success {
+  color: #2e7d32;
+}
+
+.cd-shipping-bar__track {
+  width: 100%;
+  height: 3px;
+  background: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cd-shipping-bar__fill {
+  height: 100%;
+  background: var(--color-text);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  min-width: 0;
+}
+
+.cd-shipping-bar__text--success + .cd-shipping-bar__track .cd-shipping-bar__fill,
+.cd-shipping-bar:has(.cd-shipping-bar__text--success) .cd-shipping-bar__fill {
+  background: #2e7d32;
+}
+
+/* --- Cart Drawer: Trust Badges --- */
+
+.cd-trust {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cd-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cd-trust__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.cd-trust__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.cd-trust__text {
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  font-weight: 400;
+}
+
 /* --- Hero Split Slider --- */
 
 hero-slider {

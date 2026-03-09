@@ -103,6 +103,29 @@
     {%- comment -%} Footer {%- endcomment -%}
     {%- if cart.item_count > 0 -%}
       <div class="cart-drawer__footer">
+
+        {%- comment -%} Free shipping progress bar {%- endcomment -%}
+        {%- assign free_shipping_threshold = settings.cart_free_shipping_threshold | default: '75' | times: 100 -%}
+        {%- assign cart_total = cart.total_price -%}
+        {%- assign remaining_cents = free_shipping_threshold | minus: cart_total -%}
+        <div class="cd-shipping-bar" data-shipping-bar data-threshold="{{ free_shipping_threshold }}">
+          {%- if remaining_cents > 0 -%}
+            {%- assign remaining_money = remaining_cents | money -%}
+            <p class="cd-shipping-bar__text" data-shipping-text>
+              Plus que <strong>{{ remaining_money }}</strong> pour profiter de la livraison offerte
+            </p>
+          {%- else -%}
+            <p class="cd-shipping-bar__text cd-shipping-bar__text--success" data-shipping-text>
+              Vous bénéficiez de la livraison offerte ✓
+            </p>
+          {%- endif -%}
+          <div class="cd-shipping-bar__track">
+            {%- assign progress = cart_total | times: 100 | divided_by: free_shipping_threshold -%}
+            {%- if progress > 100 -%}{%- assign progress = 100 -%}{%- endif -%}
+            <div class="cd-shipping-bar__fill" style="width: {{ progress }}%;" data-shipping-fill></div>
+          </div>
+        </div>
+
         <div class="cart-drawer__subtotal">
           <span class="cart-drawer__subtotal-label">{{ 'cart.subtotal' | t }}</span>
           <span class="cart-drawer__subtotal-price">{{ cart.total_price | money }}</span>
@@ -111,9 +134,22 @@
         <a href="{{ routes.cart_url }}/checkout" class="btn btn--primary btn--full btn--large">
           {{ 'cart.checkout' | t }}
         </a>
-        {%- if settings.cart_free_shipping_message != blank -%}
-          <p class="cart-drawer__free-shipping">{{ settings.cart_free_shipping_message }}</p>
-        {%- endif -%}
+
+        {%- comment -%} Trust badges {%- endcomment -%}
+        <div class="cd-trust">
+          <div class="cd-trust__item">
+            <span class="cd-trust__icon">{% render 'icon', name: 'truck', size: 18 %}</span>
+            <span class="cd-trust__text">Livraison rapide en Europe</span>
+          </div>
+          <div class="cd-trust__item">
+            <span class="cd-trust__icon">{% render 'icon', name: 'return', size: 18 %}</span>
+            <span class="cd-trust__text">Retours sous 14 jours</span>
+          </div>
+          <div class="cd-trust__item">
+            <span class="cd-trust__icon">{% render 'icon', name: 'headset', size: 18 %}</span>
+            <span class="cd-trust__text">Service client disponible & réactif</span>
+          </div>
+        </div>
       </div>
     {%- endif -%}
   </div>
