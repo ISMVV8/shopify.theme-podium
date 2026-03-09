@@ -672,19 +672,17 @@ class FilterDrawerElement extends HTMLElement {
       if (e.key === 'Escape' && this.classList.contains('is-open')) this.close();
     });
 
-    // Clear all filters
-    this.querySelector('[data-filter-clear]')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      const form = this.querySelector('form');
-      if (form) {
-        form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-        form.querySelectorAll('input[type="number"]').forEach(inp => inp.value = '');
-      }
-      const baseUrl = window.location.pathname;
-      window.location.href = baseUrl;
+    // Collapsible filter groups
+    this.querySelectorAll('[data-filter-group-toggle]').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        const content = toggle.nextElementSibling;
+        if (content) content.classList.toggle('is-expanded', !expanded);
+      });
     });
 
-    // Sort select
+    // Sort select — auto-submit on change
     this.querySelector('[data-sort-select]')?.addEventListener('change', (e) => {
       const url = new URL(window.location);
       url.searchParams.set('sort_by', e.target.value);

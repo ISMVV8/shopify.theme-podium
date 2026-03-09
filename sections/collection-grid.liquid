@@ -2,15 +2,52 @@
   <div class="container">
     {%- comment -%} Toolbar: sort + filter buttons {%- endcomment -%}
     <div class="collection-toolbar">
-      <button class="btn btn--secondary" data-filter-open>
-        {% render 'icon', name: 'sort', size: 16 %}
-        {{ 'collection.sort' | t }}
-      </button>
-      <button class="btn btn--secondary" data-filter-open>
-        {% render 'icon', name: 'filter', size: 16 %}
-        {{ 'collection.filter' | t }}
-      </button>
+      <div class="collection-toolbar__left">
+        <button class="collection-toolbar__btn" data-filter-open>
+          {% render 'icon', name: 'filter', size: 16 %}
+          {{ 'collection.filter' | t }}
+          {%- assign active_count = 0 -%}
+          {%- for filter in collection.filters -%}
+            {%- assign active_count = active_count | plus: filter.active_values.size -%}
+          {%- endfor -%}
+          {%- if active_count > 0 -%}
+            <span class="collection-toolbar__badge">{{ active_count }}</span>
+          {%- endif -%}
+        </button>
+        <button class="collection-toolbar__btn" data-filter-open>
+          {% render 'icon', name: 'sort', size: 16 %}
+          {{ 'collection.sort' | t }}
+        </button>
+      </div>
+      <p class="collection-toolbar__count">
+        {{ 'collection.results_count' | t: count: collection.products_count }}
+      </p>
     </div>
+
+    {%- comment -%} Active filter pills {%- endcomment -%}
+    {%- assign has_active_filters = false -%}
+    {%- for filter in collection.filters -%}
+      {%- if filter.active_values.size > 0 -%}
+        {%- assign has_active_filters = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if has_active_filters -%}
+      <div class="collection-active-filters">
+        {%- for filter in collection.filters -%}
+          {%- for value in filter.active_values -%}
+            <a href="{{ value.url_to_remove }}" class="collection-active-filters__pill">
+              {{ value.label }}
+              {% render 'icon', name: 'close', size: 10 %}
+            </a>
+          {%- endfor -%}
+        {%- endfor -%}
+        <a href="{{ collection.url }}" class="collection-active-filters__clear">
+          {{ 'collection.clear_filters' | t }}
+        </a>
+      </div>
+    {%- endif -%}
 
     {%- comment -%} Product grid {%- endcomment -%}
     {%- paginate collection.products by section.settings.products_per_page -%}
@@ -58,4 +95,3 @@
   "presets": [{"name": "Collection grid"}]
 }
 {% endschema %}
-

@@ -7,76 +7,164 @@
       </button>
     </div>
 
+    {%- comment -%} Active filters bar {%- endcomment -%}
+    {%- assign has_active_filters = false -%}
+    {%- for filter in collection.filters -%}
+      {%- if filter.active_values.size > 0 -%}
+        {%- assign has_active_filters = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if has_active_filters -%}
+      <div class="filter-drawer__active">
+        {%- for filter in collection.filters -%}
+          {%- for value in filter.active_values -%}
+            <a href="{{ value.url_to_remove }}" class="filter-drawer__tag">
+              {{ value.label }}
+              {% render 'icon', name: 'close', size: 12 %}
+            </a>
+          {%- endfor -%}
+        {%- endfor -%}
+        <a href="{{ collection.url }}" class="filter-drawer__clear-all">
+          {{ 'collection.clear_filters' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+
     <div class="filter-drawer__body">
       <form id="filter-form" action="{{ collection.url }}" method="get">
         {%- comment -%} Sort {%- endcomment -%}
-        <div class="filter-drawer__sort">
-          <label class="filter-drawer__group-title" for="sort-select">{{ 'collection.sort' | t }}</label>
-          <select id="sort-select" name="sort_by" data-sort-select>
-            {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
-                {{ option.name }}
-              </option>
-            {%- endfor -%}
-          </select>
+        <div class="filter-drawer__group filter-drawer__sort-group">
+          <button type="button" class="filter-drawer__group-toggle" data-filter-group-toggle aria-expanded="true">
+            <span class="filter-drawer__group-title">{{ 'collection.sort' | t }}</span>
+            <span class="filter-drawer__group-chevron">{% render 'icon', name: 'chevron-down', size: 12 %}</span>
+          </button>
+          <div class="filter-drawer__group-content is-expanded">
+            <select id="sort-select" name="sort_by" data-sort-select>
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
+                  {{ option.name }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
         </div>
 
         {%- comment -%} Filters {%- endcomment -%}
         {%- for filter in collection.filters -%}
+          {%- liquid
+            assign is_color_filter = false
+            assign filter_label_lower = filter.label | downcase
+            if filter_label_lower == 'color' or filter_label_lower == 'couleur' or filter_label_lower == 'colour'
+              assign is_color_filter = true
+            endif
+          -%}
+
           <div class="filter-drawer__group">
-            <h4 class="filter-drawer__group-title">{{ filter.label }}</h4>
+            <button type="button" class="filter-drawer__group-toggle" data-filter-group-toggle aria-expanded="true">
+              <span class="filter-drawer__group-title">
+                {{ filter.label }}
+                {%- if filter.active_values.size > 0 -%}
+                  <span class="filter-drawer__group-badge">{{ filter.active_values.size }}</span>
+                {%- endif -%}
+              </span>
+              <span class="filter-drawer__group-chevron">{% render 'icon', name: 'chevron-down', size: 12 %}</span>
+            </button>
 
-            {%- case filter.type -%}
-              {%- when 'list' -%}
-                <div class="filter-drawer__options">
-                  {%- for value in filter.values -%}
-                    <label class="filter-drawer__option">
-                      <input
-                        type="checkbox"
-                        name="{{ value.param_name }}"
-                        value="{{ value.value }}"
-                        {% if value.active %}checked{% endif %}
-                        {% if value.count == 0 %}disabled{% endif %}
-                      >
-                      <span>{{ value.label }}</span>
-                      <span class="filter-drawer__count">({{ value.count }})</span>
-                    </label>
-                  {%- endfor -%}
-                </div>
+            <div class="filter-drawer__group-content is-expanded">
+              {%- case filter.type -%}
+                {%- when 'list' -%}
+                  {%- if is_color_filter -%}
+                    {%- comment -%} Color swatch grid {%- endcomment -%}
+                    <div class="filter-drawer__colors">
+                      {%- for value in filter.values -%}
+                        <label class="filter-drawer__color-option{% if value.active %} is-active{% endif %}{% if value.count == 0 %} is-disabled{% endif %}">
+                          <input
+                            type="checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 %}disabled{% endif %}
+                            class="visually-hidden"
+                          >
+                          <span class="filter-drawer__color-swatch">
+                            {% render 'color-swatch', color: value.label %}
+                          </span>
+                          <span class="filter-drawer__color-label">{{ value.label }}</span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  {%- else -%}
+                    {%- comment -%} Standard checkbox list {%- endcomment -%}
+                    <div class="filter-drawer__options">
+                      {%- for value in filter.values -%}
+                        <label class="filter-drawer__option{% if value.active %} is-active{% endif %}{% if value.count == 0 %} is-disabled{% endif %}">
+                          <input
+                            type="checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 %}disabled{% endif %}
+                          >
+                          <span class="filter-drawer__checkmark">
+                            {% render 'icon', name: 'check', size: 12 %}
+                          </span>
+                          <span class="filter-drawer__option-label">{{ value.label }}</span>
+                          <span class="filter-drawer__count">({{ value.count }})</span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
 
-              {%- when 'price_range' -%}
-                <div class="filter-drawer__price-range">
-                  <input
-                    type="number"
-                    name="{{ filter.min_value.param_name }}"
-                    class="filter-drawer__price-input"
-                    placeholder="{{ filter.min_value.value | default: 0 | money_without_currency }}"
-                    value="{{ filter.min_value.value | money_without_currency }}"
-                    min="0"
-                    max="{{ filter.range_max | money_without_currency }}"
-                  >
-                  <span>–</span>
-                  <input
-                    type="number"
-                    name="{{ filter.max_value.param_name }}"
-                    class="filter-drawer__price-input"
-                    placeholder="{{ filter.range_max | money_without_currency }}"
-                    value="{{ filter.max_value.value | money_without_currency }}"
-                    min="0"
-                    max="{{ filter.range_max | money_without_currency }}"
-                  >
-                </div>
-            {%- endcase -%}
+                {%- when 'price_range' -%}
+                  <div class="filter-drawer__price-range">
+                    <div class="filter-drawer__price-field">
+                      <span class="filter-drawer__price-label">Min</span>
+                      <div class="filter-drawer__price-input-wrap">
+                        <span class="filter-drawer__price-currency">{{ cart.currency.symbol }}</span>
+                        <input
+                          type="number"
+                          name="{{ filter.min_value.param_name }}"
+                          class="filter-drawer__price-input"
+                          placeholder="0"
+                          value="{{ filter.min_value.value | money_without_currency }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency }}"
+                        >
+                      </div>
+                    </div>
+                    <span class="filter-drawer__price-sep">&mdash;</span>
+                    <div class="filter-drawer__price-field">
+                      <span class="filter-drawer__price-label">Max</span>
+                      <div class="filter-drawer__price-input-wrap">
+                        <span class="filter-drawer__price-currency">{{ cart.currency.symbol }}</span>
+                        <input
+                          type="number"
+                          name="{{ filter.max_value.param_name }}"
+                          class="filter-drawer__price-input"
+                          placeholder="{{ filter.range_max | money_without_currency }}"
+                          value="{{ filter.max_value.value | money_without_currency }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency }}"
+                        >
+                      </div>
+                    </div>
+                  </div>
+              {%- endcase -%}
+            </div>
           </div>
         {%- endfor -%}
       </form>
     </div>
 
     <div class="filter-drawer__footer">
-      <button class="btn btn--secondary" data-filter-clear>
-        {{ 'collection.clear_filters' | t }}
-      </button>
-      <button class="btn btn--primary" type="submit" form="filter-form">
+      {%- if has_active_filters -%}
+        <a href="{{ collection.url }}" class="btn btn--secondary">
+          {{ 'collection.clear_filters' | t }}
+        </a>
+      {%- endif -%}
+      <button class="btn btn--primary{% unless has_active_filters %} btn--full{% endunless %}" type="submit" form="filter-form">
         {{ 'collection.apply_filters' | t }}
       </button>
     </div>
@@ -91,4 +179,3 @@
   "presets": [{"name": "Collection filters"}]
 }
 {% endschema %}
-
