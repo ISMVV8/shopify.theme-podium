@@ -17,7 +17,9 @@
           "settings": {
             "image": "shopify://shop_images/Gemini_Generated_Image_y01ds7y01ds7y01d-2.png",
             "cta_text": "DÉCOUVRIR",
-            "cta_link": "shopify://collections"
+            "cta_link": "shopify://collections",
+            "cta_bg_color": "#ffffff",
+            "cta_text_color": "#000000"
           }
         }
       },
@@ -146,16 +148,18 @@
         "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
         "heading": "L’élégance commence ici",
         "cta_text": "NOS BOUTIQUES",
-        "cta_link": ""
+        "cta_link": "",
+        "cta_bg_color": "#ffffff",
+        "cta_text_color": "#000000"
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "heading": "Restons en contact",
-        "description": "Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités et offres exclusives.",
+        "heading": "Entrez dans l’univers Podium",
+        "description": "Recevez en avant-première nos dernières collections, nouveautés et offres exclusives.",
         "consent_text": "En vous inscrivant, vous acceptez notre",
-        "policy_link": ""
+        "policy_link": "shopify://policies/privacy-policy"
       }
     },
     "trust_benefits": {
