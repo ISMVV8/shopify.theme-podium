@@ -1192,6 +1192,10 @@ function initQuickSheet() {
           atcBtn.disabled = false;
           updateAtcLabel(product.variants[0]);
         }
+        // Dispatch event for recommendations
+        document.dispatchEvent(new CustomEvent('quick-sheet:opened', {
+          detail: { productId: product.id }
+        }));
       })
       .catch(function() {
         optionsEl.innerHTML = '<p style="color:var(--color-text-secondary);font-size:0.875rem;">Erreur de chargement</p>';
@@ -1399,4 +1403,160 @@ function closeAllSortDropdowns() {
     if (t) t.setAttribute('aria-expanded', 'false');
   });
 }
+
+/* --- Product Recommendations ("Vous aimerez aussi") --- */
+
+function initRecommendations() {
+  var recoCache = {};
+
+  function buildRecoCard(product) {
+    var card = document.createElement('a');
+    card.href = product.url;
+    card.className = 'cart-reco__card';
+
+    var imgSrc = '';
+    if (product.featured_image) {
+      // Shopify API returns full URL or path
+      imgSrc = product.featured_image;
+      if (imgSrc.indexOf('//') === 0) imgSrc = 'https:' + imgSrc;
+      // Use Shopify CDN resize
+      if (imgSrc.indexOf('.jpg') !== -1 || imgSrc.indexOf('.png') !== -1 || imgSrc.indexOf('.webp') !== -1) {
+        imgSrc = imgSrc.replace(/(\.(jpg|png|webp))/, '_300x$1');
+      }
+    }
+
+    var img = document.createElement('img');
+    img.className = 'cart-reco__card-img';
+    img.src = imgSrc || '';
+    img.alt = product.title || '';
+    img.width = 120;
+    img.height = 150;
+    img.loading = 'lazy';
+    card.appendChild(img);
+
+    var title = document.createElement('span');
+    title.className = 'cart-reco__card-title';
+    title.textContent = product.title || '';
+    card.appendChild(title);
+
+    var priceWrap = document.createElement('span');
+    var price = product.price;
+    var comparePrice = product.compare_at_price;
+
+    if (comparePrice && comparePrice > price) {
+      priceWrap.className = 'cart-reco__card-price cart-reco__card-price--sale';
+      priceWrap.textContent = formatMoney(price);
+      var oldPrice = document.createElement('s');
+      oldPrice.textContent = formatMoney(comparePrice);
+      priceWrap.appendChild(oldPrice);
+    } else {
+      priceWrap.className = 'cart-reco__card-price';
+      priceWrap.textContent = formatMoney(price);
+    }
+    card.appendChild(priceWrap);
+
+    return card;
+  }
+
+  function loadRecos(productId, container, limit) {
+    if (!productId || !container) return;
+    limit = limit || 8;
+
+    // Don't reload if already loaded for this product
+    if (container.dataset.loadedFor === String(productId)) return;
+
+    // Check cache
+    if (recoCache[productId]) {
+      renderRecos(recoCache[productId], container, limit);
+      return;
+    }
+
+    var url = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root || '/') +
+      'recommendations/products.json?product_id=' + productId + '&limit=' + limit;
+
+    fetch(url)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        var products = data.products || [];
+        recoCache[productId] = products;
+        renderRecos(products, container, limit);
+      })
+      .catch(function(err) {
+        console.error('Recommendations error:', err);
+      });
+  }
+
+  function renderRecos(products, container, limit) {
+    container.innerHTML = '';
+    if (!products.length) {
+      // Hide the whole reco section if no products
+      var parent = container.closest('.cart-reco');
+      if (parent) parent.style.display = 'none';
+      return;
+    }
+
+    var parent = container.closest('.cart-reco');
+    if (parent) parent.style.display = '';
+
+    var count = Math.min(products.length, limit || 8);
+    for (var i = 0; i < count; i++) {
+      container.appendChild(buildRecoCard(products[i]));
+    }
+    container.dataset.loadedFor = String(products[0] && products[0].id ? container.dataset.loadedFor : '');
+    // Mark as loaded for the original product
+    var recoParent = container.closest('[data-cart-reco], [data-sheet-reco]');
+    if (recoParent && recoParent.dataset.productId) {
+      container.dataset.loadedFor = recoParent.dataset.productId;
+    }
+  }
+
+  // --- Cart Drawer Recommendations ---
+  // Listen for cart:updated events to load recommendations
+  function loadCartRecos() {
+    var cartDrawerEl = document.querySelector('cart-drawer');
+    if (!cartDrawerEl) return;
+    var recoContainer = cartDrawerEl.querySelector('[data-cart-reco]');
+    if (!recoContainer) return;
+    var pid = recoContainer.dataset.productId;
+    var scroll = recoContainer.querySelector('[data-cart-reco-scroll]');
+    if (pid && scroll) {
+      loadRecos(pid, scroll, 8);
+    }
+  }
+
+  // Load recos when cart drawer opens
+  document.addEventListener('cart:updated', function() {
+    setTimeout(loadCartRecos, 200);
+  });
+
+  // Also try to load on click of cart open buttons
+  document.querySelectorAll('[data-cart-open]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setTimeout(loadCartRecos, 300);
+    });
+  });
+
+  // Initial load if cart drawer already has items
+  setTimeout(loadCartRecos, 500);
+
+  // --- Quick Sheet Recommendations ---
+  // Load when the quick sheet opens with a product
+  document.addEventListener('quick-sheet:opened', function(e) {
+    var productId = e.detail && e.detail.productId;
+    if (!productId) return;
+    var sheetReco = document.querySelector('[data-sheet-reco]');
+    if (sheetReco) {
+      sheetReco.dataset.productId = productId;
+      var scroll = sheetReco.querySelector('[data-sheet-reco-scroll]');
+      if (scroll) {
+        loadRecos(productId, scroll, 8);
+      }
+    }
+  });
+}
+
+// Initialize recommendations on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  initRecommendations();
+});
 

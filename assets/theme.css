@@ -2715,6 +2715,138 @@ featured-products {
   border-color: var(--color-text);
 }
 
+/* --- Cart / Sheet Recommendations ("Vous aimerez aussi") --- */
+
+.cart-reco {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.cart-reco__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-right: 4px;
+}
+
+.cart-reco__title {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.cart-reco__scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  margin-right: -16px;
+  padding-right: 16px;
+}
+
+.cart-reco__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.cart-reco__card {
+  flex: 0 0 120px;
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.2s ease;
+}
+
+.cart-reco__card:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.cart-reco__card-img {
+  width: 120px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 0;
+  background: #f5f5f5;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.cart-reco__card-title {
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  color: var(--color-text);
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cart-reco__card-price {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+.cart-reco__card-price--sale {
+  color: var(--color-sale, #b00020);
+}
+
+.cart-reco__card-price s {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  margin-left: 6px;
+  font-size: 0.625rem;
+}
+
+/* In-drawer variant: slightly narrower cards */
+.cart-drawer .cart-reco {
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.cart-drawer .cart-reco__card {
+  flex: 0 0 110px;
+}
+
+.cart-drawer .cart-reco__card-img {
+  width: 110px;
+  height: 140px;
+}
+
+/* In quick-sheet variant */
+.cart-reco--sheet {
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.cart-reco--sheet .cart-reco__scroll {
+  margin-right: -24px;
+  padding-right: 24px;
+}
+
+/* Empty state – hide when no products */
+.cart-reco:empty,
+.cart-reco__scroll:empty {
+  display: none;
+}
+
 /* --- Price --- */
 
 .price {

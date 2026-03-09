@@ -141,6 +141,16 @@
       <a class="quick-sheet__more" href="#" data-quick-sheet-link>
         {{ 'product.view_details' | t | default: 'Plus de détails' }}
       </a>
+
+      {%- comment -%} Vous aimerez aussi – Recommendations in quick sheet {%- endcomment -%}
+      <div class="cart-reco cart-reco--sheet" data-sheet-reco>
+        <div class="cart-reco__header">
+          <h3 class="cart-reco__title">{{ 'product.you_may_like' | t }}</h3>
+        </div>
+        <div class="cart-reco__scroll" data-sheet-reco-scroll>
+          {%- comment -%} Products loaded via JS {%- endcomment -%}
+        </div>
+      </div>
     </div>
   </div>
 

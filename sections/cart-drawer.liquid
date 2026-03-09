@@ -87,6 +87,16 @@
             </div>
           {%- endfor -%}
         </div>
+
+        {%- comment -%} Vous aimerez aussi – Recommendations {%- endcomment -%}
+        <div class="cart-reco" data-cart-reco data-product-id="{{ cart.items.first.product.id }}">
+          <div class="cart-reco__header">
+            <h3 class="cart-reco__title">{{ 'product.you_may_like' | t }}</h3>
+          </div>
+          <div class="cart-reco__scroll" data-cart-reco-scroll>
+            {%- comment -%} Products loaded via JS {%- endcomment -%}
+          </div>
+        </div>
       {%- endif -%}
     </div>
 
