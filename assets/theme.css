@@ -1630,16 +1630,39 @@ featured-products {
     gap: 8px;
     margin-bottom: 12px;
   }
+  .featured-products .container {
+    overflow: visible;
+  }
+  .fp-panel {
+    overflow: visible;
+  }
   .fp-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    display: flex;
+    gap: 0;
+    overflow: visible;
   }
   .fp-featured {
     display: none;
   }
   .fp-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+  .fp-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .fp-grid .product-card {
+    flex: 0 0 42vw;
+    min-width: 0;
+    scroll-snap-align: start;
   }
   .fp-grid .product-card__image-overflow {
     aspect-ratio: 3 / 4;
