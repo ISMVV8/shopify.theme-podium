@@ -1198,15 +1198,45 @@ function initQuickSheet() {
       });
   });
 
+  function getOptionName(opt) {
+    if (typeof opt === 'string') return opt;
+    if (opt && opt.name) return opt.name;
+    return String(opt);
+  }
+
+  function getOptionValues(product, idx) {
+    var opt = product.options[idx];
+    // If option is an object with values array, use that directly
+    if (opt && typeof opt === 'object' && Array.isArray(opt.values)) {
+      return opt.values;
+    }
+    // Fallback: collect from variants
+    var seen = [];
+    product.variants.forEach(function(v) {
+      var val = v.options ? v.options[idx] : (v['option' + (idx + 1)]);
+      if (val && seen.indexOf(val) === -1) seen.push(val);
+    });
+    return seen;
+  }
+
+  function isSimpleProduct(product) {
+    if (!product.options || product.options.length === 0) return true;
+    if (product.options.length === 1) {
+      var name = getOptionName(product.options[0]);
+      if (name === 'Title' || name === 'Titre') return true;
+    }
+    return false;
+  }
+
   function buildOptions(product) {
-    if (!product.options || (product.options.length === 1 && product.options[0] === 'Title')) {
-      // Simple product — no options
+    if (isSimpleProduct(product)) {
       atcBtn.disabled = false;
       updateAtcLabel(product.variants[0]);
       return;
     }
 
-    product.options.forEach(function(optionName, idx) {
+    product.options.forEach(function(opt, idx) {
+      var optionName = getOptionName(opt);
       var group = document.createElement('div');
       group.className = 'quick-sheet__option-group';
 
@@ -1218,14 +1248,9 @@ function initQuickSheet() {
       var values = document.createElement('div');
       values.className = 'quick-sheet__option-values';
 
-      // Collect unique values for this option
-      var seen = [];
-      product.variants.forEach(function(v) {
-        var val = v.options[idx];
-        if (seen.indexOf(val) === -1) seen.push(val);
-      });
+      var optValues = getOptionValues(product, idx);
 
-      seen.forEach(function(val) {
+      optValues.forEach(function(val) {
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'quick-sheet__option-btn';
@@ -1234,7 +1259,6 @@ function initQuickSheet() {
         btn.dataset.optionValue = val;
 
         btn.addEventListener('click', function() {
-          // Deselect siblings
           values.querySelectorAll('.quick-sheet__option-btn').forEach(function(b) {
             b.classList.remove('is-selected');
           });
@@ -1252,10 +1276,11 @@ function initQuickSheet() {
   }
 
   function resolveVariant(product) {
-    // Check if all options selected
-    var allSelected = product.options.every(function(_, idx) {
-      return selectedOptions[idx] !== undefined;
-    });
+    var totalOptions = product.options.length;
+    var allSelected = true;
+    for (var i = 0; i < totalOptions; i++) {
+      if (selectedOptions[i] === undefined) { allSelected = false; break; }
+    }
 
     if (!allSelected) {
       atcBtn.disabled = true;
@@ -1263,18 +1288,27 @@ function initQuickSheet() {
     }
 
     // Find matching variant
-    var match = product.variants.find(function(v) {
-      return product.options.every(function(_, idx) {
-        return v.options[idx] === selectedOptions[idx];
-      });
-    });
+    var match = null;
+    for (var j = 0; j < product.variants.length; j++) {
+      var v = product.variants[j];
+      var opts = v.options || [v.option1, v.option2, v.option3];
+      var isMatch = true;
+      for (var k = 0; k < totalOptions; k++) {
+        if (opts[k] !== selectedOptions[k]) { isMatch = false; break; }
+      }
+      if (isMatch) { match = v; break; }
+    }
 
     if (match && match.available) {
       atcBtn.disabled = false;
       atcBtn.dataset.variantId = match.id;
       updateAtcLabel(match);
-      // Update variant label
-      variantLabelEl.textContent = match.options.join(' · ');
+      var labelParts = [];
+      var opts = match.options || [match.option1, match.option2, match.option3];
+      for (var m = 0; m < totalOptions; m++) {
+        if (opts[m]) labelParts.push(opts[m]);
+      }
+      variantLabelEl.textContent = labelParts.join(' · ');
     } else {
       atcBtn.disabled = true;
       if (match) {

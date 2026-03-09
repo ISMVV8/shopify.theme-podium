@@ -2487,24 +2487,28 @@ featured-products {
   .product-card__quick-add {
     display: flex;
     position: absolute;
-    bottom: var(--space-sm);
+    bottom: -14px;
     right: var(--space-sm);
-    z-index: 1;
+    z-index: 2;
     background: var(--color-bg);
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--color-border);
     color: var(--color-text);
   }
+  .product-card__quick-add svg {
+    width: 13px;
+    height: 13px;
+  }
   .product-card__quick-add-plus {
     position: absolute;
-    top: -2px;
-    right: -2px;
-    font-size: 0.625rem;
+    top: -3px;
+    right: -3px;
+    font-size: 0.5625rem;
     font-weight: 700;
     line-height: 1;
   }
