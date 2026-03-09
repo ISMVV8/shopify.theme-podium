@@ -27,6 +27,9 @@
   {%- endif -%}
 
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
   {%- comment -%} CSS Variables from theme settings – inlined directly {%- endcomment -%}
   <style>
@@ -42,11 +45,11 @@
       --color-sale: {{ settings.color_sale }};
       --color-overlay: {{ settings.color_overlay }};
 
-      --font-body: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      --font-body-weight: 400;
+      --font-body: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-body-weight: 300;
       --font-body-style: normal;
-      --font-heading: 'Avenir', 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      --font-heading-weight: 600;
+      --font-heading: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+      --font-heading-weight: 400;
       --font-heading-style: normal;
       --font-body-size: {{ settings.font_body_size }}px;
       --font-heading-scale: {{ settings.font_heading_scale | times: 1.0 | divided_by: 100.0 }};
