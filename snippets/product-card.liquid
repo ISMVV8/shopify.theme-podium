@@ -118,13 +118,11 @@
       {%- for option in product.options_with_values -%}
         {%- assign opt_lower = option.name | downcase -%}
         {%- if opt_lower == 'color' or opt_lower == 'couleur' or opt_lower == 'colour' -%}
-          {%- if option.values.size > 1 -%}
             <div class="product-card__colors">
               {%- for color_value in option.values -%}
                 {% render 'color-swatch', color: color_value %}
               {%- endfor -%}
             </div>
-          {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
       <div class="product-card__price">
