@@ -2487,7 +2487,7 @@ featured-products {
   .product-card__quick-add {
     display: flex;
     position: absolute;
-    bottom: -14px;
+    bottom: 6px;
     right: var(--space-sm);
     z-index: 2;
     background: var(--color-bg);
