@@ -34,23 +34,6 @@
 
     <div class="filter-drawer__body">
       <form id="filter-form" action="{{ collection.url }}" method="get">
-        {%- comment -%} Sort {%- endcomment -%}
-        <div class="filter-drawer__group filter-drawer__sort-group">
-          <button type="button" class="filter-drawer__group-toggle" data-filter-group-toggle aria-expanded="true">
-            <span class="filter-drawer__group-title">{{ 'collection.sort' | t }}</span>
-            <span class="filter-drawer__group-chevron">{% render 'icon', name: 'chevron-down', size: 12 %}</span>
-          </button>
-          <div class="filter-drawer__group-content is-expanded">
-            <select id="sort-select" name="sort_by" data-sort-select>
-              {%- for option in collection.sort_options -%}
-                <option value="{{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
-                  {{ option.name }}
-                </option>
-              {%- endfor -%}
-            </select>
-          </div>
-        </div>
-
         {%- comment -%} Filters {%- endcomment -%}
         {%- for filter in collection.filters -%}
           {%- liquid

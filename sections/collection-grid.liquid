@@ -25,10 +25,23 @@
             <span class="coll-toolbar__badge">{{ active_count }}</span>
           {%- endif -%}
         </button>
-        <button class="coll-toolbar__btn" data-filter-open>
-          {% render 'icon', name: 'sort', size: 14 %}
-          <span>{{ 'collection.sort' | t }}</span>
-        </button>
+        <div class="coll-sort" data-sort-dropdown>
+          <button class="coll-toolbar__btn" type="button" data-sort-toggle aria-expanded="false">
+            {% render 'icon', name: 'sort', size: 14 %}
+            <span>{{ 'collection.sort' | t }}</span>
+          </button>
+          <div class="coll-sort__dropdown">
+            {%- for option in collection.sort_options -%}
+              <button
+                type="button"
+                class="coll-sort__option{% if collection.sort_by == option.value or option.value == collection.default_sort_by and collection.sort_by == blank %} is-active{% endif %}"
+                data-sort-value="{{ option.value }}"
+              >
+                {{ option.name }}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
       </div>
     </div>
 

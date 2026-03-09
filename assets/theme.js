@@ -1118,5 +1118,42 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuickBuy();
   initProductRecommendations();
   initStickyATC();
+  initSortDropdown();
 });
+
+/* --- Sort Dropdown --- */
+function initSortDropdown() {
+  document.querySelectorAll('[data-sort-dropdown]').forEach(dropdown => {
+    const toggle = dropdown.querySelector('[data-sort-toggle]');
+    if (!toggle) return;
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.contains('is-open');
+      closeAllSortDropdowns();
+      if (!isOpen) {
+        dropdown.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    dropdown.querySelectorAll('[data-sort-value]').forEach(option => {
+      option.addEventListener('click', () => {
+        const url = new URL(window.location);
+        url.searchParams.set('sort_by', option.dataset.sortValue);
+        window.location.href = url.toString();
+      });
+    });
+  });
+
+  document.addEventListener('click', () => closeAllSortDropdowns());
+}
+
+function closeAllSortDropdowns() {
+  document.querySelectorAll('[data-sort-dropdown]').forEach(d => {
+    d.classList.remove('is-open');
+    const t = d.querySelector('[data-sort-toggle]');
+    if (t) t.setAttribute('aria-expanded', 'false');
+  });
+}
 

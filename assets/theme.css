@@ -2614,6 +2614,54 @@ featured-products {
   line-height: 1;
 }
 
+/* Sort dropdown */
+.coll-sort {
+  position: relative;
+}
+
+.coll-sort__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+}
+
+.coll-sort.is-open .coll-sort__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.coll-sort__option {
+  display: block;
+  width: 100%;
+  padding: 10px 18px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.coll-sort__option:hover {
+  background: #f5f5f0;
+}
+
+.coll-sort__option.is-active {
+  font-weight: 600;
+}
+
 /* Active filters */
 .coll-filters-active {
   display: flex;
