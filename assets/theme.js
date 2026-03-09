@@ -548,7 +548,7 @@ class VariantSelectorElement extends HTMLElement {
     this.addBtn = this.closest('form')?.querySelector('[data-add-to-cart]');
 
     // Color name labels (support multiple elements)
-    var infoWrap = this.closest('.pp-info') || this.closest('.product-info');
+    var infoWrap = this.closest('.pp-info') || this.closest('.pp-info-col') || this.closest('.product-info');
     this.colorNameEls = infoWrap ? infoWrap.querySelectorAll('[data-color-name]') : [];
 
     // Size value label
