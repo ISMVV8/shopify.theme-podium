@@ -683,10 +683,12 @@ announcement-bar {
 .header__nav-item {
   position: static;
   display: flex;
-  align-items: center;
+  align-items: stretch;
 }
 
 .header__nav-item .header__nav-link {
+  display: flex;
+  align-items: center;
   padding-block: var(--space-md);
 }
 
@@ -701,38 +703,42 @@ announcement-bar {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
   z-index: 50;
+  /* Extend hit area upward so mouse doesn't lose hover crossing the gap */
+  padding-top: 10px;
+  margin-top: -10px;
 }
 
-.header__nav-item:hover .mega-menu {
+.header__nav-item:hover > .mega-menu,
+.header__nav-item:focus-within > .mega-menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
-.header__nav-item:hover .header__nav-link {
+.header__nav-item:hover > .header__nav-link {
   opacity: 1;
 }
 
 .mega-menu__inner {
   display: flex;
-  gap: var(--space-xl, 48px);
-  padding-block: var(--space-xl, 40px);
+  gap: var(--space-2xl, 56px);
+  padding: var(--space-xl, 40px) 0;
   align-items: flex-start;
 }
 
 .mega-menu__columns {
   display: flex;
-  gap: var(--space-xl, 48px);
+  gap: var(--space-2xl, 56px);
   flex: 1;
 }
 
 .mega-menu__column {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 0;
+  gap: 0;
+  min-width: 140px;
 }
 
 .mega-menu__heading {
@@ -740,16 +746,17 @@ announcement-bar {
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   color: var(--color-text);
 }
 
 .mega-menu__link {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary, #666);
+  font-size: 0.8125rem;
+  color: #888;
   text-decoration: none;
-  padding: 3px 0;
+  padding: 5px 0;
   transition: color 0.15s ease;
+  line-height: 1.4;
 }
 
 .mega-menu__link:hover {
@@ -760,9 +767,10 @@ announcement-bar {
 .mega-menu__view-all {
   font-size: 0.8125rem;
   font-style: italic;
-  color: var(--color-text-secondary, #666);
+  color: #c9a0a0;
   text-decoration: none;
-  margin-top: 4px;
+  margin-top: 8px;
+  padding: 5px 0;
   transition: color 0.15s ease;
 }
 
