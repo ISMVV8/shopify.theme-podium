@@ -447,59 +447,23 @@ class FeaturedProductsSection extends HTMLElement {
   }
 }
 
-/* --- Product Gallery (dots or thumbnails) --- */
+/* --- Product Gallery (vertical scroll with variant scroll-to) --- */
 
 class ProductGalleryElement extends HTMLElement {
   connectedCallback() {
-    this.mainImage = this.querySelector('[data-main-image]');
-    this.dots = this.querySelectorAll('[data-dot]');
-    this.current = 0;
+    this.items = this.querySelectorAll('[data-gallery-item]');
 
-    // Parse images from JSON script or from data-thumb/data-dot
-    var imagesScript = this.querySelector('[data-gallery-images]');
-    if (imagesScript) {
-      try { this.images = JSON.parse(imagesScript.textContent); } catch (e) { this.images = []; }
-    } else {
-      this.images = [];
-    }
-
-    // Dot navigation
-    this.dots.forEach(function(dot, i) {
-      dot.addEventListener('click', function() { this.goTo(i); }.bind(this));
-    }.bind(this));
-
-    // Touch support on gallery
-    var mainWrap = this.querySelector('.pp-gallery__main');
-    if (mainWrap) {
-      var startX = 0;
-      mainWrap.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
-      mainWrap.addEventListener('touchend', function(e) {
-        var diff = startX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) {
-          diff > 0 ? this.goTo(this.current + 1) : this.goTo(this.current - 1);
-        }
-      }.bind(this), { passive: true });
-    }
-
-    // Listen for variant image changes
+    // Listen for variant image changes — scroll to matching image
     document.addEventListener('variant:imageChanged', function(e) {
-      var idx = this.images.findIndex(function(img) { return img.src === e.detail.src; });
-      if (idx !== -1) this.goTo(idx);
+      var src = e.detail.src;
+      for (var i = 0; i < this.items.length; i++) {
+        var img = this.items[i].querySelector('img');
+        if (img && img.src && img.src.indexOf(src) !== -1) {
+          this.items[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        }
+      }
     }.bind(this));
-  }
-
-  goTo(index) {
-    if (this.images.length === 0) return;
-    if (index < 0) index = this.images.length - 1;
-    if (index >= this.images.length) index = 0;
-    this.current = index;
-    if (this.mainImage && this.images[index]) {
-      this.mainImage.src = this.images[index].src;
-      this.mainImage.alt = this.images[index].alt;
-    }
-    this.dots.forEach(function(dot, i) {
-      dot.classList.toggle('is-active', i === index);
-    });
   }
 }
 
@@ -570,8 +534,8 @@ class VariantSelectorElement extends HTMLElement {
           this.colorNameEls.forEach(function(nameEl) { nameEl.textContent = value; });
         }
 
-        // Update size value label if clicking a size pill
-        if (this.sizeValueEl && el.closest('.pp-sizes')) {
+        // Update size value label if clicking a size pill/dot
+        if (this.sizeValueEl && (el.closest('.pp-sizes') || el.closest('.pp-size-dots'))) {
           this.sizeValueEl.textContent = value;
         }
 
@@ -868,6 +832,21 @@ function initWishlistToggles() {
   document.addEventListener('wishlist:updated', syncButtons);
 }
 
+/* --- Size Panel Toggle --- */
+
+function initSizePanelToggle() {
+  document.addEventListener('click', function(e) {
+    var toggle = e.target.closest('[data-size-toggle]');
+    if (!toggle) return;
+    var panel = toggle.parentElement.querySelector('[data-size-panel]');
+    if (!panel) return;
+    var isOpen = !panel.hidden;
+    panel.hidden = isOpen;
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    toggle.classList.toggle('is-open', !isOpen);
+  });
+}
+
 /* --- Register Custom Elements --- */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -889,5 +868,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initPasswordReveal();
   initNewsletterForms();
   initWishlistToggles();
+  initSizePanelToggle();
 });
 
