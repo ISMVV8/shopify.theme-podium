@@ -38,6 +38,11 @@
         "gift_card_resend_button": {
           "many": "Verstuur de cadeaukaarten opnieuw."
         }
+      },
+      "order_list": {
+        "items": {
+          "many": "{{count}} items"
+        }
       }
     },
     "order_details": {
@@ -290,5 +295,384 @@
     "previous_slide": "Vorige dia",
     "next_slide": "Volgende dia",
     "slide_number": "Dia {{ number }} van {{ total }}"
+  },
+  "shopify": {
+    "checkout": {
+      "general": {
+        "map": {
+          "cluster_title": {
+            "many": "Cluster van {{number}} markers"
+          }
+        }
+      },
+      "customer_account": {
+        "saved_address_option_description": {
+          "many": "Je hebt {{count}} adressen opgeslagen."
+        }
+      },
+      "stock": {
+        "unshippable_product": {
+          "header": {
+            "many": "Geen bezorging mogelijk voor %{count} artikelen"
+          },
+          "message": {
+            "many": "Deze artikelen worden uit uw winkelmandje verwijderd, omdat er geen bezorgopties beschikbaar zijn voor uw adres."
+          }
+        },
+        "item_label": {
+          "many": "{{count}} items"
+        },
+        "unfulfillable_product": {
+          "message": {
+            "many": "%{delivery_method} is niet langer beschikbaar voor deze artikelen."
+          },
+          "default_message": {
+            "many": "De gekozen bezorgmethode is voor deze artikelen niet meer beschikbaar."
+          }
+        }
+      },
+      "order_summary": {
+        "unit_price": {
+          "per_item": {
+            "many": "%{prijs} voor %{aantal} artikelen"
+          }
+        },
+        "expand_component_information": {
+          "many": "Toon %{count} items"
+        },
+        "collapse_component_information": {
+          "many": "Verberg %{count} items"
+        },
+        "discount_discovery": {
+          "merchandise_quantity_label": {
+            "many": "%{aantal} items"
+          }
+        },
+        "discount_title_stacking": {
+          "many": "Kortingen"
+        },
+        "discount_order_stacking": {
+          "many": "Korting op uw bestelling"
+        },
+        "subtotal_label_with_quantity": {
+          "many": "Subtotaal %{aantal} items"
+        },
+        "number_items": {
+          "many": "%{aantal} items"
+        },
+        "view_all_items": {
+          "many": "Toon alle items %{count}"
+        },
+        "pickup_unavailable_banner_title": {
+          "many": "Uw artikelen zijn niet in een winkel verkrijgbaar."
+        },
+        "pickup_unavailable_banner_title_with_country": {
+          "many": "Er zijn geen winkels in %{country} die uw artikelen verkopen."
+        }
+      },
+      "shipping": {
+        "estimated_delivery_date": {
+          "many": "%{count} werkdagen"
+        },
+        "other_method": {
+          "many": "%{count} andere methoden beschikbaar van"
+        },
+        "subscription_delivery_description": {
+          "prepaid_delivery_frequency": {
+            "many": "voor %{count} leveringen"
+          },
+          "subscription_delivery_frequency": {
+            "day": {
+              "many": "elke %{count} dagen"
+            },
+            "week": {
+              "many": "elke %{count} weken"
+            },
+            "month": {
+              "many": "elke %{count} maanden"
+            },
+            "year": {
+              "many": "elke %{count} jaar"
+            }
+          },
+          "first_n_order_free": {
+            "many": "%{count} eerste bestellingen gratis"
+          },
+          "free_for_first_n_order": {
+            "many": "Voor de eerste %{count} bestellingen"
+          },
+          "free_shipping_cycles": {
+            "many": "Gratis verzending voor %{count} plus leveringen"
+          },
+          "free_shipping_cycles_delivery_not_included": {
+            "many": "Gratis verzending voor %{count} leveringen"
+          },
+          "first_n_order_free_with_cycle": {
+            "many": "Gratis verzending voor %{count} meer leveringen, daarna %{recurring_order_shipping_price}"
+          },
+          "first_n_order_free_with_cycle_delivery_not_included": {
+            "many": "Gratis verzending voor %{count} leveringen, daarna %{recurring_order_shipping_price}"
+          },
+          "max_cycles_base_shipping": {
+            "many": "%{count} extra leveringen voor %{shipping_price} per stuk"
+          },
+          "max_cycles_base_shipping_delivery_not_included": {
+            "many": "%{count} extra leveringen voor %{shipping_price} per stuk"
+          },
+          "prepaid_free_shipping_with_cycles": {
+            "many": "Gratis verzending voor de eerste %{cycle}, gevolgd door %{recurring_order_shipping_price}."
+          },
+          "prepaid_order_one_cycle": {
+            "many": "%{verzendkosten} voor %{aantal} plus leveringen (%{kosten per levering})"
+          },
+          "prepaid_order_one_cycle_delivery_not_included": {
+            "many": "%{verzendkosten} voor %{aantal} leveringen (%{kosten per levering})"
+          },
+          "prepaid_order_no_cycle": {
+            "many": "%{verzendkosten} voor %{aantal} plus leveringen (%{kosten per levering}), gevolgd door %{verzendkosten voor terugkerende bestellingen}"
+          },
+          "prepaid_order_no_cycle_delivery_not_included": {
+            "many": "%{verzendkosten} voor %{aantal} leveringen (%{kosten per levering}), gevolgd door %{verzendkosten voor terugkerende bestellingen}"
+          }
+        },
+        "shipping_method_first_shipment_group_title": {
+          "many": "Eerste leveringen"
+        },
+        "shipping_method_recurring_shipments_group_title": {
+          "many": "Terugkerende mailings"
+        },
+        "unbranded_description_with_fulfillment_days": {
+          "many": "Verzending binnen %{count} werkdagen"
+        },
+        "unbranded_description_with_fulfillment_weeks": {
+          "many": "Verzending binnen %{count} weken"
+        }
+      },
+      "payment": {
+        "order_covered_by_gift_cards_notice": {
+          "many": "Uw bestellingen worden gedekt door uw cadeaukaarten."
+        },
+        "card_fields_unavailable_html": {
+          "many": "Betalingen met creditcard of betaalpas zijn momenteel niet mogelijk.<br> <a href=\"%{current_url}\">Vernieuw deze pagina</a> of probeer een andere betaalmethode."
+        },
+        "expired_cards_info": {
+          "many": "Er zijn %{count} verlopen kaarten die u in uw account kunt bekijken en wijzigen."
+        },
+        "order_edit_banner_items_added": {
+          "many": "%{count} toegevoegd(en)"
+        },
+        "discount_show_more_warnings": {
+          "many": "Toon meer %{count}"
+        },
+        "discount_codes_removed_summary": {
+          "many": "%{count} kortingscodes zijn verwijderd"
+        },
+        "discount_codes_modified_summary": {
+          "many": "De kortingscodes zijn gewijzigd."
+        },
+        "discount_codes_removed_or_modified_summary": {
+          "many": "%{count} kortingscodes zijn verwijderd of gewijzigd."
+        }
+      },
+      "shipping_errors": {
+        "shipping_method_not_available_generic": {
+          "many": "Sommige artikelen in uw winkelwagen kunnen niet naar het door u opgegeven adres worden verzonden. Controleer of uw adres correct is en probeer het opnieuw of selecteer een ander adres."
+        },
+        "shipping_method_not_available_updated": {
+          "many": "We kunnen ten minste één van de artikelen die u aan uw winkelmandje heeft toegevoegd niet verzenden. Verwijder het/de artikel(en) om te kunnen betalen, of neem contact op met de winkel."
+        }
+      },
+      "processing": {
+        "wait": {
+          "medium": {
+            "many": "Uw bestelling wordt verwerkt. De geschatte wachttijd is %{count} minuten."
+          }
+        }
+      },
+      "thank_you": {
+        "login_reorder_link_text": {
+          "many": "Koop deze producten ook."
+        },
+        "gift_card_confirmation_by_text_typ": {
+          "many": "Je ontvangt binnen enkele minuten een sms-bericht met je cadeaubonnen."
+        },
+        "gift_card_confirmation_by_email_typ": {
+          "many": "Je ontvangt over een paar minuten een e-mail met je cadeaubonnen."
+        },
+        "gift_card_email_title": {
+          "many": "De cadeaubonnen werden per e-mail verzonden."
+        },
+        "gift_card_text_title": {
+          "many": "De cadeaubonnen werden via sms verzonden."
+        },
+        "gift_card_resent_confirmation": {
+          "many": "De cadeaubonnen zijn geretourneerd."
+        },
+        "gift_card_resend_failure": {
+          "many": "Er is een probleem opgetreden bij het versturen van uw cadeaubonnen. Probeer het opnieuw of neem contact met ons op."
+        },
+        "thank_you_unconfirmed_items_heading": {
+          "many": "Sommige items zijn nog niet bevestigd."
+        },
+        "thank_you_unconfirmed_items_description": {
+          "many": "U heeft hiervoor geen kosten in rekening gebracht gekregen."
+        },
+        "thank_you_item_label": {
+          "many": "%{aantal} items"
+        },
+        "items_fulfilled_by_store": {
+          "many": "De artikelen die u hebt gekocht, worden vanuit andere winkels verzonden."
+        }
+      },
+      "order_payment_collection": {
+        "changes_summary": {
+          "added": {
+            "many": "%{count} toegevoegd(en)"
+          }
+        }
+      },
+      "open_graph_meta_tag": {
+        "title_with_products": {
+          "many": "Koop %{product_name} en %{count} andere artikelen"
+        }
+      },
+      "subscriptions": {
+        "recurring_totals_with_policies": {
+          "first_cycles": {
+            "many": "Om te beginnen, %{count} betalingen van %{total_price} elk"
+          }
+        },
+        "recurring_total_intervals": {
+          "day": {
+            "many": "%{count} dagen"
+          },
+          "week": {
+            "many": "%{count} weken"
+          },
+          "month": {
+            "many": "%{count} maanden"
+          },
+          "year": {
+            "many": "%{count} jaar"
+          }
+        },
+        "recurring_totals_with_initial_order_shipping_discount_with_policies": {
+          "first_cycles": {
+            "many": "vervolgens %{count} betalingen van %{total_price} elk"
+          }
+        }
+      },
+      "contextual_availability": {
+        "title": {
+          "many": "Producten niet beschikbaar"
+        },
+        "products_not_available": {
+          "many": "Deze producten worden uit uw winkelwagen verwijderd omdat ze niet beschikbaar zijn in uw land/regio."
+        },
+        "all_products_in_cart_unavailable": {
+          "many": "Deze producten zijn niet beschikbaar in uw land/regio."
+        }
+      },
+      "throttle": {
+        "estimated_wait_time": {
+          "many": "De geschatte wachttijd is {{count}} minuten"
+        }
+      },
+      "deliverability": {
+        "not_deliverable": {
+          "title": {
+            "many": "Geen bezorging mogelijk voor %{count} artikelen"
+          },
+          "message": {
+            "many": "Deze artikelen worden uit uw winkelmandje verwijderd, omdat er geen bezorgopties beschikbaar zijn voor uw adres."
+          }
+        }
+      },
+      "pickup_point": {
+        "paginator": {
+          "header": {
+            "many": "Het aantal punten %{first} – %{last} wordt weergegeven, van de %{count} punten."
+          },
+          "selected_pickup_point_label": {
+            "many": "%{pickup_point_index} van %{count} punten"
+          },
+          "selected_page": {
+            "many": "%{eerste} - %{laatste} van %{aantal} punten"
+          }
+        },
+        "number_of_pickup_points_near_location": {
+          "many": "%{count} inzamelpunten gevonden in de buurt van uw locatie"
+        },
+        "pickup_unavailable_banner_title": {
+          "many": "Er zijn geen inzamelpunten beschikbaar voor uw artikelen."
+        }
+      },
+      "local_pickup": {
+        "location_information": {
+          "many": "Er zijn %{count} locaties met voorraad in de buurt."
+        },
+        "paginator": {
+          "label": {
+            "many": "%{first} – %{last} op %{count} winkels"
+          }
+        },
+        "reveal_more_label": {
+          "many": "Bekijk %{count} meer locaties"
+        },
+        "all_stores_far_away": {
+          "title_with_item": {
+            "many": "De dichtstbijzijnde locatie met uw artikelen is meer dan %{distance} verwijderd van %{location}."
+          }
+        },
+        "location_information_far_away": {
+          "many": "Er zijn %{count} slots met jouw item"
+        },
+        "location_nearby": {
+          "many": "Er zijn %{count} locaties in de buurt van uw artikel."
+        },
+        "location_nearby_short": {
+          "many": "%{count} locaties in de buurt van uw artikel"
+        },
+        "location_far_away": {
+          "many": "%{count} locaties met uw artikel"
+        },
+        "toggle_more_locations": {
+          "many": "%{count} andere locaties"
+        },
+        "pickup_unavailable_banner_title": {
+          "many": "Er is geen ruimte beschikbaar voor uw spullen."
+        },
+        "pickup_unavailable_banner_title_with_country": {
+          "many": "Er zijn geen locaties in %{country} met uw artikelen."
+        }
+      },
+      "merchandise_unavailable_in_buyer_location": {
+        "remove_items_action": {
+          "many": "Verwijder niet-beschikbare items"
+        }
+      },
+      "review_address_modal": {
+        "subtitle": {
+          "many": "Deze bestelling wordt verzonden naar een adres dat is opgegeven door {{merchant}} . Selecteer een bezorgadres."
+        }
+      },
+      "remote_merchandise_only": {
+        "detail_item_label": {
+          "many": "{{count}} items"
+        }
+      }
+    },
+    "notices": {
+      "order": {
+        "cancel_reason": {
+          "many": "Ander"
+        }
+      }
+    },
+    "page_titles": {
+      "search_results": {
+        "many": "Zoekresultaten: %{count} resultaten gevonden voor \"%{terms}\""
+      }
+    }
   }
 }
