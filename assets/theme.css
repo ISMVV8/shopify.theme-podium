@@ -2032,13 +2032,17 @@ featured-products {
 
 /* --- Trust Benefits --- */
 
+.trust-benefits {
+  width: 100%;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
 .trust-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-lg);
-  padding: var(--space-xl) 0;
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-xl) var(--space-lg);
 }
 
 .trust-row__item {

@@ -1,34 +1,32 @@
-<section class="section">
-  <div class="container">
-    <div class="trust-row">
-      {%- for block in section.blocks -%}
-        <div class="trust-row__item" {{ block.shopify_attributes }}>
-          <div class="trust-row__icon">
-            {% render 'icon', name: block.settings.icon, size: 28 %}
-          </div>
-          <span class="trust-row__label">{{ block.settings.label }}</span>
+<section class="trust-benefits">
+  <div class="trust-row">
+    {%- for block in section.blocks -%}
+      <div class="trust-row__item" {{ block.shopify_attributes }}>
+        <div class="trust-row__icon">
+          {% render 'icon', name: block.settings.icon, size: 28 %}
         </div>
-      {%- endfor -%}
+        <span class="trust-row__label">{{ block.settings.label }}</span>
+      </div>
+    {%- endfor -%}
 
-      {%- if section.blocks.size == 0 -%}
-        <div class="trust-row__item">
-          <div class="trust-row__icon">{% render 'icon', name: 'truck', size: 28 %}</div>
-          <span class="trust-row__label">{{ 'trust.fast_shipping' | t }}</span>
-        </div>
-        <div class="trust-row__item">
-          <div class="trust-row__icon">{% render 'icon', name: 'return', size: 28 %}</div>
-          <span class="trust-row__label">{{ 'trust.returns' | t }}</span>
-        </div>
-        <div class="trust-row__item">
-          <div class="trust-row__icon">{% render 'icon', name: 'lock', size: 28 %}</div>
-          <span class="trust-row__label">{{ 'trust.secure_payment' | t }}</span>
-        </div>
-        <div class="trust-row__item">
-          <div class="trust-row__icon">{% render 'icon', name: 'headset', size: 28 %}</div>
-          <span class="trust-row__label">{{ 'trust.customer_service' | t }}</span>
-        </div>
-      {%- endif -%}
-    </div>
+    {%- if section.blocks.size == 0 -%}
+      <div class="trust-row__item">
+        <div class="trust-row__icon">{% render 'icon', name: 'truck', size: 28 %}</div>
+        <span class="trust-row__label">{{ 'trust.fast_shipping' | t }}</span>
+      </div>
+      <div class="trust-row__item">
+        <div class="trust-row__icon">{% render 'icon', name: 'return', size: 28 %}</div>
+        <span class="trust-row__label">{{ 'trust.returns' | t }}</span>
+      </div>
+      <div class="trust-row__item">
+        <div class="trust-row__icon">{% render 'icon', name: 'lock', size: 28 %}</div>
+        <span class="trust-row__label">{{ 'trust.secure_payment' | t }}</span>
+      </div>
+      <div class="trust-row__item">
+        <div class="trust-row__icon">{% render 'icon', name: 'headset', size: 28 %}</div>
+        <span class="trust-row__label">{{ 'trust.customer_service' | t }}</span>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
