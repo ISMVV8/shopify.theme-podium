@@ -2001,16 +2001,16 @@ featured-products {
 
 .quick-buy {
   position: absolute;
-  bottom: 0;
+  bottom: 12px;
   left: 10px;
   right: 10px;
-  transform: translateY(calc(100% + 8px));
+  transform: translateY(8px);
   background: #fff;
   border-radius: 10px;
   padding: 12px 14px 14px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
   z-index: 10;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
@@ -2019,6 +2019,7 @@ featured-products {
 .product-card:hover .quick-buy,
 .product-card .quick-buy.is-active {
   opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
 }
 
