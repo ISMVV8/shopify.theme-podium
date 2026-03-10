@@ -40,6 +40,11 @@
               {% render 'icon', name: 'pinterest', size: 20 %}
             </a>
           {%- endif -%}
+          {%- if settings.social_snapchat != blank -%}
+            <a href="{{ settings.social_snapchat }}" target="_blank" rel="noopener" aria-label="Snapchat">
+              {% render 'icon', name: 'snapchat', size: 20 %}
+            </a>
+          {%- endif -%}
         </div>
         {%- if section.settings.app_cta_text != blank -%}
           <a href="{{ section.settings.app_cta_link }}" class="btn btn--secondary footer__app-cta">

@@ -1,1 +1,37 @@
-[]
+[
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL",
+        "info": "https://instagram.com/yourhandle"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL",
+        "info": "https://facebook.com/yourpage"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL",
+        "info": "https://tiktok.com/@yourhandle"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest URL",
+        "info": "https://pinterest.com/yourprofile"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat",
+        "label": "Snapchat URL",
+        "info": "https://snapchat.com/add/yourhandle"
+      }
+    ]
+  }
+]
