@@ -20,11 +20,12 @@
       <div class="footer__col footer__col--center">
         <div class="footer__logo-text">{{ shop.name }}</div>
         <div class="footer__social">
-          {%- if settings.social_instagram != blank -%}
-            <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
-              {% render 'icon', name: 'instagram', size: 20 %}
-            </a>
-          {%- endif -%}
+          <a href="{{ settings.social_instagram | default: '#' }}" target="_blank" rel="noopener" aria-label="Instagram">
+            {% render 'icon', name: 'instagram', size: 20 %}
+          </a>
+          <a href="{{ settings.social_snapchat | default: '#' }}" target="_blank" rel="noopener" aria-label="Snapchat">
+            {% render 'icon', name: 'snapchat', size: 20 %}
+          </a>
           {%- if settings.social_facebook != blank -%}
             <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
               {% render 'icon', name: 'facebook', size: 20 %}
@@ -38,11 +39,6 @@
           {%- if settings.social_pinterest != blank -%}
             <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">
               {% render 'icon', name: 'pinterest', size: 20 %}
-            </a>
-          {%- endif -%}
-          {%- if settings.social_snapchat != blank -%}
-            <a href="{{ settings.social_snapchat }}" target="_blank" rel="noopener" aria-label="Snapchat">
-              {% render 'icon', name: 'snapchat', size: 20 %}
             </a>
           {%- endif -%}
         </div>
