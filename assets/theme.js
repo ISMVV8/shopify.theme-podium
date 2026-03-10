@@ -98,7 +98,7 @@ class StickyHeader extends HTMLElement {
     const updatePosition = () => {
       this._abHeight = this._announcementBar ? this._announcementBar.offsetHeight : 0;
       this._onScroll();
-      this.style.height = this.header.offsetHeight + 'px';
+      this.style.height = '0px';
     };
 
     this._onScroll = () => {
