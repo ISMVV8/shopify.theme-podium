@@ -12,6 +12,20 @@
     "main": {
       "type": "stores",
       "blocks": {
+        "store_3hRnkA": {
+          "type": "store",
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
+            "name": "Podium - Boutique 4",
+            "address": "Rue de Brabant 89, 1030",
+            "phone": "",
+            "email": "",
+            "hours_weekday": "11h00 – 19h00",
+            "hours_saturday": "11h00 – 19h00",
+            "hours_sunday": "11h00 – 19h00",
+            "map_link": "https://maps.app.goo.gl/4asHHLWWuhNG1uhv9"
+          }
+        },
         "store_1": {
           "type": "store",
           "settings": {
@@ -56,6 +70,7 @@
         }
       },
       "block_order": [
+        "store_3hRnkA",
         "store_1",
         "store_2",
         "store_3"
