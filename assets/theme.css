@@ -460,6 +460,13 @@ announcement-bar {
   display: block;
 }
 
+/* Collapse the header section wrapper so it takes no flow space
+   (both children are position:fixed or height:0). */
+.header-section {
+  height: 0;
+  overflow: visible;
+}
+
 .header {
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
