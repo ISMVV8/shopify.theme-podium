@@ -119,9 +119,9 @@
           "menu_2": "",
           "app_cta_text": "Download the app",
           "app_cta_link": "",
-          "privacy_url": "",
-          "terms_url": "",
-          "legal_url": ""
+          "privacy_url": "shopify://policies/privacy-policy",
+          "terms_url": "shopify://policies/terms-of-service",
+          "legal_url": "shopify://policies/legal-notice"
         }
       },
       "cart-drawer": {
