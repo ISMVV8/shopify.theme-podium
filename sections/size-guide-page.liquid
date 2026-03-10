@@ -1,0 +1,289 @@
+{%- comment -%}
+  Size Guide page – Louis Vuitton inspired, elegant tables and how-to-measure section.
+  Categories (Robes, Hauts, Pantalons…) as blocks with their own size charts.
+{%- endcomment -%}
+
+<section class="sg-page">
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="sg-page__hero">
+    <h1 class="sg-page__title">{{ section.settings.heading }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <p class="sg-page__sub">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="sg-page__body container">
+    {%- comment -%} How to measure {%- endcomment -%}
+    <div class="sg-page__measure">
+      <h2 class="sg-page__section-title">Comment prendre vos mesures</h2>
+      <div class="sg-page__measure-grid">
+        <div class="sg-page__measure-item">
+          <div class="sg-page__measure-num">1</div>
+          <h3 class="sg-page__measure-name">Tour de poitrine</h3>
+          <p class="sg-page__measure-desc">Mesurez horizontalement autour de la partie la plus forte de votre poitrine, en passant sous les bras.</p>
+        </div>
+        <div class="sg-page__measure-item">
+          <div class="sg-page__measure-num">2</div>
+          <h3 class="sg-page__measure-name">Tour de taille</h3>
+          <p class="sg-page__measure-desc">Mesurez autour de la partie la plus étroite de votre taille, généralement au niveau du nombril.</p>
+        </div>
+        <div class="sg-page__measure-item">
+          <div class="sg-page__measure-num">3</div>
+          <h3 class="sg-page__measure-name">Tour de hanches</h3>
+          <p class="sg-page__measure-desc">Mesurez autour de la partie la plus large de vos hanches, en gardant le mètre bien horizontal.</p>
+        </div>
+        <div class="sg-page__measure-item">
+          <div class="sg-page__measure-num">4</div>
+          <h3 class="sg-page__measure-name">Longueur</h3>
+          <p class="sg-page__measure-desc">Mesurez du point le plus haut de l'épaule jusqu'à l'ourlet souhaité.</p>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} Size charts from blocks {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'size_chart' -%}
+        <div class="sg-page__chart" {{ block.shopify_attributes }}>
+          <h2 class="sg-page__chart-title">{{ block.settings.title }}</h2>
+          {%- if block.settings.description != blank -%}
+            <p class="sg-page__chart-desc">{{ block.settings.description }}</p>
+          {%- endif -%}
+          <div class="sg-page__table-wrap">
+            <table class="sg-page__table">
+              <thead>
+                <tr>
+                  <th>Taille</th>
+                  <th>{{ block.settings.col1_label | default: 'Poitrine (cm)' }}</th>
+                  <th>{{ block.settings.col2_label | default: 'Taille (cm)' }}</th>
+                  <th>{{ block.settings.col3_label | default: 'Hanches (cm)' }}</th>
+                  {%- if block.settings.col4_label != blank -%}
+                    <th>{{ block.settings.col4_label }}</th>
+                  {%- endif -%}
+                </tr>
+              </thead>
+              <tbody>
+                {%- if block.settings.row_xs != blank -%}
+                  <tr>
+                    <td>XS</td>
+                    {%- assign cols = block.settings.row_xs | split: '|' -%}
+                    {%- for col in cols -%}<td>{{ col | strip }}</td>{%- endfor -%}
+                  </tr>
+                {%- endif -%}
+                {%- if block.settings.row_s != blank -%}
+                  <tr>
+                    <td>S</td>
+                    {%- assign cols = block.settings.row_s | split: '|' -%}
+                    {%- for col in cols -%}<td>{{ col | strip }}</td>{%- endfor -%}
+                  </tr>
+                {%- endif -%}
+                {%- if block.settings.row_m != blank -%}
+                  <tr>
+                    <td>M</td>
+                    {%- assign cols = block.settings.row_m | split: '|' -%}
+                    {%- for col in cols -%}<td>{{ col | strip }}</td>{%- endfor -%}
+                  </tr>
+                {%- endif -%}
+                {%- if block.settings.row_l != blank -%}
+                  <tr>
+                    <td>L</td>
+                    {%- assign cols = block.settings.row_l | split: '|' -%}
+                    {%- for col in cols -%}<td>{{ col | strip }}</td>{%- endfor -%}
+                  </tr>
+                {%- endif -%}
+                {%- if block.settings.row_xl != blank -%}
+                  <tr>
+                    <td>XL</td>
+                    {%- assign cols = block.settings.row_xl | split: '|' -%}
+                    {%- for col in cols -%}<td>{{ col | strip }}</td>{%- endfor -%}
+                  </tr>
+                {%- endif -%}
+                {%- if block.settings.row_xxl != blank -%}
+                  <tr>
+                    <td>XXL</td>
+                    {%- assign cols = block.settings.row_xxl | split: '|' -%}
+                    {%- for col in cols -%}<td>{{ col | strip }}</td>{%- endfor -%}
+                  </tr>
+                {%- endif -%}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Tips {%- endcomment -%}
+    {%- if section.settings.tips != blank -%}
+      <div class="sg-page__tips">
+        <h2 class="sg-page__section-title">Nos conseils</h2>
+        <div class="sg-page__tips-content">
+          {{ section.settings.tips }}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Bottom {%- endcomment -%}
+  {%- if section.settings.bottom_text != blank -%}
+    <div class="sg-page__bottom container">
+      <p class="sg-page__bottom-text">{{ section.settings.bottom_text }}</p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Guide des tailles",
+  "class": "sg-page-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Guide des tailles"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sous-titre",
+      "default": "Trouvez votre taille idéale pour chaque pièce de nos collections"
+    },
+    {
+      "type": "richtext",
+      "id": "tips",
+      "label": "Conseils",
+      "default": "<p>• Prenez vos mesures directement sur le corps, en sous-vêtements, avec un mètre ruban souple.<br>• Ne serrez pas trop le mètre : il doit être ajusté mais pas tendu.<br>• En cas d'hésitation entre deux tailles, nous recommandons la taille supérieure pour un confort optimal.</p>"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Texte en bas",
+      "default": "Pour toute question sur les tailles, n'hésitez pas à contacter notre service client."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size_chart",
+      "name": "Tableau de tailles",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Catégorie",
+          "default": "Robes & Abayas"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Toutes les mesures sont en centimètres"
+        },
+        {
+          "type": "text",
+          "id": "col1_label",
+          "label": "Colonne 1",
+          "default": "Poitrine (cm)"
+        },
+        {
+          "type": "text",
+          "id": "col2_label",
+          "label": "Colonne 2",
+          "default": "Taille (cm)"
+        },
+        {
+          "type": "text",
+          "id": "col3_label",
+          "label": "Colonne 3",
+          "default": "Hanches (cm)"
+        },
+        {
+          "type": "text",
+          "id": "col4_label",
+          "label": "Colonne 4 (optionnel)"
+        },
+        {
+          "type": "text",
+          "id": "row_xs",
+          "label": "XS (valeurs séparées par |)",
+          "default": "80-84 | 60-64 | 86-90"
+        },
+        {
+          "type": "text",
+          "id": "row_s",
+          "label": "S (valeurs séparées par |)",
+          "default": "84-88 | 64-68 | 90-94"
+        },
+        {
+          "type": "text",
+          "id": "row_m",
+          "label": "M (valeurs séparées par |)",
+          "default": "88-92 | 68-72 | 94-98"
+        },
+        {
+          "type": "text",
+          "id": "row_l",
+          "label": "L (valeurs séparées par |)",
+          "default": "92-96 | 72-78 | 98-104"
+        },
+        {
+          "type": "text",
+          "id": "row_xl",
+          "label": "XL (valeurs séparées par |)",
+          "default": "96-102 | 78-84 | 104-110"
+        },
+        {
+          "type": "text",
+          "id": "row_xxl",
+          "label": "XXL (valeurs séparées par |)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Guide des tailles",
+      "blocks": [
+        {
+          "type": "size_chart",
+          "settings": {
+            "title": "Robes & Abayas",
+            "description": "Toutes les mesures sont en centimètres",
+            "row_xs": "80-84 | 60-64 | 86-90",
+            "row_s": "84-88 | 64-68 | 90-94",
+            "row_m": "88-92 | 68-72 | 94-98",
+            "row_l": "92-96 | 72-78 | 98-104",
+            "row_xl": "96-102 | 78-84 | 104-110"
+          }
+        },
+        {
+          "type": "size_chart",
+          "settings": {
+            "title": "Hauts & Tuniques",
+            "description": "Toutes les mesures sont en centimètres",
+            "col3_label": "Longueur (cm)",
+            "row_xs": "80-84 | 60-64 | 58",
+            "row_s": "84-88 | 64-68 | 60",
+            "row_m": "88-92 | 68-72 | 62",
+            "row_l": "92-96 | 72-78 | 64",
+            "row_xl": "96-102 | 78-84 | 66"
+          }
+        },
+        {
+          "type": "size_chart",
+          "settings": {
+            "title": "Jupes & Pantalons",
+            "description": "Toutes les mesures sont en centimètres",
+            "col1_label": "Taille (cm)",
+            "col2_label": "Hanches (cm)",
+            "col3_label": "Entrejambe (cm)",
+            "row_xs": "60-64 | 86-90 | 76",
+            "row_s": "64-68 | 90-94 | 78",
+            "row_m": "68-72 | 94-98 | 79",
+            "row_l": "72-78 | 98-104 | 80",
+            "row_xl": "78-84 | 104-110 | 81"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
