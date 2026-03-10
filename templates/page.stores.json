@@ -12,20 +12,6 @@
     "main": {
       "type": "stores",
       "blocks": {
-        "store_3hRnkA": {
-          "type": "store",
-          "settings": {
-            "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
-            "name": "Podium - Boutique 4",
-            "address": "Rue de Brabant 89, 1030",
-            "phone": "",
-            "email": "",
-            "hours_weekday": "11h00 – 19h00",
-            "hours_saturday": "11h00 – 19h00",
-            "hours_sunday": "11h00 – 19h00",
-            "map_link": "https://maps.app.goo.gl/4asHHLWWuhNG1uhv9"
-          }
-        },
         "store_1": {
           "type": "store",
           "settings": {
@@ -67,15 +53,30 @@
             "hours_sunday": "11h00 – 19h00",
             "map_link": "https://maps.app.goo.gl/BnT3XSjzbTAbjVkCA"
           }
+        },
+        "store_3hRnkA": {
+          "type": "store",
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
+            "name": "Podium - Boutique 4",
+            "address": "Rue de Brabant 89, 1030",
+            "phone": "",
+            "email": "",
+            "hours_weekday": "11h00 – 19h00",
+            "hours_saturday": "11h00 – 19h00",
+            "hours_sunday": "11h00 – 19h00",
+            "map_link": "https://maps.app.goo.gl/4asHHLWWuhNG1uhv9"
+          }
         }
       },
       "block_order": [
-        "store_3hRnkA",
         "store_1",
         "store_2",
-        "store_3"
+        "store_3",
+        "store_3hRnkA"
       ],
       "settings": {
+        "hero_image": "shopify://shop_images/b57c8d2d-ef3f-47f6-8183-451a683d9956.jpg",
         "heading": "Nos Boutiques",
         "subheading": "Découvrez l'univers Podium près de chez vous",
         "intro_text": "Chaque boutique Podium est une invitation à découvrir nos collections dans un cadre élégant et raffiné. Nos conseillers vous accueillent pour une expérience personnalisée.",
