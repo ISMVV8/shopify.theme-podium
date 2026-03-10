@@ -1,6 +1,6 @@
 {%- comment -%}
   Contact page section – Louis Vuitton inspired.
-  Info cards + Shopify built-in contact form.
+  Block-based contact methods (2×2 grid) + Shopify built-in contact form.
 {%- endcomment -%}
 
 <section class="contact-page">
@@ -13,48 +13,33 @@
   </div>
 
   <div class="contact-page__body container">
-    {%- comment -%} Info cards row {%- endcomment -%}
-    <div class="contact-page__info">
-      {%- if section.settings.address != blank -%}
-        <div class="contact-page__card">
-          <span class="contact-page__card-icon">
-            {% render 'icon', name: 'map-pin', size: 22 %}
-          </span>
-          <span class="contact-page__card-label">Adresse</span>
-          <span class="contact-page__card-value">{{ section.settings.address }}</span>
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.phone != blank -%}
-        <div class="contact-page__card">
-          <span class="contact-page__card-icon">
-            {% render 'icon', name: 'phone', size: 22 %}
-          </span>
-          <span class="contact-page__card-label">Téléphone</span>
-          <a href="tel:{{ section.settings.phone | remove: ' ' }}" class="contact-page__card-value contact-page__card-link">{{ section.settings.phone }}</a>
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.email != blank -%}
-        <div class="contact-page__card">
-          <span class="contact-page__card-icon">
-            {% render 'icon', name: 'mail', size: 22 %}
-          </span>
-          <span class="contact-page__card-label">Email</span>
-          <a href="mailto:{{ section.settings.email }}" class="contact-page__card-value contact-page__card-link">{{ section.settings.email }}</a>
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.hours != blank -%}
-        <div class="contact-page__card">
-          <span class="contact-page__card-icon">
-            {% render 'icon', name: 'clock', size: 22 %}
-          </span>
-          <span class="contact-page__card-label">Horaires</span>
-          <span class="contact-page__card-value">{{ section.settings.hours }}</span>
-        </div>
-      {%- endif -%}
-    </div>
+    {%- comment -%} Contact method blocks – 2×2 grid {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="contact-page__methods">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'contact_method' -%}
+            <div class="contact-page__method" {{ block.shopify_attributes }}>
+              <h2 class="contact-page__method-title">{{ block.settings.title }}</h2>
+              {%- if block.settings.description != blank -%}
+                <p class="contact-page__method-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+              {%- if block.settings.link_url != blank and block.settings.link_text != blank -%}
+                <a href="{{ block.settings.link_url }}" class="contact-page__method-cta"
+                  {%- if block.settings.link_url contains 'wa.me' or block.settings.link_url contains 'whatsapp' or block.settings.link_url contains 'http' %} target="_blank" rel="noopener"{% endif -%}
+                >
+                  {%- if block.settings.icon != blank -%}
+                    <span class="contact-page__method-icon">
+                      {% render 'icon', name: block.settings.icon, size: 18 %}
+                    </span>
+                  {%- endif -%}
+                  <span class="contact-page__method-link-text">{{ block.settings.link_text }}</span>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
 
     {%- comment -%} Form section {%- endcomment -%}
     <div class="contact-page__form-section">
@@ -163,31 +148,6 @@
     },
     {
       "type": "header",
-      "content": "Informations de contact"
-    },
-    {
-      "type": "textarea",
-      "id": "address",
-      "label": "Adresse"
-    },
-    {
-      "type": "text",
-      "id": "phone",
-      "label": "Téléphone"
-    },
-    {
-      "type": "text",
-      "id": "email",
-      "label": "Email"
-    },
-    {
-      "type": "text",
-      "id": "hours",
-      "label": "Horaires",
-      "default": "Lun – Ven : 10h – 18h"
-    },
-    {
-      "type": "header",
       "content": "Formulaire"
     },
     {
@@ -203,9 +163,92 @@
       "default": "Nous vous répondrons sous 24 à 48 heures ouvrées."
     }
   ],
+  "blocks": [
+    {
+      "type": "contact_method",
+      "name": "Méthode de contact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Téléphone"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Du Lundi au Dimanche de 10h à 19h (CET)."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "phone", "label": "Téléphone" },
+            { "value": "whatsapp", "label": "WhatsApp" },
+            { "value": "mail", "label": "Email" },
+            { "value": "headset", "label": "Live Chat" },
+            { "value": "map-pin", "label": "Localisation" },
+            { "value": "clock", "label": "Horloge" }
+          ],
+          "default": "phone"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Texte du lien",
+          "default": "Appelez-nous"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "URL du lien"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Nous contacter"
+      "name": "Nous contacter",
+      "blocks": [
+        {
+          "type": "contact_method",
+          "settings": {
+            "title": "Téléphone",
+            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
+            "icon": "phone",
+            "link_text": "Appelez-nous"
+          }
+        },
+        {
+          "type": "contact_method",
+          "settings": {
+            "title": "WhatsApp",
+            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
+            "icon": "whatsapp",
+            "link_text": "Contactez-nous sur WhatsApp"
+          }
+        },
+        {
+          "type": "contact_method",
+          "settings": {
+            "title": "E-mail",
+            "description": "Un conseiller clientèle se chargera d'étudier votre demande",
+            "icon": "mail",
+            "link_text": "Écrivez-nous"
+          }
+        },
+        {
+          "type": "contact_method",
+          "settings": {
+            "title": "Live Chat",
+            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
+            "icon": "headset",
+            "link_text": "Envoyez-nous un message"
+          }
+        }
+      ]
     }
   ]
 }
