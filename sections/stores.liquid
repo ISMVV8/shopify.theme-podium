@@ -1,0 +1,232 @@
+{%- comment -%}
+  Stores page section – Louis Vuitton inspired design.
+  Each store is a configurable block with address, hours, phone, image.
+{%- endcomment -%}
+
+<section class="stores">
+  {%- comment -%} Hero banner {%- endcomment -%}
+  <div class="stores__hero">
+    {%- if section.settings.hero_image != blank -%}
+      <img
+        src="{{ section.settings.hero_image | image_url: width: 1920 }}"
+        alt="{{ section.settings.heading | escape }}"
+        class="stores__hero-img"
+        width="1920"
+        height="600"
+        loading="eager"
+      >
+    {%- endif -%}
+    <div class="stores__hero-overlay">
+      <h1 class="stores__hero-title">{{ section.settings.heading }}</h1>
+      {%- if section.settings.subheading != blank -%}
+        <p class="stores__hero-sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Intro text {%- endcomment -%}
+  {%- if section.settings.intro_text != blank -%}
+    <div class="stores__intro container">
+      <p class="stores__intro-text">{{ section.settings.intro_text }}</p>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Store cards {%- endcomment -%}
+  <div class="stores__grid container">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'store' -%}
+        <div class="stores__card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="stores__card-img-wrap">
+              <img
+                src="{{ block.settings.image | image_url: width: 800 }}"
+                alt="{{ block.settings.name | escape }}"
+                class="stores__card-img"
+                width="800"
+                height="500"
+                loading="lazy"
+              >
+            </div>
+          {%- endif -%}
+
+          <div class="stores__card-body">
+            <h2 class="stores__card-name">{{ block.settings.name }}</h2>
+
+            <div class="stores__card-details">
+              {%- if block.settings.address != blank -%}
+                <div class="stores__detail">
+                  <span class="stores__detail-label">Adresse</span>
+                  <span class="stores__detail-value">{{ block.settings.address }}</span>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.phone != blank -%}
+                <div class="stores__detail">
+                  <span class="stores__detail-label">Téléphone</span>
+                  <a href="tel:{{ block.settings.phone | remove: ' ' }}" class="stores__detail-value stores__detail-link">{{ block.settings.phone }}</a>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.email != blank -%}
+                <div class="stores__detail">
+                  <span class="stores__detail-label">Email</span>
+                  <a href="mailto:{{ block.settings.email }}" class="stores__detail-value stores__detail-link">{{ block.settings.email }}</a>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- comment -%} Opening hours {%- endcomment -%}
+            <div class="stores__hours">
+              <span class="stores__hours-title">Horaires d'ouverture</span>
+              {%- if block.settings.hours_weekday != blank -%}
+                <div class="stores__hours-row">
+                  <span class="stores__hours-day">Lundi – Vendredi</span>
+                  <span class="stores__hours-time">{{ block.settings.hours_weekday }}</span>
+                </div>
+              {%- endif -%}
+              {%- if block.settings.hours_saturday != blank -%}
+                <div class="stores__hours-row">
+                  <span class="stores__hours-day">Samedi</span>
+                  <span class="stores__hours-time">{{ block.settings.hours_saturday }}</span>
+                </div>
+              {%- endif -%}
+              {%- if block.settings.hours_sunday != blank -%}
+                <div class="stores__hours-row">
+                  <span class="stores__hours-day">Dimanche</span>
+                  <span class="stores__hours-time">{{ block.settings.hours_sunday }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.map_link != blank -%}
+              <a href="{{ block.settings.map_link }}" target="_blank" rel="noopener" class="stores__card-cta">
+                Itinéraire
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Bottom CTA {%- endcomment -%}
+  {%- if section.settings.bottom_text != blank -%}
+    <div class="stores__bottom container">
+      <p class="stores__bottom-text">{{ section.settings.bottom_text }}</p>
+      {%- if section.settings.contact_url != blank -%}
+        <a href="{{ section.settings.contact_url }}" class="stores__bottom-btn">Nous contacter</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Nos Boutiques",
+  "class": "stores-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Image hero"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Nos Boutiques"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sous-titre",
+      "default": "Découvrez l'univers Podium près de chez vous"
+    },
+    {
+      "type": "textarea",
+      "id": "intro_text",
+      "label": "Texte d'introduction",
+      "default": "Chaque boutique Podium est une invitation à découvrir nos collections dans un cadre élégant et raffiné. Nos conseillers vous accueillent pour une expérience personnalisée."
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Texte en bas de page",
+      "default": "Une question ? Notre équipe est à votre disposition."
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Lien contact"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Boutique",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo de la boutique"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nom de la boutique",
+          "default": "Podium"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Adresse"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
+        },
+        {
+          "type": "text",
+          "id": "hours_weekday",
+          "label": "Horaires lundi – vendredi",
+          "default": "10h00 – 19h00"
+        },
+        {
+          "type": "text",
+          "id": "hours_saturday",
+          "label": "Horaires samedi",
+          "default": "10h00 – 19h00"
+        },
+        {
+          "type": "text",
+          "id": "hours_sunday",
+          "label": "Horaires dimanche",
+          "default": "Fermé"
+        },
+        {
+          "type": "url",
+          "id": "map_link",
+          "label": "Lien Google Maps"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nos Boutiques",
+      "blocks": [
+        { "type": "store", "settings": { "name": "Podium — Boutique 1" } },
+        { "type": "store", "settings": { "name": "Podium — Boutique 2" } },
+        { "type": "store", "settings": { "name": "Podium — Boutique 3" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

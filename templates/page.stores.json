@@ -1,0 +1,51 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "stores",
+      "settings": {
+        "heading": "Nos Boutiques",
+        "subheading": "Découvrez l'univers Podium près de chez vous"
+      },
+      "blocks": {
+        "store_1": {
+          "type": "store",
+          "settings": {
+            "name": "Podium — Boutique 1",
+            "hours_weekday": "10h00 – 19h00",
+            "hours_saturday": "10h00 – 19h00",
+            "hours_sunday": "Fermé"
+          }
+        },
+        "store_2": {
+          "type": "store",
+          "settings": {
+            "name": "Podium — Boutique 2",
+            "hours_weekday": "10h00 – 19h00",
+            "hours_saturday": "10h00 – 19h00",
+            "hours_sunday": "Fermé"
+          }
+        },
+        "store_3": {
+          "type": "store",
+          "settings": {
+            "name": "Podium — Boutique 3",
+            "hours_weekday": "10h00 – 19h00",
+            "hours_saturday": "10h00 – 19h00",
+            "hours_sunday": "Fermé"
+          }
+        }
+      },
+      "block_order": ["store_1", "store_2", "store_3"]
+    }
+  },
+  "order": ["main"]
+}
