@@ -19,28 +19,55 @@
       {%- comment -%} Center column: Brand + Social {%- endcomment -%}
       <div class="footer__col footer__col--center">
         <div class="footer__logo-text">{{ shop.name }}</div>
-        <div class="footer__social">
-          {%- if settings.social_instagram != blank -%}
-            <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
-              {% render 'icon', name: 'instagram', size: 20 %}
-            </a>
-          {%- endif -%}
-          {%- if settings.social_facebook != blank -%}
-            <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
-              {% render 'icon', name: 'facebook', size: 20 %}
-            </a>
-          {%- endif -%}
-          {%- if settings.social_tiktok != blank -%}
-            <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
-              {% render 'icon', name: 'tiktok', size: 20 %}
-            </a>
-          {%- endif -%}
-          {%- if settings.social_pinterest != blank -%}
-            <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">
-              {% render 'icon', name: 'pinterest', size: 20 %}
-            </a>
-          {%- endif -%}
-        </div>
+        {%- assign has_social = false -%}
+        {%- if settings.social_facebook != blank or settings.social_instagram != blank or settings.social_pinterest != blank or settings.social_tiktok != blank or settings.social_whatsapp != blank or settings.social_twitter != blank or settings.social_youtube != blank or settings.social_snapchat != blank -%}
+          {%- assign has_social = true -%}
+        {%- endif -%}
+
+        {%- if has_social -%}
+          <div class="footer__social">
+            {%- if settings.social_facebook != blank -%}
+              <a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook" class="footer__social-link">
+                {% render 'icon', name: 'facebook', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_pinterest != blank -%}
+              <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest" class="footer__social-link">
+                {% render 'icon', name: 'pinterest', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_instagram != blank -%}
+              <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram" class="footer__social-link">
+                {% render 'icon', name: 'instagram', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_tiktok != blank -%}
+              <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok" class="footer__social-link">
+                {% render 'icon', name: 'tiktok', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_whatsapp != blank -%}
+              <a href="{{ settings.social_whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp" class="footer__social-link">
+                {% render 'icon', name: 'whatsapp', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_twitter != blank -%}
+              <a href="{{ settings.social_twitter }}" target="_blank" rel="noopener" aria-label="X (Twitter)" class="footer__social-link">
+                {% render 'icon', name: 'twitter', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_youtube != blank -%}
+              <a href="{{ settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube" class="footer__social-link">
+                {% render 'icon', name: 'youtube', size: 20 %}
+              </a>
+            {%- endif -%}
+            {%- if settings.social_snapchat != blank -%}
+              <a href="{{ settings.social_snapchat }}" target="_blank" rel="noopener" aria-label="Snapchat" class="footer__social-link">
+                {% render 'icon', name: 'snapchat', size: 20 %}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
         {%- if section.settings.app_cta_text != blank -%}
           <a href="{{ section.settings.app_cta_link }}" class="btn btn--secondary footer__app-cta">
             {{ section.settings.app_cta_text }}

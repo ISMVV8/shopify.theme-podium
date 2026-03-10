@@ -1,1 +1,79 @@
-[]
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Podium",
+    "theme_version": "1.0.0",
+    "theme_author": "Podium",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Comptes de réseaux sociaux"
+      },
+      {
+        "type": "paragraph",
+        "content": "Renseignez les URLs de vos réseaux sociaux. Les icônes apparaîtront automatiquement dans le footer."
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "placeholder": "https://www.facebook.com/votre-page",
+        "info": "URL complète de votre page Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "placeholder": "https://www.instagram.com/votre-compte",
+        "info": "URL complète de votre profil Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest",
+        "placeholder": "https://www.pinterest.fr/votre-compte",
+        "info": "URL complète de votre profil Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok",
+        "placeholder": "https://www.tiktok.com/@votre-compte",
+        "info": "URL complète de votre profil TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp",
+        "label": "WhatsApp",
+        "placeholder": "https://wa.me/33612345678",
+        "info": "Lien WhatsApp (wa.me/numéro ou lien de groupe)"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "X (Twitter)",
+        "placeholder": "https://x.com/votre-compte",
+        "info": "URL complète de votre profil X / Twitter"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube",
+        "placeholder": "https://www.youtube.com/@votre-chaine",
+        "info": "URL complète de votre chaîne YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat",
+        "label": "Snapchat",
+        "placeholder": "https://www.snapchat.com/add/votre-pseudo",
+        "info": "URL complète de votre profil Snapchat"
+      }
+    ]
+  }
+]
