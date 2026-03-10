@@ -1,42 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "stores",
-      "settings": {
-        "heading": "Nos Boutiques",
-        "subheading": "Découvrez l'univers Podium près de chez vous"
-      },
       "blocks": {
         "store_1": {
           "type": "store",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
             "name": "Podium — Boutique 1",
-            "hours_weekday": "10h00 – 19h00",
-            "hours_saturday": "10h00 – 19h00",
-            "hours_sunday": "Fermé"
+            "address": "Chaussée de Gand 62, 1080",
+            "phone": "",
+            "email": "",
+            "hours_weekday": "11h00 – 19h00",
+            "hours_saturday": "11h00 – 19h00",
+            "hours_sunday": "11h00 – 19h00",
+            "map_link": "https://maps.app.goo.gl/2iqDVnhhKNMhTc8W6"
           }
         },
         "store_2": {
           "type": "store",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
             "name": "Podium — Boutique 2",
-            "hours_weekday": "10h00 – 19h00",
-            "hours_saturday": "10h00 – 19h00",
-            "hours_sunday": "Fermé"
+            "address": "Chaussée de Gand 67, 1080",
+            "phone": "",
+            "email": "",
+            "hours_weekday": "11h00 – 19h00",
+            "hours_saturday": "11h00 – 19h00",
+            "hours_sunday": "11h00 – 19h00",
+            "map_link": "https://maps.app.goo.gl/S2dunNdhnhAg2TaRA"
           }
         },
         "store_3": {
           "type": "store",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_8jo0bv8jo0bv8jo0-2.png",
             "name": "Podium — Boutique 3",
-            "hours_weekday": "10h00 – 19h00",
-            "hours_saturday": "10h00 – 19h00",
-            "hours_sunday": "Fermé"
+            "address": "Chaussée de Gand 90, 1080",
+            "phone": "",
+            "email": "",
+            "hours_weekday": "11h00 – 19h00",
+            "hours_saturday": "11h00 – 19h00",
+            "hours_sunday": "11h00 – 19h00",
+            "map_link": "https://maps.app.goo.gl/BnT3XSjzbTAbjVkCA"
           }
         }
       },
-      "block_order": ["store_1", "store_2", "store_3"]
+      "block_order": [
+        "store_1",
+        "store_2",
+        "store_3"
+      ],
+      "settings": {
+        "heading": "Nos Boutiques",
+        "subheading": "Découvrez l'univers Podium près de chez vous",
+        "intro_text": "Chaque boutique Podium est une invitation à découvrir nos collections dans un cadre élégant et raffiné. Nos conseillers vous accueillent pour une expérience personnalisée.",
+        "bottom_text": "Une question ? Notre équipe est à votre disposition.",
+        "contact_url": ""
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
