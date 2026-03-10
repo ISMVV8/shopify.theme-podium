@@ -2342,13 +2342,13 @@ featured-products {
 /* --- Footer --- */
 
 .footer {
-  background: #f5f3f0;
-  color: #1a1a1a;
+  background: #1a1a1a;
+  color: #fff;
 }
 
 /* Newsletter band */
 .footer__newsletter {
-  border-bottom: 1px solid #e0ddd8;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
   padding: 48px 0;
 }
 
@@ -2365,14 +2365,14 @@ featured-products {
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: #1a1a1a;
+  color: #fff;
   margin-bottom: 8px;
 }
 
 .footer__newsletter-sub {
   font-size: 0.8125rem;
   font-weight: 300;
-  color: #888;
+  color: rgba(255,255,255,0.5);
   letter-spacing: 0.02em;
   line-height: 1.5;
 }
@@ -2384,7 +2384,7 @@ featured-products {
 .footer__newsletter-field {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
   min-width: 320px;
 }
 
@@ -2393,7 +2393,7 @@ featured-products {
   background: transparent;
   border: none;
   outline: none;
-  color: #1a1a1a;
+  color: #fff;
   font-size: 0.8125rem;
   font-weight: 300;
   letter-spacing: 0.04em;
@@ -2401,13 +2401,13 @@ featured-products {
   -webkit-appearance: none;
 }
 .footer__newsletter-input::placeholder {
-  color: #aaa;
+  color: rgba(255,255,255,0.4);
 }
 
 .footer__newsletter-btn {
   background: transparent;
   border: none;
-  color: #1a1a1a;
+  color: #fff;
   cursor: pointer;
   padding: 12px 4px;
   transition: opacity 0.25s ease;
@@ -2418,7 +2418,7 @@ featured-products {
 
 .footer__newsletter-success {
   font-size: 0.75rem;
-  color: #666;
+  color: rgba(255,255,255,0.5);
   margin-top: 8px;
   letter-spacing: 0.04em;
 }
@@ -2455,21 +2455,21 @@ featured-products {
   font-size: 1.25rem;
   font-weight: var(--font-heading-weight, 400);
   letter-spacing: 0.02em;
-  color: #1a1a1a;
+  color: #fff;
   margin-bottom: 16px;
 }
 
 .footer__link {
   font-size: 0.875rem;
   font-weight: 300;
-  color: #555;
+  color: rgba(255,255,255,0.6);
   text-decoration: none;
   letter-spacing: 0.02em;
   padding: 4px 0;
   transition: color 0.25s ease;
 }
 .footer__link:hover {
-  color: #1a1a1a;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -2479,7 +2479,7 @@ featured-products {
   font-size: 2rem;
   font-weight: var(--font-heading-weight, 400);
   letter-spacing: 0.04em;
-  color: #1a1a1a;
+  color: #fff;
   margin-bottom: 24px;
 }
 
@@ -2492,17 +2492,17 @@ featured-products {
 }
 
 .footer__social a {
-  color: #555;
+  color: rgba(255,255,255,0.6);
   transition: color 0.25s ease;
 }
 .footer__social a:hover {
-  color: #1a1a1a;
+  color: #fff;
   text-decoration: none;
 }
 
 /* Bottom bar */
 .footer__bottom {
-  border-top: 1px solid #e0ddd8;
+  border-top: 1px solid rgba(255,255,255,0.12);
   padding: 28px 0;
 }
 
@@ -2517,7 +2517,7 @@ featured-products {
 .footer__copyright {
   font-size: 0.6875rem;
   font-weight: 300;
-  color: #999;
+  color: rgba(255,255,255,0.4);
   letter-spacing: 0.04em;
   display: none;
 }
@@ -2531,18 +2531,18 @@ featured-products {
 .footer__legal a {
   font-size: 0.6875rem;
   font-weight: 300;
-  color: #999;
+  color: rgba(255,255,255,0.4);
   text-decoration: none;
   letter-spacing: 0.03em;
   transition: color 0.25s ease;
 }
 .footer__legal a:hover {
-  color: #1a1a1a;
+  color: #fff;
   text-decoration: none;
 }
 
 .footer__legal-sep {
-  color: #ccc;
+  color: rgba(255,255,255,0.3);
   font-size: 0.625rem;
 }
 
