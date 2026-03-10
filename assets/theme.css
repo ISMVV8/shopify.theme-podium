@@ -617,6 +617,14 @@ announcement-bar {
   box-shadow: none;
 }
 
+/* Collapse wrapper so no white gap shows between announcement bar and hero.
+   The header is position:fixed so it doesn't need reserved space on homepage. */
+.header-wrapper[data-transparent-header="true"][data-template="index"] {
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: visible;
+}
+
 /* Light style: white text/icons on hero */
 .header-wrapper[data-transparent-header="true"][data-template="index"][data-header-hero-style="light"] .header:not(.is-sticky) {
   color: #fff;
@@ -654,23 +662,10 @@ announcement-bar {
   background: var(--color-text);
 }
 
-/* Pull hero up behind the header so it overlaps.
-   Uses header--has-hero (set once on load, never toggled) to avoid
-   layout-shift feedback loops with the IntersectionObserver. */
-.header--has-hero #main-content > .shopify-section:first-child {
-  margin-top: -64px;
-}
+/* Hero sits right after the announcement bar (wrapper is collapsed).
+   Padding clears the fixed transparent header so content isn't hidden. */
 .header--has-hero #main-content > .shopify-section:first-child .hero-slider__slide {
-  padding-top: 64px;
-}
-
-@media (max-width: 1023px) {
-  .header--has-hero #main-content > .shopify-section:first-child {
-    margin-top: -52px;
-  }
-  .header--has-hero #main-content > .shopify-section:first-child .hero-slider__slide {
-    padding-top: 52px;
-  }
+  padding-top: var(--header-height, 64px);
 }
 
 /* --- Mega Menu (desktop dropdown) --- */
