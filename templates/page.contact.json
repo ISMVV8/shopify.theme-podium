@@ -12,16 +12,6 @@
     "main": {
       "type": "contact",
       "blocks": {
-        "method_phone": {
-          "type": "contact_method",
-          "settings": {
-            "title": "Téléphone",
-            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
-            "icon": "phone",
-            "link_text": "Appelez-nous",
-            "link_url": "{{ page.url }}"
-          }
-        },
         "contact_method_NNmLmJ": {
           "type": "contact_method",
           "settings": {
@@ -64,7 +54,6 @@
         }
       },
       "block_order": [
-        "method_phone",
         "contact_method_NNmLmJ",
         "method_whatsapp",
         "method_email",
