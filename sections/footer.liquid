@@ -20,10 +20,14 @@
       <div class="footer__col footer__col--center">
         <div class="footer__logo-text">{{ shop.name }}</div>
         <div class="footer__social">
-          <a href="{{ settings.social_instagram | default: '#' }}" target="_blank" rel="noopener" aria-label="Instagram">
+          {%- assign insta_url = settings.social_instagram | default: '#' -%}
+          {%- if insta_url == blank -%}{%- assign insta_url = '#' -%}{%- endif -%}
+          <a href="{{ insta_url }}" target="_blank" rel="noopener" aria-label="Instagram">
             {% render 'icon', name: 'instagram', size: 20 %}
           </a>
-          <a href="{{ settings.social_snapchat | default: '#' }}" target="_blank" rel="noopener" aria-label="Snapchat">
+          {%- assign snap_url = settings.social_snapchat | default: '#' -%}
+          {%- if snap_url == blank -%}{%- assign snap_url = '#' -%}{%- endif -%}
+          <a href="{{ snap_url }}" target="_blank" rel="noopener" aria-label="Snapchat">
             {% render 'icon', name: 'snapchat', size: 20 %}
           </a>
           {%- if settings.social_facebook != blank -%}
