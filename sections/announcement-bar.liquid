@@ -5,7 +5,7 @@
     aria-label="{{ 'announcement.default_message' | t | default: 'Announcement' }}"
     data-rotate="{{ section.settings.enable_message_rotation }}"
     data-interval="{{ section.settings.rotation_interval_seconds | times: 1000 }}"
-    style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};"
+    style="--ab-bg: {{ section.settings.background_color }}; --ab-text: {{ section.settings.text_color }};"
   >
     <div class="announcement-bar__inner">
 
@@ -19,14 +19,8 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} CENTER — Messages carousel (true-centered via grid) {%- endcomment -%}
+      {%- comment -%} CENTER — Messages carousel {%- endcomment -%}
       <div class="announcement-bar__zone announcement-bar__center">
-        {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
-          <button class="announcement-bar__arrow" data-announce-prev aria-label="Previous message" type="button">
-            {% render 'icon', name: 'chevron-left', size: 12 %}
-          </button>
-        {%- endif -%}
-
         <div class="announcement-bar__messages" data-announce-track>
           {%- for block in section.blocks -%}
             {%- if block.type == 'message' -%}
@@ -48,12 +42,6 @@
             </p>
           {%- endif -%}
         </div>
-
-        {%- if section.blocks.size > 1 and section.settings.show_arrows -%}
-          <button class="announcement-bar__arrow" data-announce-next aria-label="Next message" type="button">
-            {% render 'icon', name: 'chevron-right', size: 12 %}
-          </button>
-        {%- endif -%}
       </div>
 
       {%- comment -%} RIGHT — Trustpilot badge {%- endcomment -%}
@@ -99,13 +87,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#d7e9f6"
+      "default": "#1a1a1a"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#1a1a1a"
+      "default": "#ffffff"
     },
     {
       "type": "header",
@@ -163,7 +151,7 @@
       "type": "checkbox",
       "id": "show_arrows",
       "label": "Show navigation arrows",
-      "default": true
+      "default": false
     }
   ],
   "blocks": [
@@ -193,7 +181,7 @@
         {
           "type": "message",
           "settings": {
-            "message_text": "Votre shopping encore plus facile : Téléchargez notre app !"
+            "message_text": "Livraison offerte dès 75€ d'achat"
           }
         }
       ]
