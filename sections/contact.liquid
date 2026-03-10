@@ -1,0 +1,212 @@
+{%- comment -%}
+  Contact page section – Louis Vuitton inspired.
+  Info cards + Shopify built-in contact form.
+{%- endcomment -%}
+
+<section class="contact-page">
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="contact-page__hero">
+    <h1 class="contact-page__title">{{ section.settings.heading }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <p class="contact-page__sub">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="contact-page__body container">
+    {%- comment -%} Info cards row {%- endcomment -%}
+    <div class="contact-page__info">
+      {%- if section.settings.address != blank -%}
+        <div class="contact-page__card">
+          <span class="contact-page__card-icon">
+            {% render 'icon', name: 'map-pin', size: 22 %}
+          </span>
+          <span class="contact-page__card-label">Adresse</span>
+          <span class="contact-page__card-value">{{ section.settings.address }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.phone != blank -%}
+        <div class="contact-page__card">
+          <span class="contact-page__card-icon">
+            {% render 'icon', name: 'phone', size: 22 %}
+          </span>
+          <span class="contact-page__card-label">Téléphone</span>
+          <a href="tel:{{ section.settings.phone | remove: ' ' }}" class="contact-page__card-value contact-page__card-link">{{ section.settings.phone }}</a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.email != blank -%}
+        <div class="contact-page__card">
+          <span class="contact-page__card-icon">
+            {% render 'icon', name: 'mail', size: 22 %}
+          </span>
+          <span class="contact-page__card-label">Email</span>
+          <a href="mailto:{{ section.settings.email }}" class="contact-page__card-value contact-page__card-link">{{ section.settings.email }}</a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.hours != blank -%}
+        <div class="contact-page__card">
+          <span class="contact-page__card-icon">
+            {% render 'icon', name: 'clock', size: 22 %}
+          </span>
+          <span class="contact-page__card-label">Horaires</span>
+          <span class="contact-page__card-value">{{ section.settings.hours }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Form section {%- endcomment -%}
+    <div class="contact-page__form-section">
+      <h2 class="contact-page__form-title">{{ section.settings.form_heading | default: 'Envoyez-nous un message' }}</h2>
+      {%- if section.settings.form_subtext != blank -%}
+        <p class="contact-page__form-sub">{{ section.settings.form_subtext }}</p>
+      {%- endif -%}
+
+      {%- form 'contact', class: 'contact-page__form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="contact-page__success">
+            <p>Merci pour votre message. Nous vous répondrons dans les plus brefs délais.</p>
+          </div>
+        {%- endif -%}
+
+        {%- if form.errors -%}
+          <div class="contact-page__errors">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="contact-page__form-grid">
+          <div class="contact-page__field">
+            <label for="contact-name" class="contact-page__label">Nom complet</label>
+            <input
+              type="text"
+              id="contact-name"
+              name="contact[{{ 'contact.form.name' | t | default: 'Nom' }}]"
+              class="contact-page__input"
+              required
+              autocomplete="name"
+            >
+          </div>
+          <div class="contact-page__field">
+            <label for="contact-email" class="contact-page__label">Email</label>
+            <input
+              type="email"
+              id="contact-email"
+              name="contact[email]"
+              class="contact-page__input"
+              required
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <div class="contact-page__field">
+          <label for="contact-subject" class="contact-page__label">Sujet</label>
+          <select id="contact-subject" name="contact[{{ 'contact.form.subject' | t | default: 'Sujet' }}]" class="contact-page__input contact-page__select">
+            <option value="">Sélectionnez un sujet</option>
+            <option value="Commande">Question sur une commande</option>
+            <option value="Livraison">Livraison</option>
+            <option value="Retour">Retour ou échange</option>
+            <option value="Produit">Question sur un produit</option>
+            <option value="Taille">Conseil taille</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+
+        <div class="contact-page__field">
+          <label for="contact-phone" class="contact-page__label">Téléphone <span class="contact-page__optional">(optionnel)</span></label>
+          <input
+            type="tel"
+            id="contact-phone"
+            name="contact[{{ 'contact.form.phone' | t | default: 'Téléphone' }}]"
+            class="contact-page__input"
+            autocomplete="tel"
+          >
+        </div>
+
+        <div class="contact-page__field">
+          <label for="contact-body" class="contact-page__label">Message</label>
+          <textarea
+            id="contact-body"
+            name="contact[body]"
+            class="contact-page__input contact-page__textarea"
+            rows="6"
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="contact-page__submit">
+          Envoyer
+        </button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nous contacter",
+  "class": "contact-page-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Nous contacter"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sous-titre",
+      "default": "Notre équipe est à votre écoute pour toute question"
+    },
+    {
+      "type": "header",
+      "content": "Informations de contact"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Adresse"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Téléphone"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Horaires",
+      "default": "Lun – Ven : 10h – 18h"
+    },
+    {
+      "type": "header",
+      "content": "Formulaire"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Titre du formulaire",
+      "default": "Envoyez-nous un message"
+    },
+    {
+      "type": "text",
+      "id": "form_subtext",
+      "label": "Sous-texte du formulaire",
+      "default": "Nous vous répondrons sous 24 à 48 heures ouvrées."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nous contacter"
+    }
+  ]
+}
+{% endschema %}
