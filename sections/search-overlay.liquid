@@ -1,7 +1,19 @@
 <search-overlay class="search-overlay" id="search-overlay" role="dialog" aria-label="{{ 'search.title' | t }}">
-  <div class="container search-overlay__inner">
-    <form action="{{ routes.search_url }}" method="get" role="search">
+  <div class="search-overlay__inner">
+
+    {%- comment -%} Mobile top bar {%- endcomment -%}
+    <div class="search-overlay__topbar">
+      <button type="button" class="search-overlay__back" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
+        {% render 'icon', name: 'chevron-left', size: 22 %}
+      </button>
+      <span class="search-overlay__topbar-title">Rechercher</span>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-overlay__form">
       <div class="search-overlay__input-wrap">
+        <span class="search-overlay__search-icon" aria-hidden="true">
+          {% render 'icon', name: 'search', size: 18 %}
+        </span>
         <input
           type="search"
           name="q"
@@ -11,8 +23,8 @@
           aria-label="{{ 'search.placeholder' | t }}"
         >
         <input type="hidden" name="type" value="product">
-        <button type="button" class="btn--icon" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
-          {% render 'icon', name: 'close', size: 24 %}
+        <button type="button" class="search-overlay__close btn--icon" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
+          {% render 'icon', name: 'close', size: 20 %}
         </button>
       </div>
     </form>
@@ -68,4 +80,3 @@
   ]
 }
 {% endschema %}
-
