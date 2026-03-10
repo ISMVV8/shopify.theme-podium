@@ -101,10 +101,18 @@ class StickyHeader extends HTMLElement {
       this.style.height = '0px';
     };
 
+    this._isHomepage = this.dataset.transparentHeader === 'true' && this.dataset.template === 'index';
+
     this._onScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       const offset = Math.max(this._abHeight - scrollY, 0);
       this.header.style.top = offset + 'px';
+
+      // On the homepage, header is transparent at top, opaque once scrolled
+      if (this._isHomepage) {
+        const pastBar = scrollY > this._abHeight;
+        this.header.classList.toggle('is-sticky', pastBar);
+      }
     };
 
     updatePosition();
@@ -113,18 +121,10 @@ class StickyHeader extends HTMLElement {
     this._resizeObserver.observe(this.header);
     if (this._announcementBar) this._resizeObserver.observe(this._announcementBar);
 
-    // Layout class for hero overlap (negative margin)
-    const hero = (this.dataset.transparentHeader === 'true' && this.dataset.template === 'index')
-      ? document.getElementById('home-hero')
-      : null;
-
-    if (hero) {
-      document.body.classList.add('header--has-hero');
+    // On non-homepage pages, always opaque
+    if (!this._isHomepage) {
+      this.header.classList.add('is-sticky');
     }
-
-    // Header is always opaque with shadow — no observers, no toggling,
-    // nothing dynamic at any scroll position.
-    this.header.classList.add('is-sticky');
   }
 
   disconnectedCallback() {
