@@ -11,12 +11,6 @@
   "sections": {
     "main": {
       "type": "contact",
-      "settings": {
-        "heading": "Nous contacter",
-        "subheading": "Notre équipe est à votre écoute pour toute question",
-        "form_heading": "Envoyez-nous un message",
-        "form_subtext": "Nous vous répondrons sous 24 à 48 heures ouvrées."
-      },
       "blocks": {
         "method_phone": {
           "type": "contact_method",
@@ -24,7 +18,8 @@
             "title": "Téléphone",
             "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
             "icon": "phone",
-            "link_text": "Appelez-nous"
+            "link_text": "Appelez-nous",
+            "link_url": "{{ page.url }}"
           }
         },
         "method_whatsapp": {
@@ -33,7 +28,8 @@
             "title": "WhatsApp",
             "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
             "icon": "whatsapp",
-            "link_text": "Contactez-nous sur WhatsApp"
+            "link_text": "Contactez-nous sur WhatsApp",
+            "link_url": "https://wa.me/32466316024"
           }
         },
         "method_email": {
@@ -42,7 +38,8 @@
             "title": "E-mail",
             "description": "Un conseiller clientèle se chargera d'étudier votre demande",
             "icon": "mail",
-            "link_text": "Écrivez-nous"
+            "link_text": "Écrivez-nous",
+            "link_url": ""
           }
         },
         "method_chat": {
@@ -51,12 +48,26 @@
             "title": "Live Chat",
             "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
             "icon": "headset",
-            "link_text": "Envoyez-nous un message"
+            "link_text": "Envoyez-nous un message",
+            "link_url": ""
           }
         }
       },
-      "block_order": ["method_phone", "method_whatsapp", "method_email", "method_chat"]
+      "block_order": [
+        "method_phone",
+        "method_whatsapp",
+        "method_email",
+        "method_chat"
+      ],
+      "settings": {
+        "heading": "Nous contacter",
+        "subheading": "Notre équipe est à votre écoute pour toute question",
+        "form_heading": "Envoyez-nous un message",
+        "form_subtext": "Nous vous répondrons sous 24 à 48 heures ouvrées."
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
