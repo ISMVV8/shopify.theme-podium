@@ -8,6 +8,175 @@
     "theme_support_url": ""
   },
   {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Couleurs générales"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Arrière-plan",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Texte principal",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "color",
+        "id": "color_text_secondary",
+        "label": "Texte secondaire",
+        "default": "#6B6B6B"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Bordures",
+        "default": "#E5E5E5"
+      },
+      {
+        "type": "color",
+        "id": "color_overlay",
+        "label": "Overlay",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Prix soldé",
+        "default": "#C53030"
+      },
+      {
+        "type": "header",
+        "content": "Boutons"
+      },
+      {
+        "type": "color",
+        "id": "color_button_bg",
+        "label": "Bouton principal — fond",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "color",
+        "id": "color_button_text",
+        "label": "Bouton principal — texte",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_button_secondary_bg",
+        "label": "Bouton secondaire — fond",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_button_secondary_text",
+        "label": "Bouton secondaire — texte",
+        "default": "#1A1A1A"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "range",
+        "id": "font_body_size",
+        "label": "Taille du texte (px)",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "font_heading_scale",
+        "label": "Échelle des titres",
+        "min": 75,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Arrondi des coins (px)",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "default": 4,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "spacing_scale",
+        "label": "Échelle des espacements",
+        "min": 75,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Largeur de page (px)",
+        "min": 960,
+        "max": 1600,
+        "step": 20,
+        "default": 1280,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "header_sticky",
+        "label": "Header fixe au scroll",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "announcement_bar_enabled",
+        "label": "Afficher la barre d'annonce",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_trustpilot_badge",
+        "label": "Afficher le badge Trustpilot",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold",
+        "label": "Seuil livraison gratuite (€)",
+        "default": "75",
+        "info": "Montant en euros à partir duquel la livraison est offerte"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_message",
+        "label": "Message livraison gratuite",
+        "default": "Livraison offerte à partir de 75€*"
+      }
+    ]
+  },
+  {
     "name": "Réseaux sociaux",
     "settings": [
       {
@@ -22,57 +191,49 @@
         "type": "text",
         "id": "social_facebook",
         "label": "Facebook",
-        "placeholder": "https://www.facebook.com/votre-page",
-        "info": "URL complète de votre page Facebook"
+        "placeholder": "https://www.facebook.com/votre-page"
       },
       {
         "type": "text",
         "id": "social_instagram",
         "label": "Instagram",
-        "placeholder": "https://www.instagram.com/votre-compte",
-        "info": "URL complète de votre profil Instagram"
+        "placeholder": "https://www.instagram.com/votre-compte"
       },
       {
         "type": "text",
         "id": "social_pinterest",
         "label": "Pinterest",
-        "placeholder": "https://www.pinterest.fr/votre-compte",
-        "info": "URL complète de votre profil Pinterest"
+        "placeholder": "https://www.pinterest.fr/votre-compte"
       },
       {
         "type": "text",
         "id": "social_tiktok",
         "label": "TikTok",
-        "placeholder": "https://www.tiktok.com/@votre-compte",
-        "info": "URL complète de votre profil TikTok"
+        "placeholder": "https://www.tiktok.com/@votre-compte"
       },
       {
         "type": "text",
         "id": "social_whatsapp",
         "label": "WhatsApp",
-        "placeholder": "https://wa.me/33612345678",
-        "info": "Lien WhatsApp (wa.me/numéro ou lien de groupe)"
+        "placeholder": "https://wa.me/33612345678"
       },
       {
         "type": "text",
         "id": "social_twitter",
         "label": "X (Twitter)",
-        "placeholder": "https://x.com/votre-compte",
-        "info": "URL complète de votre profil X / Twitter"
+        "placeholder": "https://x.com/votre-compte"
       },
       {
         "type": "text",
         "id": "social_youtube",
         "label": "YouTube",
-        "placeholder": "https://www.youtube.com/@votre-chaine",
-        "info": "URL complète de votre chaîne YouTube"
+        "placeholder": "https://www.youtube.com/@votre-chaine"
       },
       {
         "type": "text",
         "id": "social_snapchat",
         "label": "Snapchat",
-        "placeholder": "https://www.snapchat.com/add/votre-pseudo",
-        "info": "URL complète de votre profil Snapchat"
+        "placeholder": "https://www.snapchat.com/add/votre-pseudo"
       }
     ]
   }
