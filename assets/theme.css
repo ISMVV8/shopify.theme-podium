@@ -2430,8 +2430,10 @@ featured-products {
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .footer__col {
