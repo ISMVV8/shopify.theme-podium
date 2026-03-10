@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -5,10 +14,48 @@
       "settings": {
         "heading": "Nous contacter",
         "subheading": "Notre équipe est à votre écoute pour toute question",
-        "hours": "Lun – Ven : 10h – 18h",
         "form_heading": "Envoyez-nous un message",
         "form_subtext": "Nous vous répondrons sous 24 à 48 heures ouvrées."
-      }
+      },
+      "blocks": {
+        "method_phone": {
+          "type": "contact_method",
+          "settings": {
+            "title": "Téléphone",
+            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
+            "icon": "phone",
+            "link_text": "Appelez-nous"
+          }
+        },
+        "method_whatsapp": {
+          "type": "contact_method",
+          "settings": {
+            "title": "WhatsApp",
+            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
+            "icon": "whatsapp",
+            "link_text": "Contactez-nous sur WhatsApp"
+          }
+        },
+        "method_email": {
+          "type": "contact_method",
+          "settings": {
+            "title": "E-mail",
+            "description": "Un conseiller clientèle se chargera d'étudier votre demande",
+            "icon": "mail",
+            "link_text": "Écrivez-nous"
+          }
+        },
+        "method_chat": {
+          "type": "contact_method",
+          "settings": {
+            "title": "Live Chat",
+            "description": "Du Lundi au Dimanche de 10h à 19h (CET).",
+            "icon": "headset",
+            "link_text": "Envoyez-nous un message"
+          }
+        }
+      },
+      "block_order": ["method_phone", "method_whatsapp", "method_email", "method_chat"]
     }
   },
   "order": ["main"]
