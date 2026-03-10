@@ -13,12 +13,12 @@
     "color_text": "#1A1A1A",
     "color_text_secondary": "#6B6B6B",
     "color_border": "#E5E5E5",
+    "color_overlay": "#000000",
+    "color_sale": "#C53030",
     "color_button_bg": "#1A1A1A",
     "color_button_text": "#FFFFFF",
     "color_button_secondary_bg": "#FFFFFF",
     "color_button_secondary_text": "#1A1A1A",
-    "color_sale": "#C53030",
-    "color_overlay": "#000000",
     "font_body_size": 14,
     "font_heading_scale": 100,
     "border_radius": 4,
@@ -29,6 +29,8 @@
     "show_trustpilot_badge": false,
     "cart_free_shipping_threshold": "75",
     "cart_free_shipping_message": "Livraison offerte à partir de 75€*",
+    "social_instagram": "https://www.instagram.com/podiumwomen/",
+    "social_snapchat": "https://snapchat.com/t/ubFpTP6T",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
