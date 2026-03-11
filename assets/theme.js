@@ -203,11 +203,12 @@ class MobileMenuDrawer extends HTMLElement {
 class SearchOverlayElement extends HTMLElement {
   connectedCallback() {
     this.input = this.querySelector('.search-overlay__input');
-    this.closeBtn = this.querySelector('[data-search-close]');
     document.querySelectorAll('[data-search-open]').forEach(btn => {
       btn.addEventListener('click', () => this.open());
     });
-    if (this.closeBtn) this.closeBtn.addEventListener('click', () => this.close());
+    this.querySelectorAll('[data-search-close]').forEach(btn => {
+      btn.addEventListener('click', () => this.close());
+    });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.classList.contains('is-open')) this.close();
     });
@@ -215,7 +216,7 @@ class SearchOverlayElement extends HTMLElement {
   open() {
     this.classList.add('is-open');
     bodyScrollLock(true);
-    if (this.input) setTimeout(() => this.input.focus(), 100);
+    if (this.input) setTimeout(() => this.input.focus(), 200);
   }
   close() {
     this.classList.remove('is-open');

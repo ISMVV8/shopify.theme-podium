@@ -1,14 +1,15 @@
 <search-overlay class="search-overlay" id="search-overlay" role="dialog" aria-label="{{ 'search.title' | t }}">
-  <div class="search-overlay__inner">
+  <div class="search-overlay__backdrop" data-search-close></div>
+  <div class="search-overlay__panel">
+    {%- comment -%} Close button {%- endcomment -%}
+    <button type="button" class="search-overlay__close" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
+      {% render 'icon', name: 'close', size: 22 %}
+    </button>
 
-    {%- comment -%} Mobile top bar {%- endcomment -%}
-    <div class="search-overlay__topbar">
-      <button type="button" class="search-overlay__back" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
-        {% render 'icon', name: 'chevron-left', size: 22 %}
-      </button>
-      <span class="search-overlay__topbar-title">Rechercher</span>
-    </div>
+    {%- comment -%} Title {%- endcomment -%}
+    <p class="search-overlay__title">Rechercher</p>
 
+    {%- comment -%} Search form {%- endcomment -%}
     <form action="{{ routes.search_url }}" method="get" role="search" class="search-overlay__form">
       <div class="search-overlay__input-wrap">
         <span class="search-overlay__search-icon" aria-hidden="true">
@@ -23,31 +24,28 @@
           aria-label="{{ 'search.placeholder' | t }}"
         >
         <input type="hidden" name="type" value="product">
-        <button type="button" class="search-overlay__close btn--icon" data-search-close aria-label="{{ 'accessibility.close_search' | t }}">
-          {% render 'icon', name: 'close', size: 20 %}
-        </button>
       </div>
     </form>
 
-    {%- comment -%} Frequent searches {%- endcomment -%}
+    {%- comment -%} Popular searches {%- endcomment -%}
     <div class="search-overlay__frequent">
-      <p class="search-overlay__frequent-label">{{ 'search.frequent' | t }}</p>
+      <p class="search-overlay__frequent-label">Recherches populaires</p>
       <div class="search-overlay__pills">
         {%- for block in section.blocks -%}
           {%- if block.type == 'quick_link' -%}
-            <a href="{{ block.settings.link }}" class="btn btn--pill" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.link }}" class="search-overlay__pill" {{ block.shopify_attributes }}>
               {{ block.settings.label }}
             </a>
           {%- endif -%}
         {%- endfor -%}
         {%- if section.blocks.size == 0 -%}
-          <a href="{{ routes.search_url }}?q=robes&type=product" class="btn btn--pill">Robes</a>
-          <a href="{{ routes.search_url }}?q=chemisiers&type=product" class="btn btn--pill">Chemisiers & Blouses</a>
-          <a href="{{ routes.search_url }}?q=pulls+gilets&type=product" class="btn btn--pill">Pulls & Gilets</a>
-          <a href="{{ routes.search_url }}?q=vestes+manteaux&type=product" class="btn btn--pill">Vestes & Manteaux</a>
-          <a href="{{ routes.search_url }}?q=tops+t-shirts&type=product" class="btn btn--pill">Tops & T-shirts</a>
-          <a href="{{ routes.search_url }}?q=accessoires&type=product" class="btn btn--pill">Accessoires</a>
-          <a href="{{ routes.search_url }}?q=pantalons&type=product" class="btn btn--pill">Pantalons</a>
+          <a href="{{ routes.search_url }}?q=robes&type=product" class="search-overlay__pill">Robes</a>
+          <a href="{{ routes.search_url }}?q=chemisiers&type=product" class="search-overlay__pill">Chemisiers & Blouses</a>
+          <a href="{{ routes.search_url }}?q=pulls+gilets&type=product" class="search-overlay__pill">Pulls & Gilets</a>
+          <a href="{{ routes.search_url }}?q=vestes+manteaux&type=product" class="search-overlay__pill">Vestes & Manteaux</a>
+          <a href="{{ routes.search_url }}?q=tops+t-shirts&type=product" class="search-overlay__pill">Tops & T-shirts</a>
+          <a href="{{ routes.search_url }}?q=accessoires&type=product" class="search-overlay__pill">Accessoires</a>
+          <a href="{{ routes.search_url }}?q=pantalons&type=product" class="search-overlay__pill">Pantalons</a>
         {%- endif -%}
       </div>
     </div>
