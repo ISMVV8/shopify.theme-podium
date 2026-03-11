@@ -1131,7 +1131,7 @@ a.mega-menu__heading:hover {
   left: 0;
   right: 0;
   background: #fff;
-  padding: 56px 0 48px;
+  padding: 24px 0 28px;
   transform: translateY(-100%);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1142,8 +1142,8 @@ a.mega-menu__heading:hover {
 /* Close */
 .search-overlay__close {
   position: absolute;
-  top: 20px;
-  right: 24px;
+  top: 14px;
+  right: 20px;
   background: none;
   border: none;
   cursor: pointer;
@@ -1167,12 +1167,12 @@ a.mega-menu__heading:hover {
   letter-spacing: 0.2em;
   color: #999;
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 }
 
 /* Form */
 .search-overlay__form {
-  max-width: 560px;
+  max-width: 480px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -1180,9 +1180,9 @@ a.mega-menu__heading:hover {
 .search-overlay__input-wrap {
   display: flex;
   align-items: center;
-  border-bottom: 1.5px solid #1a1a1a;
-  padding-bottom: 8px;
-  gap: 12px;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 6px;
+  gap: 10px;
 }
 
 .search-overlay__search-icon {
@@ -1196,12 +1196,12 @@ a.mega-menu__heading:hover {
   border: none;
   background: none;
   font-family: var(--font-heading);
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 300;
   letter-spacing: 0.04em;
   color: #1a1a1a;
   outline: none;
-  padding: 8px 0;
+  padding: 6px 0;
   min-width: 0;
 }
 .search-overlay__input::placeholder {
@@ -1211,8 +1211,8 @@ a.mega-menu__heading:hover {
 
 /* Popular searches */
 .search-overlay__frequent {
-  max-width: 560px;
-  margin: 28px auto 0;
+  max-width: 480px;
+  margin: 18px auto 0;
   padding: 0 24px;
 }
 
@@ -1222,21 +1222,21 @@ a.mega-menu__heading:hover {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: #999;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .search-overlay__pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .search-overlay__pill {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 300;
   letter-spacing: 0.04em;
   color: #1a1a1a;
-  padding: 8px 18px;
+  padding: 6px 14px;
   border: 1px solid #ddd;
   border-radius: 100px;
   text-decoration: none;
